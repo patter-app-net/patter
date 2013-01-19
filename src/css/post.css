@@ -1,0 +1,138 @@
+/* Post Wrapper */
+
+.postRowWrap
+{
+  width: 100%;
+  overflow: hidden;
+}
+
+/* Post Bar */
+
+.postRow {
+  position: relative;
+  margin-bottom: 5px;
+  margin-left: 5px;
+  padding: 5px;
+  max-width: 85%;
+  border-bottom: 1px solid #e0e0e0;
+  border-radius: 3px;
+  float: left;
+  clear: both;
+  font-size: 0.875em;
+  -ms-word-break: break-all;
+  word-break: break-word;
+  -webkit-hyphens: auto;
+  -moz-hyphens: auto;
+  hyphens: auto;
+  background: #f5f5f5;
+}
+
+.mentionPost {
+  background: #fff7cb;
+}
+
+.myPost {
+  background: #e5f2ff;
+}
+
+.postRow a {
+  color: #00457c;
+  text-decoration: none;
+  font-style: italic;
+  display: inline-block;
+  font-size: inherit;
+}
+
+.postRow a:hover {
+  color: #2a79b8;
+}
+
+.postRow a.link {
+  font-weight: bold;
+}
+
+.postRow .mention {
+  font-weight: bold;
+  color: #39f;
+  display: inline-block;
+  font-size: inherit;
+  margin-left: 0;
+}
+
+.postBody {
+}
+
+/* Broadcast Icon */
+
+.broadcastIcon {
+  background: url('http://patter-app.net/Resources/Images/BroadcastImg.png') no-repeat;
+  width: 24px;
+  height: 18px;
+  display: block;
+}
+
+.broadcastLink {
+  float: left;
+  margin: 4px;
+  bottom: 0;
+  width: 27px;
+  height: 21px;
+  background-color: #058205;
+  border-radius: 3px;
+  padding: 5px 0 0 3px;
+}
+
+/* Author */
+
+.authorContainer
+{
+}
+
+a.author:hover
+{
+  color: #222222;
+  background-color: #dddddd;
+  text-decoration: none;
+}
+
+a.author
+{
+  color: #000000;
+  background-color: #cccccc;
+  padding: 0px 5px 0px 5px;
+  margin-right: 5px;
+  text-decoration: none;
+  font-style: normal;
+  height: 23px;
+}
+
+.authorAvatar {
+  float: left;
+  margin-top: 0px;
+}
+
+.authorAvatarImg {
+  max-height: 23px;
+}
+
+/* Timestamp */
+
+.postTimestamp {
+  font-size: 0.6em;
+  color: #a4a4a4;
+  float: left;
+  padding: 7px 0 0 5px;
+  display: inline-block;
+}
+
+/* Embedded Images */
+
+.emoji {
+  max-height: 24px;
+}
+
+.embedImageWrapper {
+  padding: 5px;
+  text-align: center;
+  overflow: hidden;
+}
