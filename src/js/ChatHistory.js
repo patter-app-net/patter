@@ -119,7 +119,7 @@ function ($, util, appnet, postTemplate, emojiTemplate) {
 
     var timestamp = $('.postTimestamp', post);
     timestamp.attr('title', data.created_at);
-    formatTimestamp(timestamp);
+//    formatTimestamp(timestamp);
 
 
 //    $('.mention', row).each(function (index, element) {

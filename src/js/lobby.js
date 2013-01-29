@@ -13,6 +13,8 @@ function ($, util, appnet, editRoomModal) {
   var hasNotified = false;
 
   function initialize() {
+    appnet.init('patter2Token', 'patterPrevUrl');
+
     if (! appnet.isLogged())
     {
       util.redirect('auth.html');
@@ -324,7 +326,7 @@ function ($, util, appnet, editRoomModal) {
   function logout(event)
   {
     event.preventDefault();
-    $.removeCookie('patter2Token');
+    $.removeCookie('patter2Token', { path: '/' });
     util.redirect('index.html');
     return false;
   }

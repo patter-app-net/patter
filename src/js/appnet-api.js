@@ -7,13 +7,21 @@ define(['jquery', 'js/util', 'jquery-cookie'],
 function ($, util) {
   'use strict';
 
-  var appnet = {};
+  var appnet = {
+    accessToken: null
+  };
 
-  var authCookie = 'patter2Token';
-  var urlCookie = 'patterPrevUrl';
+  var authCookie = 'appnetToken';
+  var urlCookie = 'appnetPrevUrl';
 
-  appnet.accessToken = $.cookie(authCookie);
-    
+  appnet.init = function (newAuthCookie, newUrlCookie)
+  {
+    authCookie = newAuthCookie;
+    urlCookie = newUrlCookie;
+
+    appnet.accessToken = $.cookie(authCookie);
+  };
+
   var callSuccess = function (response)
   {
     if (response !== null &&

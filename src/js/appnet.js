@@ -13,6 +13,11 @@ function ($, util, api, note) {
     user: null
   };
 
+  appnet.init = function (tokenCookie, urlCookie)
+  {
+    this.api.init(tokenCookie, urlCookie);
+  };
+
   appnet.isLogged = function () {
     return this.api.accessToken !== null;
   };

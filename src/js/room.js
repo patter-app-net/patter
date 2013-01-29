@@ -48,6 +48,7 @@ function ($, util, appnet, roomInfo, roomMenu, RoomFeed) {
   {
     var params = util.getUrlVars();
     var newRoom = params.channel;
+    appnet.init('patter2Token', 'patterPrevUrl');
     if (! newRoom)
     {
       util.redirect('auth.html');
