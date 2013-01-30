@@ -121,7 +121,7 @@ function ($, appnet, chatTemplate) {
       annotations: postAnnotations
     };
     var text = messageString;
-    var promo = ' -- ' + this.channelName;
+    var promo = ' -- ' + this.channelName + ' [Room]';
     if (text.length + promo.length <= 256)
     {
       post.text = text + promo;
@@ -129,8 +129,8 @@ function ($, appnet, chatTemplate) {
         links: [{
           text: this.channelName,
           url: url,
-          pos: text.length + promo.length - this.channelName.length,
-          len: this.channelName.length
+          pos: text.length + promo.length - 6,
+          len: 6
         }]
       };
     }
