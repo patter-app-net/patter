@@ -8,7 +8,7 @@ define(['jquery', 'js/util', 'js/appnet', 'js/roomInfo',
         'js/UserFields',
         'text!template/editRoomModal.html'],
 function ($, util, appnet, roomInfo, UserFields, editTemplate) {
-  'use strict';
+  
 
   var editRoomModal = {
   };

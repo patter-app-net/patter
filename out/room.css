@@ -1,6 +1,155 @@
-@import url("css/reset.css");
-@import url("css/post.css");
-@import url("css/user.css");
+html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td,article,aside,canvas,details,embed,figure,figcaption,footer,header,hgroup,menu,nav,output,ruby,section,summary,time,mark,audio,video{border:0;font-size:100%;font:inherit;vertical-align:baseline;margin:0;padding:0}article,aside,details,figcaption,figure,footer,header,hgroup,menu,nav,section{display:block}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:none}table{border-collapse:collapse;border-spacing:0}
+.postRowWrap
+{
+  width: 100%;
+  overflow: hidden;
+}
+.postRow {
+  padding: 5px;
+  width: 100%;
+  border-bottom: 1px solid #e0e0e0;
+  font-size: 16px;
+  -ms-word-break: break-all;
+  word-break: break-word;
+  -webkit-hyphens: auto;
+  -moz-hyphens: auto;
+  hyphens: auto;
+  background: #fff;
+  position: relative;
+}
+.mentionPost {
+}
+.myPost {
+}
+.postRow a {
+  color: #00457c;
+  text-decoration: none;
+  font-style: italic;
+  display: inline-block;
+  font-size: inherit;
+}
+.postRow a:hover {
+  color: #2a79b8;
+}
+.postRow a.link {
+  font-weight: bold;
+}
+.postRow .mention {
+  font-weight: bold;
+  color: #39f;
+  display: inline-block;
+  font-size: inherit;
+  margin-left: 0;
+}
+.postBody {
+  display: inline-block;
+  margin-left: 160px;
+  line-height: 26px;
+}
+.broadcastIcon {
+  background: url('http://patter-app.net/Resources/Images/BroadcastImg.png') no-repeat;
+  width: 24px;
+  height: 18px;
+  display: block;
+}
+.broadcastLink {
+  position: absolute;
+  right: 0px;
+  top: 50%;
+  margin-top: -13px;
+  margin-right: 20px;
+  width: 27px;
+  height: 21px;
+  background-color: #8c291d;
+  border-radius: 3px;
+  padding: 5px 0 0 3px;
+}
+.authorContainer
+{
+  position: absolute;
+  width: 150px;
+  text-align: right;
+  overflow: hidden;
+}
+a.author:hover
+{
+  color: #222222;
+  background-color: #dddddd;
+  text-decoration: none;
+}
+a.author
+{
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  width: 80%;
+  display: inline-block;
+  line-height: 26px;
+  font-style: normal;
+}
+.authorAvatar {
+  float: left;
+  margin-top: 0px;
+}
+.authorAvatarImg {
+  max-height: 23px;
+}
+.postTimestamp {
+  font-size: 0.6em;
+  color: #a4a4a4;
+  padding: 7px 0 0 5px;
+  display: inline-block;
+}
+.emoji {
+  max-height: 24px;
+}
+.embedImageWrapper {
+  padding: 5px;
+  text-align: center;
+  overflow: hidden;
+}
+.usersList {
+  margin: 0;
+}
+.userAvatar {
+  width: 33px;
+  height: 33px;
+  max-height: 33px;
+  left: 0px;
+  display: inline-block;
+}
+.userName {
+  display: inline-block;
+  vertical-align: top;
+  text-decoration: none;
+  font-size: 0.875em;
+  border-radius: 0 3px 3px 0;
+  position: absolute;
+  left: 33px;
+  right: 0;
+  padding: 5px;
+  background-color: #e5f2ff;
+  color: #036;
+  border-bottom: 1px solid #b7d1eb;
+  margin-bottom: 5px;
+  font-weight: bold;
+  height: 23px;
+}
+.myAccount:hover {
+  background: #cbe0f6;
+}
+.idleUser {
+  background-color: #fdd;
+}
+.idleUser:hover {
+  background: #f1c1be;
+}
+.activeUser {
+  background-color: #eee;
+}
+.activeUser:hover {
+  background: #ddd;
+}
 body { font-family: 'Open Sans', 'Helvetica Neue', Helvetica, Sans-Serif; text-rendering: optimizeLegibility; -webkit-font-smoothing: antialiased;}
 li, .nav li {
   list-style-type: none;
@@ -58,7 +207,6 @@ li, .nav li {
   overflow: hidden;
   text-overflow: ellipsis;
 }
-
 .btn-success .users, .btn-success .channel-name {
   background-color: #408043;
 }
@@ -129,7 +277,6 @@ footer {
   color: #fff;
 }
 .rowFull {
-/*  z-index: 1; */
   left: 0px;
   right: 0px;
   
@@ -200,7 +347,6 @@ input.broadcastMessage:hover { background: #005510; }
     right: 20px;
     left: 20px;
 }
-
 .chatBoxWrap {
   color: #000000;
   background: #eee;

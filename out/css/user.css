@@ -1,0 +1,43 @@
+
+.usersList {
+  margin: 0;
+}
+.userAvatar {
+  width: 33px;
+  height: 33px;
+  max-height: 33px;
+  left: 0px;
+  display: inline-block;
+}
+.userName {
+  display: inline-block;
+  vertical-align: top;
+  text-decoration: none;
+  font-size: 0.875em;
+  border-radius: 0 3px 3px 0;
+  position: absolute;
+  left: 33px;
+  right: 0;
+  padding: 5px;
+  background-color: #e5f2ff;
+  color: #036;
+  border-bottom: 1px solid #b7d1eb;
+  margin-bottom: 5px;
+  font-weight: bold;
+  height: 23px;
+}
+.myAccount:hover {
+  background: #cbe0f6;
+}
+.idleUser {
+  background-color: #fdd;
+}
+.idleUser:hover {
+  background: #f1c1be;
+}
+.activeUser {
+  background-color: #eee;
+}
+.activeUser:hover {
+  background: #ddd;
+}

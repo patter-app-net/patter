@@ -1,13 +1,9 @@
-/* Post Wrapper */
 
 .postRowWrap
 {
   width: 100%;
   overflow: hidden;
 }
-
-/* Post Bar */
-
 .postRow {
   padding: 5px;
   width: 100%;
@@ -21,13 +17,10 @@
   background: #fff;
   position: relative;
 }
-
 .mentionPost {
 }
-
 .myPost {
 }
-
 .postRow a {
   color: #00457c;
   text-decoration: none;
@@ -35,15 +28,12 @@
   display: inline-block;
   font-size: inherit;
 }
-
 .postRow a:hover {
   color: #2a79b8;
 }
-
 .postRow a.link {
   font-weight: bold;
 }
-
 .postRow .mention {
   font-weight: bold;
   color: #39f;
@@ -51,22 +41,17 @@
   font-size: inherit;
   margin-left: 0;
 }
-
 .postBody {
   display: inline-block;
   margin-left: 160px;
   line-height: 26px;
 }
-
-/* Broadcast Icon */
-
 .broadcastIcon {
   background: url('http://patter-app.net/Resources/Images/BroadcastImg.png') no-repeat;
   width: 24px;
   height: 18px;
   display: block;
 }
-
 .broadcastLink {
   position: absolute;
   right: 0px;
@@ -79,9 +64,6 @@
   border-radius: 3px;
   padding: 5px 0 0 3px;
 }
-
-/* Author */
-
 .authorContainer
 {
   position: absolute;
@@ -89,14 +71,12 @@
   text-align: right;
   overflow: hidden;
 }
-
 a.author:hover
 {
   color: #222222;
   background-color: #dddddd;
   text-decoration: none;
 }
-
 a.author
 {
   overflow: hidden;
@@ -107,31 +87,22 @@ a.author
   line-height: 26px;
   font-style: normal;
 }
-
 .authorAvatar {
   float: left;
   margin-top: 0px;
 }
-
 .authorAvatarImg {
   max-height: 23px;
 }
-
-/* Timestamp */
-
 .postTimestamp {
   font-size: 0.6em;
   color: #a4a4a4;
   padding: 7px 0 0 5px;
   display: inline-block;
 }
-
-/* Embedded Images */
-
 .emoji {
   max-height: 24px;
 }
-
 .embedImageWrapper {
   padding: 5px;
   text-align: center;

@@ -3,8 +3,7 @@
 // Overall task for managing a list of subscribed channels
 
 /*global require: true */
-require(['jquery', 'js/util', 'js/appnet', 'js/editRoomModal',
-         'bootstrap'],
+require(['jquery', 'js/util', 'js/appnet', 'js/editRoomModal'],
 function ($, util, appnet, editRoomModal) {
   'use strict';
 
@@ -163,9 +162,9 @@ function ($, util, appnet, editRoomModal) {
       return result;
     });
 
-    var mine = $('<div/>').append('<h3 class="muted">My Rooms</h3>');
-    var pm = $('<div/>').append('<h3 class="muted">Private Messages</h3>');
-    var other = $('<div/>').append('<h3 class="muted">Public Rooms</h3>');
+    var mine = $('<div/>');
+    var pm = $('<div/>');
+    var other = $('<div/>');
     var lastId = 0;
     var i = 0;
     for (i = 0; i < channels.length; i += 1) {
@@ -188,9 +187,9 @@ function ($, util, appnet, editRoomModal) {
       }
       lastId = channels[i].id;
     }
-    $('#patter-list').html(mine.contents());
-    $('#pm-list').html(pm.contents());
-    $('#public-list').html(other.contents());
+    $('#patter-list .lobby-list-inner').html(mine.contents());
+    $('#pm-list .lobby-list-inner').html(pm.contents());
+    $('#public-list .lobby-list-inner').html(other.contents());
     if (! shownChannels) {
       //        $('#loading-modal').modal('hide');
       shownChannels = true;
@@ -215,8 +214,8 @@ function ($, util, appnet, editRoomModal) {
     
     row.addClass('row-fluid');
     
-    row.append($('<div class="span5 offset1"/>').append(renderMembers(members)));
-    row.append($('<div class="span6"/>').append(renderThumbs(members)));
+    row.append($('<div class="users"/>').append(renderMembers(members)));
+    row.append($('<div class="user-pics"/>').append(renderThumbs(members)));
     
     var result = $('<a class="btn btn-large btn-block" href="room.html?channel=' + channel.id + '">');
     if (channel.has_unread) {
@@ -234,7 +233,7 @@ function ($, util, appnet, editRoomModal) {
     
     row.addClass('row-fluid');
     
-    row.append($('<div class="span5"/>').append(renderChannelName(channel)));
+    row.append($('<div class="channel-name"/>').append(renderChannelName(channel)));
     if (settings.blurb)
     {
       row.append($('<div class="span5"/>').append(util.htmlEncode(settings.blurb)));
@@ -263,7 +262,7 @@ function ($, util, appnet, editRoomModal) {
     var result = $('<div/>');
     for (var i = 0; i < members.length; i += 1) {
       result.append('<img class="avatarImg img-rounded" ' +
-                    'width="40" height="40" src="' +
+                    'width="30" height="30" src="' +
                     members[i].avatar + '" alt=""/>');
     }
     return result;
