@@ -13,6 +13,7 @@ function ($, appnet, chatTemplate) {
   {
     this.root = root;
     this.channelId = channel.id;
+    this.channelName = appnet.note.findPatterName(channel);
     this.postCallback = postCallback;
 
     root.html(chatTemplate);
@@ -95,17 +96,31 @@ function ($, appnet, chatTemplate) {
   ChatForm.prototype.broadcastMessage = function (messageString, annotations)
   {
     var postAnnotations = annotations.slice();
+    var url = 'http://patter-app.net/room.html?channel=' + this.channelId;
     postAnnotations.push({
       type: 'net.app.core.crosspost',
       value: {
-        canonical_url: 'http://patter-app.net/room.html?channel=' +
-          this.channelId
+        canonical_url: url
       }
     });
     var post = {
       text: messageString,
       annotations: postAnnotations
     };
+    var text = messageString;
+    var promo = ' -- ' + this.channelName;
+    if (text.length + promo.length <= 256)
+    {
+      post.text = text + promo;
+      post.entities = {
+        links: [{
+          text: this.channelName,
+          url: url,
+          pos: text.length + promo.length - this.channelName.length,
+          len: this.channelName.length
+        }]
+      };
+    }
     var context = {
       message: messageString,
       annotations: annotations,
