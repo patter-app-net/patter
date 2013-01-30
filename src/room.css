@@ -172,4 +172,17 @@ input.chatbox {
   .userWindow {display: none;}
   .navbar .brand {padding: 0!important; margin: 0!important;}
   .navbar-text {line-height: 0;}
+
+  .postRowWrap .postBody {
+    margin-left: 80px;
+  }
+  .embedImageWrapper {
+    margin-left: 80px;
+  }
+  .postRowWrap .authorContainer {
+    width: 70px;
+  }
+  .postRowWrap .authorContainer .authorAvatar {
+    display: none;
+  }
 }

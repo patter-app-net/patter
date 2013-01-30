@@ -3,7 +3,7 @@
 // Information about the current room the user is chatting in.
 
 /*global define:true */
-define(['jquery', 'js/appnet'], function ($, appnet) {
+define(['jquery', 'js/util', 'js/appnet'], function ($, util, appnet) {
   'use strict';
 
   var roomInfo = {
@@ -27,6 +27,15 @@ define(['jquery', 'js/appnet'], function ($, appnet) {
     var keyList = Object.keys(this.members);
     var i = 0;
     this.channel = response.data;
+    var name = appnet.note.findPatterName(this.channel);
+    if (name)
+    {
+      $('title').html(util.htmlEncode(name) + ' (Patter)');
+    }
+    else
+    {
+      $('title').html('Private Message Channel (Patter)');
+    }
     for (i = 0; i < keyList.length; i += 1)
     {
       delete this.members[keyList[i]];
