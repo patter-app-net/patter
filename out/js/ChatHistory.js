@@ -20,6 +20,7 @@ function ($, util, appnet, postTemplate, emojiTemplate) {
     this.atBottom = true;
     this.root.scroll($.proxy(onScroll, this));
     $(window).on('resize', $.proxy(this.scrollToBottom, this));
+    updateTimestamps();
   }
 
   ChatHistory.prototype.update = function (data, goBack)
@@ -113,7 +114,7 @@ function ($, util, appnet, postTemplate, emojiTemplate) {
     author.text(data.user.username);
     author.on('click', this.authorCallback);
     
-    $('.postBody', post).html(body);
+    $('.postBody', post).prepend(body);
 
     renderEmbedImage(data, post);
 
@@ -141,7 +142,7 @@ function ($, util, appnet, postTemplate, emojiTemplate) {
       var image = $('.embedImage', post);
       image.attr('src', util.htmlEncode(embed.url));
       image.attr('height', height);
-      image.attr('style', 'max-height: ' + height + 'px; height: ' + height + 'px;');
+      image.attr('style', 'max-height: ' + height + 'px;');
     }
     else
     {
@@ -263,10 +264,19 @@ function ($, util, appnet, postTemplate, emojiTemplate) {
         'now': 'now',
         'ago': ' ',
         'in': 'in'
-      }
+      },
+      live: false
     });
   }
 
+  var timestampTimer = null;
+
+  function updateTimestamps()
+  {
+    clearTimeout(timestampTimer);
+    formatTimestamp($('.postTimestamp'));
+    timestampTimer = setTimeout(updateTimestamps, 60 * 1000);
+  }
 
   function makeUserColor(user) {
     /*jslint bitwise: true*/

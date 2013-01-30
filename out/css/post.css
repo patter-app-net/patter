@@ -1,25 +1,15 @@
-
 .postRowWrap
 {
-  width: 100%;
-  overflow: hidden;
+  background-color: #eee;
+  display: relative;
 }
 .postRow {
-  padding: 5px;
-  width: 100%;
-  border-bottom: 1px solid #e0e0e0;
-  font-size: 16px;
   -ms-word-break: break-all;
   word-break: break-word;
   -webkit-hyphens: auto;
   -moz-hyphens: auto;
   hyphens: auto;
-  background: #fff;
-  position: relative;
-}
-.mentionPost {
-}
-.myPost {
+  background: #f5f5f5;
 }
 .postRow a {
   color: #00457c;
@@ -41,44 +31,28 @@
   font-size: inherit;
   margin-left: 0;
 }
-.postBody {
-  display: inline-block;
+.postTimestamp {
+  font-size: 0.6em;
+  float: right;
+  margin-right: 5px;
+}
+.emoji {
+  max-height: 24px;
+}
+.embedImageWrapper {
   margin-left: 160px;
-  line-height: 26px;
+  padding: 10px;
+  background-color: #fff;
+  text-align: center;
+  overflow: hidden;
 }
-.broadcastIcon {
-  background: url('http://patter-app.net/Resources/Images/BroadcastImg.png') no-repeat;
-  width: 24px;
-  height: 18px;
-  display: block;
-}
-.broadcastLink {
-  position: absolute;
-  right: 0px;
-  top: 50%;
-  margin-top: -13px;
-  margin-right: 20px;
-  width: 27px;
-  height: 21px;
-  background-color: #8c291d;
-  border-radius: 3px;
-  padding: 5px 0 0 3px;
-}
-.authorContainer
-{
+.postRowWrap .authorContainer {
   position: absolute;
   width: 150px;
   text-align: right;
   overflow: hidden;
 }
-a.author:hover
-{
-  color: #222222;
-  background-color: #dddddd;
-  text-decoration: none;
-}
-a.author
-{
+.postRowWrap .author {
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
@@ -87,24 +61,36 @@ a.author
   line-height: 26px;
   font-style: normal;
 }
-.authorAvatar {
+.broadcastIcon {
+  background: url('http://patter-app.net/Resources/Images/BroadcastImg.png') no-repeat;
+  width: 24px;
+  height: 18px;
+  display: block;
+}
+.broadcastLink {
+  float: right;
+  width: 27px;
+  height: 18px;
+  background-color: #058205;
+  border-radius: 3px;
+  padding: 1px 0 1px 3px;
+  margin-right: 5px;
+}
+.postRowWrap .authorContainer .authorAvatar {
   float: left;
-  margin-top: 0px;
 }
-.authorAvatarImg {
-  max-height: 23px;
+.postRowWrap .postBody {
+  display: block;
+  margin-left: 160px;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  padding-left: 10px;
+  background-color: #fff;
+  border-bottom: 1px solid #eee;
 }
-.postTimestamp {
-  font-size: 0.6em;
-  color: #a4a4a4;
-  padding: 7px 0 0 5px;
-  display: inline-block;
+.mentionPost .postBody {
+  background: #fff7cb;
 }
-.emoji {
-  max-height: 24px;
-}
-.embedImageWrapper {
-  padding: 5px;
-  text-align: center;
-  overflow: hidden;
+.myPost .postBody {
+  background: #e5f2ff;
 }
