@@ -173,3 +173,41 @@ input.chatbox {
   .navbar .brand {padding: 0!important; margin: 0!important;}
   .navbar-text {line-height: 0;}
 }
+
+.embedImageWrapper {
+  margin-left: 160px;
+  padding: 10px;
+  background-color: #fff;
+}
+.postRowWrap {
+  background-color: #eee;
+  display: relative;
+}
+
+.postRowWrap .authorContainer {
+  position: absolute;
+  width: 150px;
+  text-align: right;
+  overflow: hidden;
+}
+.postRowWrap .author {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  width: 80%;
+  display: inline-block;
+}
+
+.postRowWrap .authorContainer .authorAvatar {
+  float: left;
+}
+
+.postRowWrap .postBody {
+  display: block;
+  margin-left: 160px;
+  padding-top: 5px;
+  padding-botom: 5px;
+  padding-left: 10px;
+  background-color: #fff;
+  border-bottom: 1px solid #eee;
+}
