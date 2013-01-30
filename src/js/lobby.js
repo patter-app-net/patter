@@ -114,6 +114,13 @@ function ($, util, appnet, editRoomModal) {
     for (i = 0; i < response.data.length; i += 1)
     {
       var current = appnet.note.findChannelRefId(response.data[i]);
+      if (! current) {
+        var val = appnet.note.findAnnotation('net.app.core.channel.invite',
+                                             response.data[i].annotations);
+        if (val) {
+          current = val.channel_id;
+        }
+      }
       if (current) {
         publicChannels.push(current);
       }

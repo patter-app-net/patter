@@ -19,7 +19,14 @@ function ($, appnet, chatTemplate) {
     root.html(chatTemplate);
     this.input = $('.messageText', root);
     $('.sendForm', root).submit($.proxy(clickSend, this));
-    $('.broadcastButton', root).click($.proxy(clickBroadcast, this));
+    if (channel.type === 'net.patter-app.room')
+    {
+      $('.broadcastButton', root).click($.proxy(clickBroadcast, this));
+    }
+    else
+    {
+      $('.broadcastButton', root).hide();
+    }
     $('.authorizeButton', root).click($.proxy(clickAuthorize, this));
     $('.sendForm', root).hide();
     $('.must-authorize', root).hide();
@@ -101,6 +108,12 @@ function ($, appnet, chatTemplate) {
       type: 'net.app.core.crosspost',
       value: {
         canonical_url: url
+      }
+    });
+    postAnnotations.push({
+      type: 'net.app.core.channel.invite',
+      value: {
+        channel_id: this.channelId
       }
     });
     var post = {
