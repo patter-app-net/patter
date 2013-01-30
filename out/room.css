@@ -110,32 +110,36 @@ html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abb
   vertical-align: top;
   text-decoration: none;
   font-size: 0.875em;
-  border-radius: 0 3px 3px 0;
   position: absolute;
   left: 33px;
   right: 0;
-  padding: 5px;
-  background-color: #e5f2ff;
-  color: #036;
-  border-bottom: 1px solid #b7d1eb;
-  margin-bottom: 5px;
-  font-weight: bold;
+  padding: 9px 5px 1px 5px;
+  font-weight: 600;
   height: 23px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.myAccount {
+  background-color: #b32d2a;
+  color: #fff;
 }
 .myAccount:hover {
-  background: #cbe0f6;
+  background: #bf2e2c;
 }
 .idleUser {
-  background-color: #fdd;
+  background-color: #fff;
+  color: #393939;
+  opacity: 0.3;
 }
 .idleUser:hover {
-  background: #f1c1be;
+  opacity: 0.6;
 }
 .activeUser {
-  background-color: #eee;
+  background-color: #666666;
+  color: #fff;
 }
 .activeUser:hover {
-  background: #ddd;
+  background: #737373;
 }
 body { font-family: 'Open Sans', 'Helvetica Neue', Helvetica, Sans-Serif; text-rendering: optimizeLegibility; -webkit-font-smoothing: antialiased;}
 li, .nav li {
@@ -259,6 +263,16 @@ footer {
 	 color-stop(0, rgb(189,55,40))
   );
 }
+.nav {
+  float: left;
+  line-height: 42px;
+  margin-left: 20px;
+  color: #fff;
+}
+.nav.pull-right {
+  float: right;
+  margin-right: 20px;
+}
 .navbar-inner a {
   text-decoration: none;
   color: #fff;
@@ -284,7 +298,8 @@ footer {
 }
 .chatForm {
   position: absolute;
-  bottom: 0;
+  bottom: -15px;
+  width: 100%;
 }
 .chatClientWrap h3 { font-weight: normal; font-size: 1.5em; line-height: 1em; font-family: 'Oswald', sans-serif; color: #fff; margin: 0; margin-left: 10px; padding: 0; }
 input.submitMessage { background: #038e1d; color: #fff; font-size: 1em; width: 100%; height: 42px; float: left; border-radius: 0 0 3px 0; border: none; }
@@ -313,7 +328,6 @@ input.broadcastMessage:hover { background: #005510; }
 .userWindow {
   background-color: #b5aaaa;
   overflow: auto;
-  border-radius: 0 3px 3px 0;
   float: right;
   position: absolute;
   top: 50px;
@@ -360,6 +374,24 @@ input.chatbox {
   padding-left: 3px;
 }
 .broadcastContainer { float: left; margin: 0 0 0 40px; }
+.sendForm {
+  display: block;
+  margin: 0 0 20px;
+  width: 100%;
+}
+.messageText {
+  display: inline-block;
+  height: 20px;
+  padding: 4px 6px;
+  margin-bottom: 9px;
+  font-size: 14px;
+  line-height: 20px;
+  color: #555;
+  -webkit-border-radius: 3px;
+  -moz-border-radius: 3px;
+  border-radius: 3px;
+  width: 70%;
+}
 @media screen and (max-width: 799px) {
   .chatClientWrap {
     left: 0;

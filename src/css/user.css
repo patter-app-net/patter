@@ -18,36 +18,38 @@
   vertical-align: top;
   text-decoration: none;
   font-size: 0.875em;
-  border-radius: 0 3px 3px 0;
-
   position: absolute;
   left: 33px;
   right: 0;
-  padding: 5px;
-  background-color: #e5f2ff;
-  color: #036;
-  border-bottom: 1px solid #b7d1eb;
-  margin-bottom: 5px;
-  font-weight: bold;
+  padding: 9px 5px 1px 5px;
+  font-weight: 600;
   height: 23px;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
-
+.myAccount {
+  background-color: #b32d2a;
+  color: #fff;
+}
 .myAccount:hover {
-  background: #cbe0f6;
+  background: #bf2e2c;
 }
 
 .idleUser {
-  background-color: #fdd;
+  background-color: #fff;
+  color: #393939;
+  opacity: 0.3;
 }
 
 .idleUser:hover {
-  background: #f1c1be;
+  opacity: 0.6;
 }
 
 .activeUser {
-  background-color: #eee;
+  background-color: #666666;
+  color: #fff;
 }
 
 .activeUser:hover {
-  background: #ddd;
+  background: #737373;
 }
