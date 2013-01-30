@@ -1,31 +1,16 @@
-/* Post Wrapper */
-
 .postRowWrap
 {
-  width: 100%;
-  overflow: hidden;
+  background-color: #eee;
+  display: relative;
 }
 
-/* Post Bar */
-
 .postRow {
-  padding: 5px;
-  width: 100%;
-  border-bottom: 1px solid #e0e0e0;
-  font-size: 16px;
   -ms-word-break: break-all;
   word-break: break-word;
   -webkit-hyphens: auto;
   -moz-hyphens: auto;
   hyphens: auto;
-  background: #fff;
-  position: relative;
-}
-
-.mentionPost {
-}
-
-.myPost {
+  background: #f5f5f5;
 }
 
 .postRow a {
@@ -52,13 +37,40 @@
   margin-left: 0;
 }
 
-.postBody {
-  display: inline-block;
-  margin-left: 160px;
-  line-height: 26px;
+.postTimestamp {
+  font-size: 0.6em;
+  float: right;
+  margin-right: 5px;
 }
 
-/* Broadcast Icon */
+.emoji {
+  max-height: 24px;
+}
+
+.embedImageWrapper {
+  margin-left: 160px;
+  padding: 10px;
+  background-color: #fff;
+  text-align: center;
+  overflow: hidden;
+}
+
+.postRowWrap .authorContainer {
+  position: absolute;
+  width: 150px;
+  text-align: right;
+  overflow: hidden;
+}
+.postRowWrap .author {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  width: 80%;
+  display: inline-block;
+  line-height: 30px;
+  font-style: normal;
+}
+
 
 .broadcastIcon {
   background: url('http://patter-app.net/Resources/Images/BroadcastImg.png') no-repeat;
@@ -68,72 +80,33 @@
 }
 
 .broadcastLink {
-  position: absolute;
-  right: 0px;
-  top: 50%;
-  margin-top: -13px;
-  margin-right: 20px;
+  float: right;
   width: 27px;
-  height: 21px;
-  background-color: #8c291d;
+  height: 18px;
+  background-color: #058205;
   border-radius: 3px;
-  padding: 5px 0 0 3px;
+  padding: 1px 0 1px 3px;
+  margin-right: 5px;
 }
 
-/* Author */
-
-.authorContainer
-{
-  position: absolute;
-  width: 150px;
-  text-align: right;
-  overflow: hidden;
-}
-
-a.author:hover
-{
-  color: #222222;
-  background-color: #dddddd;
-  text-decoration: none;
-}
-
-a.author
-{
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-  width: 80%;
-  display: inline-block;
-  line-height: 26px;
-  font-style: normal;
-}
-
-.authorAvatar {
+.postRowWrap .authorContainer .authorAvatar {
   float: left;
-  margin-top: 0px;
 }
 
-.authorAvatarImg {
-  max-height: 23px;
+.postRowWrap .postBody {
+  display: block;
+  margin-left: 160px;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  padding-left: 10px;
+  background-color: #fff;
+  border-bottom: 1px solid #eee;
 }
 
-/* Timestamp */
-
-.postTimestamp {
-  font-size: 0.6em;
-  color: #a4a4a4;
-  padding: 7px 0 0 5px;
-  display: inline-block;
+.mentionPost .postBody {
+  background: #fff7cb;
 }
 
-/* Embedded Images */
-
-.emoji {
-  max-height: 24px;
-}
-
-.embedImageWrapper {
-  padding: 5px;
-  text-align: center;
-  overflow: hidden;
+.myPost .postBody {
+  background: #e5f2ff;
 }
