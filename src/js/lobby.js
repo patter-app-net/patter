@@ -13,6 +13,7 @@ function ($, util, appnet, editRoomModal) {
   var hasNotified = false;
 
   function initialize() {
+    $.removeCookie('patterAccessToken', { path: '/' });
     appnet.init('patter2Token', 'patterPrevUrl');
 
     if (! appnet.isLogged())
@@ -24,13 +25,17 @@ function ($, util, appnet, editRoomModal) {
 //    $("#loading-modal").modal({backdrop: 'static',
 //      keyboard: false});
     initButtons();
-    appnet.updateUser(completeUserInfo, null);
+    appnet.updateUser(completeUserInfo, failUserInfo);
   }
 
   function completeUserInfo(response) {
     currentUser = response.data;
 //    $('#loading-message').html("Fetching Channels");
     processPublicChannels();
+  }
+
+  function failUserInfo(meta) {
+    util.redirect('auth.html');
   }
 
   var publicChannels = [];
@@ -333,7 +338,7 @@ function ($, util, appnet, editRoomModal) {
   function logout(event)
   {
     event.preventDefault();
-    $.removeCookie('patter2Token', { path: '/' });
+    delete localStorage.patter2Token;
     util.redirect('index.html');
     return false;
   }

@@ -37,11 +37,13 @@ function ($, util, appnet, roomInfo, roomMenu, RoomFeed) {
   function failChannel()
   {
     console.log('failChannel');
+    util.redirect('auth.html');
   }
 
   function failUser()
   {
     console.log('failUser');
+    roomInfo.updateChannel();
   }
 
   function initialize()

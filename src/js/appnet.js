@@ -19,7 +19,7 @@ function ($, util, api, note) {
   };
 
   appnet.isLogged = function () {
-    return this.api.accessToken !== null;
+    return this.api.accessToken !== null && this.api.accessToken !== undefined;
   };
 
   var updateUserSuccess = function (response) {

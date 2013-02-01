@@ -20,6 +20,15 @@ function ($, util) {
     urlCookie = newUrlCookie;
 
     appnet.accessToken = $.cookie(authCookie);
+    if (appnet.accessToken)
+    {
+      $.removeCookie(authCookie, { path: '/' });
+      localStorage[authCookie] = appnet.accessToken;
+    }
+    else
+    {
+      appnet.accessToken = localStorage[authCookie];
+    }
   };
 
   var callSuccess = function (response)
@@ -248,7 +257,7 @@ function ($, util) {
       type: type,
       url: url + makeArgs(args)
     };
-    if (this.accessToken !== null) {
+    if (this.accessToken) {
       options.headers = { Authorization: 'Bearer ' + this.accessToken };
     }
     if (data) {
