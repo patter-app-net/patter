@@ -3,7 +3,7 @@
 // Functions to create and process app.net annotations
 
 /*global define: true */
-define(['js/util'], function (util) {
+define(['util'], function (util) {
   'use strict';
 
   var note = {};
@@ -45,6 +45,18 @@ define(['js/util'], function (util) {
   {
     var name = null;
     var settings = note.findAnnotation('net.patter-app.settings',
+                                       channel.annotations);
+    if (settings !== null && settings.name !== undefined)
+    {
+      name = settings.name;
+    }
+    return name;
+  };
+
+  note.findBlogName = function (channel)
+  {
+    var name = null;
+    var settings = note.findAnnotation('net.blog-app.settings',
                                        channel.annotations);
     if (settings !== null && settings.name !== undefined)
     {

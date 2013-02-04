@@ -3,7 +3,7 @@
 // A form used for submitting messages to a Patter chat room.
 
 /*global define:true */
-define(['jquery', 'js/appnet',
+define(['jquery', 'appnet',
         'text!template/ChatForm.html',
         'jquery-caret'],
 function ($, appnet, chatTemplate) {
@@ -63,7 +63,7 @@ function ($, appnet, chatTemplate) {
     if (this.input.val().length > 0)
     {
       var text = this.input.val();
-      this.broadcastMessage(text, getImageUrl(text));
+      this.getEntities(text, getImageUrl(text));
       this.input.val('');
     }
     return false;
@@ -100,10 +100,26 @@ function ($, appnet, chatTemplate) {
   {
   };
 
-  ChatForm.prototype.broadcastMessage = function (messageString, annotations)
+  ChatForm.prototype.getEntities = function (messageString, annotations)
   {
-    var postAnnotations = annotations.slice();
-    var url = 'http://patter-app.net/room.html?channel=' + this.channelId;
+    var context = {
+      message: messageString,
+      annotations: annotations,
+      chat: this
+    };
+    console.log(messageString);
+    console.dir(getImageUrl(messageString));
+    console.log('beforeProcess');
+    console.dir(context.annotations);
+    appnet.api.processText({ text: messageString }, {},
+                           $.proxy(broadcastMessage, context),
+                           failBroadcastMessage);
+  };
+
+  var broadcastMessage = function (response)
+  {
+    var postAnnotations = this.annotations.slice(0);
+    var url = 'http://patter-app.net/room.html?channel=' + this.chat.channelId;
     postAnnotations.push({
       type: 'net.app.core.crosspost',
       value: {
@@ -113,31 +129,37 @@ function ($, appnet, chatTemplate) {
     postAnnotations.push({
       type: 'net.app.core.channel.invite',
       value: {
-        channel_id: this.channelId
+        channel_id: this.chat.channelId
       }
     });
     var post = {
-      text: messageString,
+      text: this.message,
       annotations: postAnnotations
     };
-    var text = messageString;
-    var promo = ' -- ' + this.channelName + ' [Room]';
+    var text = this.message;
+    var promo = ' \n\n' + this.chat.channelName + ' <=>';
     if (text.length + promo.length <= 256)
     {
+      var links = response.data.entities.links;
+      if (! links)
+      {
+        links = [];
+      }
+      links.push({
+        text: '<=>',
+        url: url,
+        pos: text.length + promo.length - 3,
+        len: 3
+      });
       post.text = text + promo;
       post.entities = {
-        links: [{
-          text: this.channelName,
-          url: url,
-          pos: text.length + promo.length - 6,
-          len: 6
-        }]
+        links: links
       };
     }
     var context = {
-      message: messageString,
-      annotations: annotations,
-      chat: this
+      message: this.message,
+      annotations: this.annotations,
+      chat: this.chat
     };
     appnet.api.createPost(post, { include_annotations: 1 },
                           $.proxy(completeBroadcastMessage, context),
@@ -148,10 +170,12 @@ function ($, appnet, chatTemplate) {
   {
     if (response.data)
     {
-      var messageAnn = this.annotations.splice();
+      var messageAnn = this.annotations.slice(0);
       var broadcast = appnet.note.broadcastNote(response.data.id,
                                                 response.data.canonical_url);
       messageAnn.push(broadcast);
+      console.log('Before post');
+      console.dir(messageAnn);
       this.chat.postMessage(this.message, messageAnn);
     }
   };
@@ -188,11 +212,13 @@ function ($, appnet, chatTemplate) {
     var result = [];
     var match = urlRegex.exec(text);
     if (match !== null) {
+      console.log('match');
       var url = match[0];
       var foundIndex = url.length - 4;
       if (url.indexOf('.jpg') === foundIndex ||
           url.indexOf('.png') === foundIndex ||
           url.indexOf('.gif') === foundIndex) {
+        console.log('image');
         result.push(appnet.note.embedImageNote(url, 200, 200));
       }
     }

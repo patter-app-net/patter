@@ -3,7 +3,7 @@
 // Handlers for the menu bar
 
 /*global define: true */
-define(['jquery', 'js/appnet', 'js/roomInfo', 'js/editRoomModal',
+define(['jquery', 'appnet', 'js/roomInfo', 'js/editRoomModal',
         'text!template/roomMenu.html',
         'jquery-jfontsize'],
 function ($, appnet, roomInfo, editRoomModal, menuTemplate) {

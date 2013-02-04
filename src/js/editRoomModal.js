@@ -4,11 +4,14 @@
 // room. This may also be used as a dialog for creating a new room.
 
 /*global define:true */
-define(['jquery', 'js/util', 'js/appnet', 'js/roomInfo',
+define(['jquery', 'util', 'appnet', 'js/roomInfo',
         'js/UserFields',
         'text!template/editRoomModal.html', 'bootstrap'],
 function ($, util, appnet, roomInfo, UserFields, editTemplate) {
   'use strict';
+
+  var categories = ['fun', 'lifestyle', 'profession', 'language',
+                    'community', 'tech', 'event'];
 
   var editRoomModal = {
   };
@@ -49,6 +52,8 @@ function ($, util, appnet, roomInfo, UserFields, editTemplate) {
 
   editRoomModal.update = function (newChannel, newType)
   {
+    var i = 0;
+    var j = 0;
     editRoomChannel = newChannel;
     editRoomType = newType;
     var canEdit = true;
@@ -140,11 +145,29 @@ function ($, util, appnet, roomInfo, UserFields, editTemplate) {
       $('#edit-room-promote').removeAttr('checked');
     }
 
+    if (settings.categories)
+    {
+      for (i = 0; i < categories.length; i += 1)
+      {
+        $('#edit-' + categories[i]).removeAttr('checked');
+      }
+
+      for (i = 0; i < settings.categories.length; i += 1)
+      {
+        for (j = 0; j < categories.length; j += 1)
+        {
+          if (settings.categories[i] === categories[j])
+          {
+            $('#edit-' + categories[j]).attr('checked', 'checked');
+          }
+        }
+      }
+    }
+
     editRoomFields.reset();
     if (editRoomChannel !== null)
     {
       var keys = Object.keys(roomInfo.members);
-      var i = 0;
       for (i = 0; i < keys.length; i += 1) {
         editRoomFields.addField('@' + keys[i]);
       }
@@ -258,6 +281,8 @@ function ($, util, appnet, roomInfo, UserFields, editTemplate) {
   {
     var annotations = [];
     var settings = appnet.note.findPatterSettings(channel);
+    var cats = [];
+    var i = 0;
     var settingsNote = {
       type: 'net.patter-app.settings',
       value: { name: name }
@@ -271,6 +296,14 @@ function ($, util, appnet, roomInfo, UserFields, editTemplate) {
     if (blurbId) {
       settingsNote.value.blurb_id = blurbId;
       settingsNote.value.blurb = promo;
+      for (i = 0; i < categories.length; i += 1)
+      {
+        if ($('#edit-' + categories[i]).attr('checked'))
+        {
+          cats.push(categories[i]);
+        }
+      }
+      settingsNote.value.categories = cats;
     }
     annotations.push(settingsNote);
     var fallback = {
@@ -288,7 +321,7 @@ function ($, util, appnet, roomInfo, UserFields, editTemplate) {
     var label = $('#edit-room-perm-label');
     var pwrapper = $('#edit-room-promote-wrapper');
     var pbox = $('#edit-room-promote');
-    var ptext = $('#edit-room-promo-text');
+    var poptions = $('#edit-room-promo-options');
     var fields = editRoomFields;
 
     if (perm.val() === 'private' ||
@@ -300,9 +333,9 @@ function ($, util, appnet, roomInfo, UserFields, editTemplate) {
     }
 
     if (pbox.attr('checked')) {
-      ptext.show();
+      poptions.show();
     } else {
-      ptext.hide();
+      poptions.hide();
     }
 
     if (perm.val() === 'public') {

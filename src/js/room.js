@@ -3,7 +3,7 @@
 // Overall task for managing a room
 
 /*global require: true */
-require(['jquery', 'js/util', 'js/appnet', 'js/roomInfo', 'js/roomMenu',
+require(['jquery', 'util', 'appnet', 'js/roomInfo', 'js/roomMenu',
          'js/RoomFeed'],
 function ($, util, appnet, roomInfo, roomMenu, RoomFeed) {
   'use strict';
@@ -37,7 +37,7 @@ function ($, util, appnet, roomInfo, roomMenu, RoomFeed) {
   function failChannel()
   {
     console.log('failChannel');
-    util.redirect('auth.html');
+    util.redirect('index.html');
   }
 
   function failUser()

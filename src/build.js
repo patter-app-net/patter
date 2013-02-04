@@ -1,7 +1,7 @@
 ({
   appDir: ".",
   baseUrl: ".",
-  dir: "../out",
+  dir: "../out2",
 
 //  optimize: "uglify2",
 //  generateSourceMaps: true,
@@ -27,7 +27,11 @@
     "jquery-imagesloaded": "../lib/jquery.imagesloaded.min",
     "jquery-jfontsize": "../lib/jquery.jfontsize-1.0",
     "jquery-titlealert": "../lib/jquery.titlealert.min",
-    "bootstrap": "../lib/bootstrap.min"
+    "bootstrap": "../lib/bootstrap.min",
+    "util": "../../../lib/util",
+    "appnet": "../../../lib/appnet",
+    "appnet-api": "../../../lib/appnet-api",
+    "appnet-note": "../../../lib/appnet-note"
   },
 
   shim: {

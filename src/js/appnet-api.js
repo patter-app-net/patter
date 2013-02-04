@@ -3,31 +3,31 @@
 // API calls on the app.net web service
 
 /*global define: true */
-define(['jquery', 'js/util', 'jquery-cookie'],
+define(['jquery', 'util', 'jquery-cookie'],
 function ($, util) {
   'use strict';
 
-  var appnet = {
+  var api = {
     accessToken: null
   };
 
   var authCookie = 'appnetToken';
   var urlCookie = 'appnetPrevUrl';
 
-  appnet.init = function (newAuthCookie, newUrlCookie)
+  api.init = function (newAuthCookie, newUrlCookie)
   {
     authCookie = newAuthCookie;
     urlCookie = newUrlCookie;
 
-    appnet.accessToken = $.cookie(authCookie);
-    if (appnet.accessToken)
+    api.accessToken = $.cookie(authCookie);
+    if (api.accessToken)
     {
       $.removeCookie(authCookie, { path: '/' });
-      localStorage[authCookie] = appnet.accessToken;
+      localStorage[authCookie] = api.accessToken;
     }
     else
     {
-      appnet.accessToken = localStorage[authCookie];
+      api.accessToken = localStorage[authCookie];
     }
   };
 
@@ -109,14 +109,14 @@ function ($, util) {
 
   function add(name, type, url)
   {
-    appnet[name] = function (args, success, failure) {
+    api[name] = function (args, success, failure) {
       this.call(url, type, args, success, failure);
     };
   }
 
   function addOne(name, type, prefix, suffix)
   {
-    appnet[name] = function (target, args, success, failure) {
+    api[name] = function (target, args, success, failure) {
       var url = makeUrl([prefix, target, suffix]);
       this.call(url, type, args, success, failure);
     };
@@ -124,7 +124,7 @@ function ($, util) {
     
   function addTwo(name, type, prefix, middle, suffix)
   {
-    appnet[name] = function (first, second, args, success, failure) {
+    api[name] = function (first, second, args, success, failure) {
       var url = makeUrl([prefix, first, middle, second, suffix]);
       this.call(url, type, args, success, failure);
     };
@@ -132,7 +132,7 @@ function ($, util) {
 
   function addList(name, type, url)
   {
-    appnet[name] = function (list, argsIn, success, failure) {
+    api[name] = function (list, argsIn, success, failure) {
       var ids = list.join(',');
       var args = { ids: ids};
       $.extend(args, argsIn);
@@ -142,16 +142,88 @@ function ($, util) {
 
   function addData(name, type, url)
   {
-    appnet[name] = function (data, args, success, failure) {
+    api[name] = function (data, args, success, failure) {
       this.call(url, type, args, success, failure, data);
     };
   }
 
   function addDataOne(name, type, prefix, suffix)
   {
-    appnet[name] = function (target, data, args, success, failure) {
+    api[name] = function (target, data, args, success, failure) {
       var url = makeUrl([prefix, target, suffix]);
       this.call(url, type, args, success, failure, data);
+    };
+  }
+
+  function allFromSingle(single)
+  {
+    return function (args, success, failure)
+    {
+      if (! args)
+      {
+        args = {};
+      }
+      args.count = 200;
+      var result = [];
+
+      function fetchMore(response)
+      {
+        result = result.concat(response.data);
+        if (response.meta.more)
+        {
+          args.before_id = response.meta.min_id;
+          single(args, fetchMore, failure);
+        }
+        else
+        {
+          success({ data: result });
+        }
+      }
+
+      single(args, fetchMore, failure);
+    };
+  }
+
+  function addAll(name, single)
+  {
+    api[name] = allFromSingle(single);
+  }
+
+  function addAllOne(name, single)
+  {
+    api[name] = function (target, args, success, failure)
+    {
+      var callWithTarget = function (a, b, c) {
+        return single(target, a, b, c);
+      };
+      allFromSingle(callWithTarget)(args, success, failure);
+    };
+  }
+
+  function addAllList(name, single)
+  {
+    api[name] = function (list, args, success, failure)
+    {
+      var start = 0;
+      var end = (list.length < 200 ? list.length : 200);
+      var result = [];
+
+      function fetchMore(response)
+      {
+        result = result.concat(response.data);
+        start += 200;
+        end = (list.length < start + 200 ? list.length : 200);
+        if (start < list.length)
+        {
+          single(list.slice(start, end), args, fetchMore, failure);
+        }
+        else
+        {
+          success({ data: result });
+        }
+      }
+
+      single(list.slice(start, end), args, fetchMore, failure);
     };
   }
 
@@ -167,9 +239,52 @@ function ($, util) {
   addList('getUserList', 'GET',
           'https://alpha-api.app.net/stream/0/users');
 
-  // updateUser(newUser, args, success, failure);
+  // getAllUserList([userId1, userId2], args, success, failure);
+  addAllList('getAllUserList', $.proxy(api.getUserList, api));
+
+  // updateUser(newUserObject, args, success, failure);
   addData('updateUser', 'PUT',
           'https://alpha-api.app.net/stream/0/users/me');
+
+  addOne('getFollowers', 'GET',
+         'https://alpha-api.app.net/stream/0/users/', '/followers');
+
+  addOne('getFollowing', 'GET',
+         'https://alpha-api.app.net/stream/0/users/', '/following');
+
+  api.setUserAnnotations = function (notes, success, failure)
+  {
+    var context = {
+      notes: notes,
+      success: success,
+      failure: failure
+    };
+    api.getUser('me', null, $.proxy(completeUserAnnotation, context), failure);
+  };
+
+  var completeUserAnnotation = function (response)
+  {
+    var user = response.data;
+    var locale = user.locale;
+    if (locale === 'en_US')
+    {
+      locale = 'en';
+    }
+    var newUser = {
+      name: user.name,
+      locale: locale,
+      timezone: user.timezone,
+      description: {
+        text: user.description.text,
+        entities: {
+          links: user.description.entities.links
+        }
+      },
+      annotations: this.notes
+    };
+    api.updateUser(newUser, { include_annotations: 1 },
+                   this.success, this.failure);
+  };
 
   // ------------------------------------------------------------------------
   // Channel
@@ -187,9 +302,38 @@ function ($, util) {
   addList('getChannelList', 'GET',
           'https://alpha-api.app.net/stream/0/channels/');
 
+  // getAllChannelList([channelId1, channelId2], args, success, failure);
+  addAllList('getAllChannelList', $.proxy(api.getChannelList, api));
+
   // updateChannel(channelId, newChannel, args, success, failure);
   addDataOne('updateChannel', 'PUT',
              'https://alpha-api.app.net/stream/0/channels/');
+
+  api.createSharedFeed = function (name, success, failure)
+  {
+    var channel = {
+      type: 'net.share-app.feed',
+      annotations: [{
+        type: 'net.share-app.feed',
+        value: {
+          name: name
+        }
+      }],
+      readers: { 'public': true },
+      writers: { any_user: true },
+      auto_subscribe: true
+    };
+    api.createChannel(channel, { include_annotations: 1 }, success, failure);
+  };
+
+  api.createShareStorage = function (success, failure)
+  {
+    var channel = {
+      type: 'net.share-app.storage',
+      auto_subscribe: true
+    };
+    api.createChannel(channel, { include_annotations: 1 }, success, failure);
+  };
 
   // ------------------------------------------------------------------------
   // Message
@@ -199,13 +343,57 @@ function ($, util) {
   addOne('getMessages', 'GET',
          'https://alpha-api.app.net/stream/0/channels/', '/messages');
 
+  // getAllMessages(channelId, args, success, failure);
+  addAllOne('getAllMessages', $.proxy(api.getMessages, api));
+
   // createMessage(channelId, newMessage, args, success, failure);
   addDataOne('createMessage', 'POST',
              'https://alpha-api.app.net/stream/0/channels/', '/messages');
 
-  // deleteMessage(messageId, args, success, failure);
+  // deleteMessage(channelId, messageId, args, success, failure);
   addTwo('deleteMessage', 'DELETE',
          'https://alpha-api.app.net/stream/0/channels/', '/messages/');
+
+  api.shareItem = function(channelId, comment, link, title, content,
+                           success, failure)
+  {
+    var message = {
+      text: comment,
+      annotations: [{
+        type: 'net.share-app.item',
+        value: { link: link }
+      }, {
+        type: 'net.app.core.oembed',
+        value: {
+          type: 'rich',
+          version: '1.0',
+          title: title,
+          html: content,
+          width: '600',
+          height: '600',
+          embeddable_url: link
+        }
+      }]
+    };
+    api.createMessage(channelId, message, { include_annotations: 1 },
+                      success, failure);
+  };
+
+  api.storeSubscription = function(channelId, url, title, success, failure)
+  {
+    var message = {
+      text: 'Subscribed to Feed URL: ' + url,
+      annotations: [{
+        type: 'net.share-app.subscription',
+        value: {
+          link: url,
+          title: title
+        }
+      }]
+    };
+    api.createMessage(channelId, message, { include_annotations: 1 },
+                      success, failure);
+  };
 
   // ------------------------------------------------------------------------
   // Post
@@ -223,6 +411,9 @@ function ($, util) {
   add('getSubscriptions', 'GET',
       'https://alpha-api.app.net/stream/0/channels/');
 
+  // getAllSubscriptions(args, success, failure);
+  addAll('getAllSubscriptions', $.proxy(api.getSubscriptions, api));
+
   // createSubscription(channelId, args, success, failure);
   addOne('createSubscription', 'POST',
          'https://alpha-api.app.net/stream/0/channels/', '/subscribe');
@@ -239,13 +430,16 @@ function ($, util) {
   addData('updateMarker', 'POST',
           'https://alpha-api.app.net/stream/0/posts/marker');
 
-  appnet.authorize = function ()
+  addData('processText', 'POST',
+          'https://alpha-api.app.net/stream/0/text/process');
+
+  api.authorize = function ()
   {
     $.cookie(urlCookie, window.location, { expires: 1, path: '/' });
     util.redirect('auth.html');
   };
   
-  appnet.call = function (url, type, args, success, failure, data)
+  api.call = function (url, type, args, success, failure, data)
   {
     var complete = {
       success: success,
@@ -268,5 +462,5 @@ function ($, util) {
     header.fail($.proxy(callFailure, complete));
   };
   
-  return appnet;
+  return api;
 });

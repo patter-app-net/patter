@@ -3,7 +3,7 @@
 // A pane showing a scrollable list of recent users and members
 
 /*global define:true */
-define(['jquery', 'js/util', 'js/appnet',
+define(['jquery', 'util', 'appnet',
         'text!template/user.html'],
 function ($, util, appnet, userTemplate) {
   'use strict';

@@ -3,7 +3,7 @@
 // A pane showing a scrollable list of chats and posts
 
 /*global define:true */
-define(['jquery', 'js/util', 'js/appnet',
+define(['jquery', 'util', 'appnet',
         'text!template/post.html', 'text!template/postEmoji.html',
         'jquery-desknoty', 'jquery-easydate', 'jquery-titlealert'],
 function ($, util, appnet, postTemplate, emojiTemplate) {
@@ -197,6 +197,15 @@ function ($, util, appnet, postTemplate, emojiTemplate) {
           body: last.text,
           url: ''
         });
+        if (window.fluid)
+        {
+          window.fluid.showGrowlNotification({
+            title: last.username,
+            description: last.text,
+            icon: 'patter-top-mobile.png',
+            sticky: false
+          });
+        }
       }
     }
     if (this.atBottom)
