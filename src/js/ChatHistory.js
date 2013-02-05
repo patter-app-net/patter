@@ -138,9 +138,9 @@ function ($, util, appnet, postTemplate, emojiTemplate) {
       {
         height = 200;
       }
-      $('.embedLink', post).attr('href', util.htmlEncode(embed.url));
+      $('.embedLink', post).attr('href', embed.url);
       var image = $('.embedImage', post);
-      image.attr('src', util.htmlEncode(embed.url));
+      image.attr('src', embed.url);
       image.attr('height', height);
       image.attr('style', 'max-height: ' + height + 'px;');
     }

@@ -354,8 +354,8 @@ function ($, util) {
   addTwo('deleteMessage', 'DELETE',
          'https://alpha-api.app.net/stream/0/channels/', '/messages/');
 
-  api.shareItem = function(channelId, comment, link, title, content,
-                           success, failure)
+  api.shareItem = function (channelId, comment, link, title, content,
+                            success, failure)
   {
     var message = {
       text: comment,
@@ -379,7 +379,7 @@ function ($, util) {
                       success, failure);
   };
 
-  api.storeSubscription = function(channelId, url, title, success, failure)
+  api.storeSubscription = function (channelId, url, title, success, failure)
   {
     var message = {
       text: 'Subscribed to Feed URL: ' + url,
