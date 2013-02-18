@@ -1,0 +1,72 @@
+<div id="edit-room-modal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="editRoomModalLabel" aria-hidden="true">
+  <div class="modal-header">
+    <button id="edit-room-x" type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+    <h3 id="edit-room-type">Edit Room</h3>
+    <h4 id="edit-room-owner">Owned by @user</h4>
+  </div>
+  <div class="modal-body">
+    <p id="edit-room-body">Main body text</p>
+    <form id="edit-room-form">
+      <fieldset>
+        <input type="text" placeholder="Name" id="edit-room-name">
+      </fieldset>
+      <fieldset>
+        <textarea id="edit-room-text" class="input-xlarge"
+                  rows="3" maxlength="256"
+                  placeholder="Private Message..."></textarea>
+      </fieldset>
+      <fieldset>
+        <select id="edit-room-perm" class="input-medium">
+          <option value="private">Private</option>
+          <option value="public">Public</option>
+          <option value="public-read">Public Read</option>
+        </select>
+        <label id="edit-room-perm-label"></label>
+      </fieldset>
+      <fieldset id="edit-room-promote-wrapper">
+        <label class="checkbox">
+          <input type="checkbox" id="edit-room-promote">Show this room in the Patter Directory</input>
+        </label>
+        <fieldset id="edit-room-promo-options">
+          <textarea id="edit-room-promo-text" class="input-xlarge"
+                    rows="3" maxlength="256"
+                    placeholder="Describe Your Room..."></textarea>
+          <label class="checkbox">
+            <input type="checkbox" id="edit-fun">Fun</input>
+          </label>
+          <label class="checkbox">
+            <input type="checkbox" id="edit-lifestyle">Lifestyle</input>
+          </label>
+          <label class="checkbox">
+            <input type="checkbox" id="edit-profession">Professional</input>
+          </label>
+          <label class="checkbox">
+            <input type="checkbox" id="edit-language">Language/Region</input>
+          </label>
+          <label class="checkbox">
+            <input type="checkbox" id="edit-community">Community</input>
+          </label>
+          <label class="checkbox">
+            <input type="checkbox" id="edit-tech">Tech</input>
+          </label>
+          <label class="checkbox">
+            <input type="checkbox" id="edit-event">Event</input>
+          </label>
+        </fieldset>
+      </fieldset>
+      <div class="row-fluid">
+        <div class="span6">
+          <div id="edit-room-more-div" style="clear: both;"></div>
+        </div>
+        <div class="span1">
+          <button class="btn btn-success" id="edit-room-more-button"><i class="icon-plus"></i></button>
+        </div>
+      </div>
+      <div id="edit-room-error-div"></div>
+    </form>
+  </div>
+  <div class="modal-footer">
+    <button id="edit-room-cancel" class="btn" data-dismiss="modal" aria-hidden="true">Cancel</button>
+    <button id="edit-room-save" data-dismiss="modal" data-loading-text="Saving..." class="btn btn-primary">Save</button>
+  </div>
+</div>

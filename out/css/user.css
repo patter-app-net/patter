@@ -1,9 +1,7 @@
-/* List */
+
 .usersList {
   margin: 0;
 }
-
-/* Avatar */
 .userAvatar {
   width: 33px;
   height: 33px;
@@ -11,8 +9,6 @@
   left: 0px;
   display: inline-block;
 }
-
-/* User */
 .userName {
   display: inline-block;
   vertical-align: top;
@@ -31,26 +27,21 @@
   background-color: #d98e8d;
   color: #fff;
 }
-
 .myAccount:hover {
   background: #bf6160;
 }
-
 .idleUser {
   background-color: #fff;
   color: #393939;
   opacity: 0.3;
 }
-
 .idleUser:hover {
   opacity: 0.6;
 }
-
 .activeUser {
   background-color: #666666;
   color: #fff;
 }
-
 .activeUser:hover {
   background: #737373;
 }
