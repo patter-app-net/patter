@@ -7,7 +7,7 @@ define(['jquery', 'util', 'appnet',
         'text!template/post.html', 'text!template/postEmoji.html',
         'jquery-desknoty', 'jquery-easydate', 'jquery-titlealert'],
 function ($, util, appnet, postTemplate, emojiTemplate) {
-  'use strict';
+  
 
   // id is the DOM id of the node to add the history too.
   function ChatHistory(root, authorCallback, avatarUrls)

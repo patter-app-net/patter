@@ -5,7 +5,6 @@
   border-top: 1px solid rgba(0,0,0,0.05);
   display: relative;
 }
-
 .postRow {
   -ms-word-break: break-all;
   word-break: break-word;
@@ -31,15 +30,12 @@
   display: inline-block;
   font-size: inherit;
 }
-
 .postRow a:hover {
   color: #2a79b8;
 }
-
 .postRow a.link {
   font-weight: bold;
 }
-
 .postRow .mention {
   font-weight: bold;
   color: #39f;
@@ -47,17 +43,14 @@
   font-size: inherit;
   margin-left: 0;
 }
-
 .postTimestamp {
   font-size: 0.6em;
   float: right;
   margin-right: 5px;
 }
-
 .emoji {
   max-height: 24px;
 }
-
 .embedImageWrapper {
   margin-left: 160px;
   padding: 10px;
@@ -65,7 +58,6 @@
   text-align: center;
   overflow: hidden;
 }
-
 .postRowWrap .authorContainer {
   position: absolute;
   width: 150px;
@@ -80,15 +72,12 @@
   display: inline-block;
   line-height: 30px;
 }
-
-
 .broadcastIcon {
   background: url('http://patter-app.net/Resources/Images/BroadcastImg.png') no-repeat;
   width: 24px;
   height: 18px;
   display: block;
 }
-
 .broadcastLink {
   float: right;
   width: 27px;
@@ -109,7 +98,6 @@
   float: left;
   margin: 4px 0 0 4px;
 }
-
 .postRowWrap .postBody {
   display: block;
   margin-left: 160px;
@@ -120,12 +108,9 @@
   border-bottom: 1px solid #eee;
   padding-right: 65px;
 }
-
 .mentionPost .postBody {
   background: #f4ffe5;
 }
-
 .myPost .postBody {
   background: #f2dada;
 }
-

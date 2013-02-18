@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Patter Notify</title>
+  <script src="http://lib-storage.s3-website-us-east-1.amazonaws.com/jquery-1.8.2.min.js"></script>
+  <link rel="stylesheet" style="text/css"
+        href="http://lib-storage.s3-website-us-east-1.amazonaws.com/bootstrap/css/bootstrap.min.css">
+  <link rel="stylesheet" style="text/css"
+        href="http://lib-storage.s3-website-us-east-1.amazonaws.com/bootstrap/css/bootstrap-responsive.min.css">
+  <script src="http://lib-storage.s3-website-us-east-1.amazonaws.com/bootstrap/js/bootstrap.min.js"></script>
+  <script>
+var clientId = "da8D9wY4ranbNP8vsqK8CXUkE2CUeHSB";
+
+function getHashParams() {
+  var hashParams = {};
+  var e,
+  a = /\+/g,  // Regex for replacing addition symbol with a space
+  r = /([^&;=]+)=?([^&;]*)/g,
+  d = function (s) { return decodeURIComponent(s.replace(a, " ")); },
+  q = window.location.hash.substring(1);
+
+  while (e = r.exec(q))
+    hashParams[d(e[1])] = d(e[2]);
+
+  return hashParams;
+}
+
+    function initialize() {
+      $('#authorize-button').attr('href',"https://alpha.app.net/oauth/authenticate?client_id="+clientId+"&response_type=token&redirect_uri="+window.location.href+"&scope=messages");
+
+      var hashParams = getHashParams();
+      var accessToken = hashParams['access_token'];
+      if (accessToken != null) {
+        $('#main').hide();
+      } else {
+        $('#auth').hide();
+      }
+    }
+
+    $(document).ready(initialize);
+  </script>
+</head>
+<body>
+  <div class="container">
+    <div id="main" class="hero-unit">
+      <h1>Patter Notify</h1>
+      <hr>
+      <p>Patter Notify is a Chrome extension that allows you to see when people have sent you Private Messages or <a href="http://patter-app.net" target="_blank">Patter</a> chats on <a href="http://app.net" target="_blank">app.net</a>.</p>
+      <p>To start, you just need to follow these three simple steps:</p>
+      <ul>
+        <li>Step 1: <a class="btn btn-success" href="https://chrome.google.com/webstore/detail/patter-notify/mgnienamhhknholbcmjegigakmlaaljc">Install</a> the Patter Notify Chrome extension</li>
+        <li>Step 2: After installation, <a class="btn btn-success" id="authorize-button">Authorize</a> Patter Notify on app.net.</li>
+        <li>Step 3: Using <a href="http://patter-app.net">Patter</a>, subscribe to the rooms you want to receive notifications in.</li>
+      </ul>
+
+      <p>After following these steps, you will receive notifications whenever new messages pop up in rooms you don't have open. Since chat rooms can get quite busy, Patter Notify uses the following rules to pop up a notification.</p>
+      <ul>
+        <li>You will never receive more than one notification every five minutes.</li>
+        <li>Patter Notify only ever pops up one notification. No new notifications will pop up until you dismiss the first.</li>
+        <li>After dismissing a notification, you will not receive a new one unless more happens after the notification.</li>
+      </ul>
+
+      <p>For troubleshooting, contact <a href="http://alpha.app.net/duerig">@duerig</a>.</p>
+      <p>Our privacy policy is <a href="http://www.privacychoice.org/policy/mobile?policy=7e57611e9551c6105db81e5c27f3a415">here</a>.</p>
+      <p>Patter Notify interacts with <a href="http://app.net">app.net</a> on your behalf and so any interaction is also subject to their policies.</p>
+    </div>
+    <div id="auth" class="hero-unit">
+      <h1>Patter Notify Authorization</h1>
+      <hr>
+      <p>You should receive a notification indicating that your authorization is complete. Close this window when you see it.</p>
+      <p><a href="patter-notify.html" class="btn">Back</a></p>
+      <p>For troubleshooting, contact <a href="http://alpha.app.net/duerig">@duerig</a>.</p>
+    </div>
+  </div>
+</body>
+</html>
