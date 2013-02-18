@@ -114,3 +114,6 @@
 .myPost .postBody {
   background: #f2dada;
 }
+.broadcastPost .mention {
+color: #f2dada;
+}

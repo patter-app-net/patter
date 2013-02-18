@@ -115,6 +115,9 @@ body { font-family: 'Open Sans', 'Helvetica Neue', Helvetica, Sans-Serif; text-r
 .myPost .postBody {
   background: #f2dada;
 }
+.broadcastPost .mention {
+color: #f2dada;
+}
 .usersList {
   margin: 0;
 }
@@ -140,11 +143,11 @@ body { font-family: 'Open Sans', 'Helvetica Neue', Helvetica, Sans-Serif; text-r
   text-overflow: ellipsis;
 }
 .myAccount {
-  background-color: #b32d2a;
+  background-color: #d98e8d;
   color: #fff;
 }
 .myAccount:hover {
-  background: #bf2e2c;
+  background: #bf6160;
 }
 .idleUser {
   background-color: #fff;

@@ -24,11 +24,11 @@
   text-overflow: ellipsis;
 }
 .myAccount {
-  background-color: #b32d2a;
+  background-color: #d98e8d;
   color: #fff;
 }
 .myAccount:hover {
-  background: #bf2e2c;
+  background: #bf6160;
 }
 .idleUser {
   background-color: #fff;
