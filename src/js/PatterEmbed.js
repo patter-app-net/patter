@@ -5,7 +5,7 @@
 // it new messages and a channel to post in.
 
 /*global define:true */
-define(['jquery', 'js/ChatForm', 'js/UserList', 'js/ChatHistory'],
+define(['jquery', './ChatForm', './UserList', './ChatHistory'],
 function ($, ChatForm, UserList, ChatHistory) {
   'use strict';
 

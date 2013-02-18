@@ -65,6 +65,24 @@ define(['util'], function (util) {
     return name;
   };
 
+  note.findBlogStatus = function (message)
+  {
+    return note.findAnnotation('net.blog-app.status',
+                               message.annotations);
+  };
+
+  note.findBlogPost = function (message)
+  {
+    return note.findAnnotation('net.jazzychad.adnblog.post',
+                               message.annotations);
+  };
+
+  note.findBlogPhotoset = function (message)
+  {
+    return note.findAnnotation('net.blog-app.photoset',
+                               message.annotations);
+  };
+
   note.findChannelRefId = function (message)
   {
     var id = null;

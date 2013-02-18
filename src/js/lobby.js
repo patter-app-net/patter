@@ -137,11 +137,11 @@ function ($, util, appnet, editRoomModal, Category) {
     var hasHome = false;
     var hasRoom = false;
     var hasPm = false;
-    var home = $('<div class="span8 offset3"/>');
+    var home = $('<div class="span8"/>');
     home.append('<h3>Home</h3>');
-    var rooms = $('<div class="span8 offset3"/>');
+    var rooms = $('<div class="span8"/>');
     rooms.append('<h3>My Rooms</h3>');
-    var pms = $('<div class="span8 offset3"/>');
+    var pms = $('<div class="span8"/>');
     pms.append('<h3>Private Messages</h3>');
     var i = 0;
     for (i = 0; i < this.data.length; i += 1)
@@ -246,11 +246,11 @@ function ($, util, appnet, editRoomModal, Category) {
     var i = 0;
     var j = 0;
     var foundCat = false;
-    var general = $('<div class="span8 offset3"/>');
+    var general = $('<div class="span8"/>');
     general.append('<h3>General Rooms</h3>');
     for (j = 0; j < cats.length; j += 1)
     {
-      cats[j].tag = $('<div class="span8 offset3"/>');
+      cats[j].tag = $('<div class="span8"/>');
       cats[j].tag.append('<h3>' + cats[j].title + '</h3>');
     }
     for (i = 0; i < this.data.length; i += 1)
