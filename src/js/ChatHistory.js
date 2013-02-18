@@ -88,7 +88,7 @@ function ($, util, appnet, postTemplate, emojiTemplate) {
                                                data.annotations);
     if (broadcast !== null)
     {
-      $('.broadcastLink', post).remove();
+      $('.broadcastLink', post).attr('href', broadcast.url);
       $('.postRow', post).addClass('broadcastPost');
     }
     else

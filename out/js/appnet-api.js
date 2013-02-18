@@ -423,7 +423,20 @@ function ($, util) {
          'https://alpha-api.app.net/stream/0/channels/', '/subscribe');
 
   // ------------------------------------------------------------------------
-  // Marker
+  // Files
+  // ------------------------------------------------------------------------
+
+  // createFile(file, args, success, failure);
+  addData('createFile', 'POST',
+          'https://alpha-api.app.net/stream/0/files');
+
+
+  // completeFile(fileId, data, args, success, failure);
+  addDataOne('completeFile', 'PUT',
+             'https://alpha-api.app.net/stream/0/files/', '/content');
+
+  // ------------------------------------------------------------------------
+  // Other
   // ------------------------------------------------------------------------
 
   // updateMarker(newMarker, args, success, failure);

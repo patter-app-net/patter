@@ -18,7 +18,7 @@
 .postInfo {
   position: absolute;
   right: 0;
-  top: 0;
+  top: 5px;
   bottom: 0;
   width: 65px;
   font-size: 16px;
@@ -93,7 +93,7 @@
   float: right;
   width: 27px;
   height: 18px;
-  background-color: #058205;
+  background-color: orange;
   border-radius: 3px;
   padding: 1px 0 1px 3px;
   margin-right: 5px;
@@ -102,8 +102,8 @@
   color: #fff;
 }
 .postRow.broadcastPost .postBody {
-  background-color: #8c291d;
-  color: #fff;
+  background-color: #f2c2aa;
+  color: #292929;
 }
 .postRowWrap .authorContainer .authorAvatar {
   float: left;
@@ -129,5 +129,8 @@
   background: #f2dada;
 }
 .broadcastPost .mention {
-color: #f2dada;
+  color: #cc581f;
+}
+.broadcastPost .postTimestamp {
+  color: #292929;
 }
