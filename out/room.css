@@ -1,4 +1,4 @@
-body { font-family: 'Open Sans', 'Helvetica Neue', Helvetica, Sans-Serif; text-rendering: optimizeLegibility; -webkit-font-smoothing: antialiased;}
+body { font-family: 'Open Sans', 'Helvetica Neue', Helvetica, Sans-Serif!important; text-rendering: optimizeLegibility; -webkit-font-smoothing: antialiased;}
 .postRowWrap
 {
   background-color: #eee;
@@ -189,6 +189,33 @@ body { font-family: 'Open Sans', 'Helvetica Neue', Helvetica, Sans-Serif; text-r
   -webkit-border-radius: 0px!important;
   -moz-border-radius: 0px!important;
   border-radius: 0px!important;
+}
+#edit-room-modal {
+  border-radius: 0px!important;
+  box-shadow: none!important;
+  background-color: rgb(191,56,41);
+  color: #fff!important;
+}
+#edit-room-modal:focus {
+  outline: none!important;
+}
+.modal-header {
+  border-bottom: 1px solid rgba(0,0,0,0.2)!important;
+}
+.modal-body {
+  border-top: 1px solid rgba(255,255,255,0.2)!important;
+}
+.modal-header h3 {
+  font-weight: 500;
+}
+.modal-header h4 {
+  font-weight: 400;
+}
+.modal-footer {
+  border-radius: 0px!important;
+  background-color: #e5e5e5!important;
+  border-top: 1px solid rgb(189,55,40)!important;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,0.4)!important;
 }
 .navbar .nav {
   margin: 2px 10px 0 0!important;
