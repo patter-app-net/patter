@@ -176,7 +176,8 @@ function ($, util) {
         }
         else
         {
-          success({ data: result });
+          success({ data: result,
+                    meta: { max_id: response.meta.max_id } });
         }
       }
 
@@ -403,6 +404,23 @@ function ($, util) {
   addData('createPost', 'POST',
           'https://alpha-api.app.net/stream/0/posts');
 
+  addOne('getPost', 'GET',
+         'https://alpha-api.app.net/stream/0/posts/');
+
+  add('getGlobal', 'GET',
+      'https://alpha-api.app.net/stream/0/posts/stream/global');
+
+  add('getMyStream', 'GET',
+      'https://alpha-api.app.net/stream/0/posts/stream');
+
+  add('getMyUnified', 'GET',
+      'https://alpha-api.app.net/stream/0/posts/stream/unified');
+
+  addOne('getReplies', 'GET',
+         'https://alpha-api.app.net/stream/0/posts/', '/replies');
+
+  addAllOne('getAllReplies', $.proxy(api.getReplies, api));
+
   // ------------------------------------------------------------------------
   // Subscription
   // ------------------------------------------------------------------------
@@ -450,6 +468,12 @@ function ($, util) {
   {
     $.cookie(urlCookie, window.location, { expires: 1, path: '/' });
     util.redirect('auth.html');
+  };
+
+  api.logout = function ()
+  {
+    delete localStorage[authCookie];
+    window.location.reload(true);
   };
   
   api.call = function (url, type, args, success, failure, data)

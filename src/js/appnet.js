@@ -18,6 +18,16 @@ function ($, util, api, note) {
     this.api.init(tokenCookie, urlCookie);
   };
 
+  appnet.authorize = function ()
+  {
+    this.api.authorize();
+  };
+
+  appnet.logout = function ()
+  {
+    this.api.logout();
+  };
+
   appnet.isLogged = function () {
     return this.api.accessToken !== null && this.api.accessToken !== undefined;
   };

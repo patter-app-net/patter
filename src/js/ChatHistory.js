@@ -98,14 +98,14 @@ function ($, util, appnet, postTemplate, emojiTemplate) {
 
     if (this.avatarUrls[data.user.username] !== undefined)
     {
-      $('.authorAvatar', post).attr('href', 'http://alpha.app.net/' +
-                                    data.user.username);
-      $('.authorAvatarImg', post).attr('src',
-                                       this.avatarUrls[data.user.username]);
+      var avatar = post.find('.authorAvatar');
+      avatar.attr('href', 'http://alpha.app.net/' + data.user.username);
+      var image = post.find('.authorAvatarImg');
+      image.attr('src', this.avatarUrls[data.user.username]);
     }
     else
     {
-      $('.authorAvatar', post).remove();
+      post.find('.authorAvatar').remove();
     }
 
     var author = $('.author', post);
@@ -131,23 +131,29 @@ function ($, util, appnet, postTemplate, emojiTemplate) {
   };
 
   function renderEmbedImage(data, post) {
-    var embed = appnet.note.findAnnotation('net.app.core.oembed',
-                                           data.annotations);
-    if (embed !== null && embed.type === 'photo') {
-      var height = embed.height;
-      if (height === undefined || height > 200)
-      {
-        height = 200;
+    var hasFound = false;
+    var wrapper = post.find('.embedImageWrapper');
+    var notes = data.annotations;
+    var i = 0;
+    for (i = 0; i < notes.length; i += 1) {
+      if (notes[i].type === 'net.app.core.oembed') {
+        var embed = notes[i].value;
+        if (embed !== null && embed.type === 'photo') {
+          var link = $('<a target="_blank"></a>');
+          link.css('background-image', 'url("' + embed.url + '")');
+          link.css('background-position', 'center');
+          link.css('background-size', 'contain');
+          link.css('background-repeat', 'no-repeat');
+          link.css('width', '200px');
+          link.css('height', '200px');
+          link.attr('href', embed.url);
+          wrapper.append(link);
+          hasFound = true;
+        }
       }
-      $('.embedLink', post).attr('href', embed.url);
-      var image = $('.embedImage', post);
-      image.attr('src', embed.url);
-      image.attr('height', height);
-      image.attr('style', 'max-height: ' + height + 'px;');
     }
-    else
-    {
-      $('.embedImageWrapper', post).remove();
+    if (! hasFound) {
+      wrapper.remove();
     }
   }
 

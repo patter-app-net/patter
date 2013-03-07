@@ -101,7 +101,8 @@ function ($, util, appnet, PatterEmbed) {
       this.markerName = marker.name;
     }
     if (maxId && this.markerName &&
-        (! marker || ! marker.id || maxId > marker.id))
+        (! marker || ! marker.id ||
+         parseInt(maxId, 10) > parseInt(marker.id, 10)))
     {
       changeMarker(this.markerName, maxId);
     }
