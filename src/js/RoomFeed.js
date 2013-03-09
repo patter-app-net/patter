@@ -11,7 +11,7 @@ function ($, util, appnet, PatterEmbed) {
   function RoomFeed(channel, members, formRoot, userRoot, historyRoot)
   {
     this.embed = new PatterEmbed(channel, members, formRoot, userRoot,
-                                 historyRoot, $.proxy(this.update, this));
+                                 historyRoot, $.proxy(this.update, this), null);
     this.channel = channel;
     this.goBack = false;
     this.timer = null;

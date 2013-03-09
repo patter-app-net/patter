@@ -290,7 +290,10 @@ function ($, util, appnet, editRoomModal, Category) {
 
   function addUsers(channel, users)
   {
-    channelMembers[channel.owner.id] = channel.owner;
+    if (channel.owner)
+    {
+      channelMembers[channel.owner.id] = channel.owner;
+    }
     for (var i = 0; i < channel.writers.user_ids.length; i += 1)
     {
       var id = channel.writers.user_ids[i];
@@ -572,7 +575,8 @@ function ($, util, appnet, editRoomModal, Category) {
   {
     var isPatter = (channel.type === 'net.patter-app.room');
     var members = [];
-    if (channel.owner.id !== currentUser.id || isPatter) {
+    if ((channel.owner && channel.owner.id !== currentUser.id) ||
+        isPatter) {
       members.push({ user: channel.owner.username,
                      avatar: channel.owner.avatar_image.url });
     }

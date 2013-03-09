@@ -10,12 +10,13 @@ function ($, util, appnet, postTemplate, emojiTemplate) {
   'use strict';
 
   // id is the DOM id of the node to add the history too.
-  function ChatHistory(root, authorCallback, avatarUrls)
+  function ChatHistory(root, authorCallback, muteCallback, avatarUrls)
   {
     this.root = root;
     this.post = $(postTemplate);
     this.shownPosts = {};
     this.authorCallback = authorCallback;
+    this.muteCallback = muteCallback;
     this.avatarUrls = avatarUrls;
     this.atBottom = true;
     this.root.scroll($.proxy(onScroll, this));
@@ -123,6 +124,14 @@ function ($, util, appnet, postTemplate, emojiTemplate) {
     timestamp.attr('title', data.created_at);
     formatTimestamp(timestamp);
 
+    var mute = post.find('.muteButton');
+    var that = this;
+    var username = data.user.username;
+    mute.click(function (event) {
+      event.preventDefault();
+      that.muteCallback(username);
+      return false;
+    });
 
 //    $('.mention', row).each(function (index, element) {
 //      element.setAttribute('style',
@@ -140,6 +149,10 @@ function ($, util, appnet, postTemplate, emojiTemplate) {
         var embed = notes[i].value;
         if (embed !== null && embed.type === 'photo') {
           var link = $('<a target="_blank"></a>');
+          var url = embed.url;
+          if (embed.thumbnail_url) {
+            url = embed.thumbnail_url;
+          }
           link.css('background-image', 'url("' + embed.url + '")');
           link.css('background-position', 'center');
           link.css('background-size', 'contain');
