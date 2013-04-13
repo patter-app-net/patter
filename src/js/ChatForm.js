@@ -19,13 +19,14 @@ function ($, appnet, chatTemplate) {
     root.html(chatTemplate);
     this.input = $('.messageText', root);
     $('.sendForm', root).submit($.proxy(clickSend, this));
-    if (channel.type === 'net.patter-app.room')
+    if (channel.type === 'net.patter-app.room' &&
+        (channel.readers['public'] || channel.readers.any_user))
     {
-      $('.broadcastButton', root).click($.proxy(clickBroadcast, this));
+      root.find('.broadcastButton').click($.proxy(clickBroadcast, this));
     }
     else
     {
-      $('.broadcastButton', root).hide();
+      root.find('.broadcastButton').hide();
     }
     $('.authorizeButton', root).click($.proxy(clickAuthorize, this));
     $('.sendForm', root).hide();
@@ -107,10 +108,6 @@ function ($, appnet, chatTemplate) {
       annotations: annotations,
       chat: this
     };
-    console.log(messageString);
-    console.dir(getImageUrl(messageString));
-    console.log('beforeProcess');
-    console.dir(context.annotations);
     appnet.api.processText({ text: messageString }, {},
                            $.proxy(broadcastMessage, context),
                            failBroadcastMessage);
@@ -174,8 +171,6 @@ function ($, appnet, chatTemplate) {
       var broadcast = appnet.note.broadcastNote(response.data.id,
                                                 response.data.canonical_url);
       messageAnn.push(broadcast);
-      console.log('Before post');
-      console.dir(messageAnn);
       this.chat.postMessage(this.message, messageAnn);
     }
   };
@@ -212,13 +207,11 @@ function ($, appnet, chatTemplate) {
     var result = [];
     var match = urlRegex.exec(text);
     if (match !== null) {
-      console.log('match');
       var url = match[0];
       var foundIndex = url.length - 4;
       if (url.indexOf('.jpg') === foundIndex ||
           url.indexOf('.png') === foundIndex ||
           url.indexOf('.gif') === foundIndex) {
-        console.log('image');
         result.push(appnet.note.embedImageNote(url, 200, 200));
       }
     }

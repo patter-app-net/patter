@@ -5,7 +5,7 @@
 /*global define: true */
 define(['jquery', 'appnet', 'js/roomInfo', 'js/editRoomModal',
         'text!template/roomMenu.html',
-        'jquery-jfontsize'],
+        'jquery-jfontsize', 'jquery-translator'],
 function ($, appnet, roomInfo, editRoomModal, menuTemplate) {
   'use strict';
 
@@ -18,6 +18,7 @@ function ($, appnet, roomInfo, editRoomModal, menuTemplate) {
     container = menuContainer;
     container.append(menuTemplate);
 
+    initTranslate();
     initNotify();
     $('#edit-room-button').click(clickEditRoom);
     $('#subscribe-button').click(clickSubscribe);
@@ -25,6 +26,14 @@ function ($, appnet, roomInfo, editRoomModal, menuTemplate) {
     editRoomModal.init();
     roomMenu.updateChannelView();
   };
+
+  function initTranslate()
+  {
+    $(document).translatable({
+      contentNodeSelector: '.chat-history',
+      translateButtonSelector: '#translate-button'
+    });
+  }
 
   function initNotify()
   {
@@ -87,9 +96,16 @@ function ($, appnet, roomInfo, editRoomModal, menuTemplate) {
     var status = appnet.renderStatus(roomInfo.channel);
     $('#room-name').html('<strong>' + name + '</strong>');
     $('#room-status').html(status);
-    if (roomInfo.channel.you_subscribed) {
+    if (roomInfo.channel.you_muted)
+    {
+      $('#subscribe-button').html('Unmute');
+    }
+    else if (roomInfo.channel.you_subscribed)
+    {
       $('#subscribe-button').html('Unsubscribe');
-    } else {
+    }
+    else
+    {
       $('#subscribe-button').html('Subscribe');
     }
     if (editRoomModal.canEditChannel(roomInfo.channel)) {
@@ -101,7 +117,14 @@ function ($, appnet, roomInfo, editRoomModal, menuTemplate) {
 
   function toggleSubscribe()
   {
-    if (roomInfo.channel.you_subscribed)
+    if (roomInfo.channel.you_muted)
+    {
+      appnet.api.unmuteChannel(roomInfo.id, { include_annotations: 1 },
+                               $.proxy(roomInfo.completeChannelInfo,
+                                       roomInfo),
+                               failToggleSubscribe);
+    }
+    else if (roomInfo.channel.you_subscribed)
     {
       appnet.api.deleteSubscription(roomInfo.id, { include_annotations: 1 },
                                     $.proxy(roomInfo.completeChannelInfo,

@@ -440,6 +440,14 @@ function ($, util) {
   addOne('deleteSubscription', 'DELETE',
          'https://alpha-api.app.net/stream/0/channels/', '/subscribe');
 
+  // muteChannel(channelId, args, success, failure);
+  addOne('muteChannel', 'POST',
+         'https://alpha-api.app.net/stream/0/channels/', '/mute');
+
+  // muteChannel(channelId, args, success, failure);
+  addOne('unmuteChannel', 'DELETE',
+         'https://alpha-api.app.net/stream/0/channels/', '/mute');
+
   // ------------------------------------------------------------------------
   // Files
   // ------------------------------------------------------------------------

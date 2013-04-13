@@ -5,12 +5,16 @@
 /*global require: true */
 require(['jquery', 'util', 'appnet', 'js/editRoomModal',
          'js/Category',
+         'text!template/lobbyPm.html', 'text!template/lobbyRoom.html',
          'bootstrap', 'jquery-easydate'],
-function ($, util, appnet, editRoomModal, Category) {
+function ($, util, appnet, editRoomModal, Category, pmString, roomString) {
   'use strict';
 
   var wait = 1 * 1000;
   var checkWait = 30 * 1000;
+
+  var pmTemplate = $(pmString);
+  var roomTemplate = $(roomString);
 
   var cats = [new Category('fun', 'Fun'),
               new Category('lifestyle', 'Lifestyle'),
@@ -129,6 +133,8 @@ function ($, util, appnet, editRoomModal, Category) {
     processUsers(response, $.proxy(processMine, response));
   }
 
+  var catWrapper = '<div class="span11">';
+
   var processMine = function (response)
   {
     updateChannelUsers(response.data);
@@ -137,38 +143,43 @@ function ($, util, appnet, editRoomModal, Category) {
     var hasHome = false;
     var hasRoom = false;
     var hasPm = false;
-    var home = $('<div class="span8"/>');
+    var home = $(catWrapper);
     home.append('<h3>Home</h3>');
-    var rooms = $('<div class="span8"/>');
+    var rooms = $(catWrapper);
     rooms.append('<h3>My Rooms</h3>');
-    var pms = $('<div class="span8"/>');
+    var pms = $(catWrapper);
     pms.append('<h3>Private Messages</h3>');
+    var added = 0;
     var i = 0;
     for (i = 0; i < this.data.length; i += 1)
     {
-      if (i <= 8)
+      if (! this.data[i].you_muted)
       {
-        home.append(renderChannel(this.data[i]));
-        if (this.data[i].has_unread)
+        if (added <= 8)
         {
-          hasHome = true;
+          home.append(renderChannel(this.data[i]));
+          if (this.data[i].has_unread)
+          {
+            hasHome = true;
+          }
         }
-      }
-      if (this.data[i].type === 'net.patter-app.room')
-      {
-        rooms.append(renderChannel(this.data[i]));
-        if (this.data[i].has_unread)
+        if (this.data[i].type === 'net.patter-app.room')
         {
-          hasRoom = true;
+          rooms.append(renderChannel(this.data[i]));
+          if (this.data[i].has_unread)
+          {
+            hasRoom = true;
+          }
         }
-      }
-      else if (this.data[i].type === 'net.app.core.pm')
-      {
-        pms.append(renderChannel(this.data[i]));
-        if (this.data[i].has_unread)
+        else if (this.data[i].type === 'net.app.core.pm')
         {
-          hasPm = true;
+          pms.append(renderChannel(this.data[i]));
+          if (this.data[i].has_unread)
+          {
+            hasPm = true;
+          }
         }
+        added += 1;
       }
     }
     $('#home-wrapper').html(home);
@@ -229,7 +240,7 @@ function ($, util, appnet, editRoomModal, Category) {
       }
     }
     
-    appnet.api.getAllChannelList(publicChannels, { include_annotations: 1 },
+    appnet.api.getAllChannelList(publicChannels, { include_annotations: 1, include_recent_message: 1 },
                                  processPublicChannels, failChannelList);
   }
 
@@ -246,27 +257,30 @@ function ($, util, appnet, editRoomModal, Category) {
     var i = 0;
     var j = 0;
     var foundCat = false;
-    var general = $('<div class="span8"/>');
+    var general = $(catWrapper);
     general.append('<h3>General Rooms</h3>');
     for (j = 0; j < cats.length; j += 1)
     {
-      cats[j].tag = $('<div class="span8"/>');
+      cats[j].tag = $(catWrapper);
       cats[j].tag.append('<h3>' + cats[j].title + '</h3>');
     }
     for (i = 0; i < this.data.length; i += 1)
     {
-      foundCat = false;
-      for (j = 0; j < cats.length; j += 1)
+      if (! this.data[i].you_muted)
       {
-        if (cats[j].match(this.data[i]))
+        foundCat = false;
+        for (j = 0; j < cats.length; j += 1)
         {
-          foundCat = true;
-          cats[j].tag.append(renderChannel(this.data[i]));
+          if (cats[j].match(this.data[i]))
+          {
+            foundCat = true;
+            cats[j].tag.append(renderChannel(this.data[i]));
+          }
         }
-      }
-      if (! foundCat)
-      {
-        general.append(renderChannel(this.data[i]));
+        if (! foundCat)
+        {
+          general.append(renderChannel(this.data[i]));
+        }
       }
     }
     for (j = 0; j < cats.length; j += 1)
@@ -474,11 +488,9 @@ function ($, util, appnet, editRoomModal, Category) {
   
   function renderPmChannel(channel)
   {
-    var row = $('<div/>');
+    var result = pmTemplate.clone();
     var members = findChannelMembers(channel);
     
-    row.addClass('row-fluid');
-
     var timestamp = $('<div/>');
     if (channel.recent_message)
     {
@@ -489,27 +501,22 @@ function ($, util, appnet, editRoomModal, Category) {
       timestamp.attr('title', channel.recent_message.created_at);
       timestamp.easydate({ live: false });
     }
-    row.append($('<div class="span5"/>').append(renderMembers(members)));
-    row.append($('<div class="span5"/>').append(renderThumbs(members)));
-    row.append($('<div class="span2"/>').append(appnet.renderStatus(channel))
-               .append('<br>')
-               .append(timestamp));
-    
-    var result = $('<a class="btn btn-large btn-block" href="room.html?channel=' + channel.id + '">');
-    if (channel.has_unread) {
-      result.addClass('btn-success');
-    }
-    result.append(row);
+    result.find('#members').html(renderMembers(members));
+    result.find('#thumbs').html(renderThumbs(members));
+    var status = result.find('#status');
+    status.html(appnet.renderStatus(channel));
+    status.append('<br>');
+    status.append(timestamp);
+
+    renderButtons(result, channel);
     return result;
   }
 
   function renderPatterChannel(channel)
   {
-    var row = $('<div/>');
+    var result = roomTemplate.clone();
     var members = findChannelMembers(channel);
     var settings = appnet.note.findPatterSettings(channel);
-    
-    row.addClass('row-fluid');
     
     var timestamp = $('<div/>');
     if (channel.recent_message)
@@ -521,26 +528,54 @@ function ($, util, appnet, editRoomModal, Category) {
       timestamp.attr('title', channel.recent_message.created_at);
       timestamp.easydate({ live: false });
     }
-    row.append($('<div class="span4"/>').append(renderChannelName(channel)));
+    result.find('#name').html(renderChannelName(channel));
     if (settings.blurb)
     {
-      row.append($('<div class="span6"/>').append(util.htmlEncode(settings.blurb)));
+      result.find('#blurb').html(util.htmlEncode(settings.blurb));
     }
     else
     {
-      row.append($('<div class="span6"/>').append(renderThumbs(members)));
+      result.find('#blurb').html(renderThumbs(members));
     }
-               
-    row.append($('<div class="span2"/>').append(appnet.renderStatus(channel))
-               .append('<br>')
-               .append(timestamp));
-    
-    var result = $('<a class="btn btn-large btn-block" href="room.html?channel=' + channel.id + '">');
-    if (channel.has_unread) {
-      result.addClass('btn-success');
-    }
-    result.append(row);
+
+    var status = result.find('#status');
+    status.html(appnet.renderStatus(channel));
+    status.append('<br>');
+    status.append(timestamp);
+
+    renderButtons(result, channel);
     return result;
+  }
+
+  function renderButtons(result, channel)
+  {
+    result.find('#open').attr('href', 'room.html?channel=' + channel.id);
+    if (channel.has_unread)
+    {
+      result.find('#open').addClass('btn-success');
+    }
+    if (channel.you_subscribed)
+    {
+      result.find('#subscribe').html('Unsubscribe');
+      result.find('#mute').show();
+    }
+    else
+    {
+      result.find('#subscribe').html('Subscribe');
+      result.find('#mute').hide();
+    }
+    var channelId = channel.id;
+    var isSubscribed = channel.you_subscribed;
+    result.find('#subscribe').click(function (event) {
+      event.preventDefault();
+      clickSubscribe(channelId, isSubscribed);
+      return false;
+    });
+    result.find('#mute').click(function (event) {
+      event.preventDefault();
+      clickMute(channelId);
+      return false;
+    });
   }
   
   function renderChannelName(channel)
@@ -575,8 +610,9 @@ function ($, util, appnet, editRoomModal, Category) {
   {
     var isPatter = (channel.type === 'net.patter-app.room');
     var members = [];
-    if ((channel.owner && channel.owner.id !== currentUser.id) ||
-        isPatter) {
+    if (channel.owner &&
+        (channel.owner.id !== currentUser.id || isPatter))
+    {
       members.push({ user: channel.owner.username,
                      avatar: channel.owner.avatar_image.url });
     }
@@ -593,6 +629,46 @@ function ($, util, appnet, editRoomModal, Category) {
       return left.user.localeCompare(right.user);
     });
     return members;
+  }
+
+  function clickSubscribe(channelId, isSubscribed)
+  {
+    var options = {
+      include_annotations: 1,
+      include_recent_message: 1
+    };
+    if (isSubscribed)
+    {
+      appnet.api.deleteSubscription(channelId, options,
+                                    completeSubscribe, failSubscribe);
+    }
+    else
+    {
+      appnet.api.createSubscription(channelId, options,
+                                    completeSubscribe, failSubscribe);
+    }
+  }
+
+  function clickMute(channelId)
+  {
+    var options = {
+      include_annotations: 1,
+      include_recent_message: 1
+    };
+    appnet.api.muteChannel(channelId, options,
+                           completeSubscribe, failSubscribe);
+  }
+
+  function completeSubscribe(response)
+  {
+    gettingPublic = false;
+    fetchEvent();
+    refreshPublic = false;
+    getPublicRooms();
+  }
+
+  function failSubscribe(meta)
+  {
   }
 
   function initButtons() {

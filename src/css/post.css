@@ -83,7 +83,7 @@
 
 
 .broadcastIcon {
-  background: url('http://patter-app.net/Resources/Images/BroadcastImg.png') no-repeat;
+  background: url('https://patter.s3.amazonaws.com/broadcast.png') no-repeat;
   width: 24px;
   height: 18px;
   display: block;

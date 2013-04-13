@@ -40,7 +40,10 @@ define(['jquery', 'util', 'appnet'], function ($, util, appnet) {
     {
       delete this.members[keyList[i]];
     }
-    this.members[owner.username] = owner;
+    if (owner)
+    {
+      this.members[owner.username] = owner;
+    }
     getWriterInfo();
   };
 

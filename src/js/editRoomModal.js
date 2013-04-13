@@ -78,8 +78,9 @@ function ($, util, appnet, roomInfo, UserFields, editTemplate) {
     $('#edit-room-type').html(roomType);
     
     // Modal subtitle
-    var ownerText = '';
-    if (editRoomChannel !== null) {
+    var ownerText = 'Unknown Owner';
+    if (editRoomChannel !== null && editRoomChannel.owner)
+    {
       ownerText = 'Owned by @' + editRoomChannel.owner.username;
     }
     $('#edit-room-owner').html(ownerText);

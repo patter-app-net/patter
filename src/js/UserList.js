@@ -55,12 +55,15 @@ function ($, util, appnet, userTemplate) {
   UserList.prototype.storePostInfo = function (data)
   {
     var created = new Date(data.created_at).getTime();
-    if (this.postTimes[data.user.username] === undefined ||
-        this.postTimes[data.user.username] === null ||
-        this.postTimes[data.user.username] < created)
+    if (data.user)
     {
-      this.postTimes[data.user.username] = created;
-      this.avatars[data.user.username] = data.user.avatar_image.url;
+      if (this.postTimes[data.user.username] === undefined ||
+          this.postTimes[data.user.username] === null ||
+          this.postTimes[data.user.username] < created)
+      {
+        this.postTimes[data.user.username] = created;
+        this.avatars[data.user.username] = data.user.avatar_image.url;
+      }
     }
   };
 

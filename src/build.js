@@ -27,11 +27,12 @@
     "jquery-imagesloaded": "../lib/jquery.imagesloaded.min",
     "jquery-jfontsize": "../lib/jquery.jfontsize-1.0",
     "jquery-titlealert": "../lib/jquery.titlealert.min",
+    "jquery-translator": "../lib/jquery.translator",
     "bootstrap": "../lib/bootstrap.min",
     "util": "js/util",
     "appnet": "js/appnet",
     "appnet-api": "js/appnet-api",
-    "appnet-note": "js/appnet-note",
+    "appnet-note": "js/appnet-note"
 //    "util": "../../../lib/util",
 //    "appnet": "../../../lib/appnet",
 //    "appnet-api": "../../../lib/appnet-api",
@@ -47,6 +48,7 @@
     "jquery-imagesloaded": ["jquery"],
     "jquery-jfontsize": ["jquery"],
     "jquery-titlealert": ["jquery"],
+    "jquery-translator": ["jquery"],
     "bootstrap": ["jquery"]
   },
 

@@ -111,8 +111,13 @@ function ($, util, appnet, postTemplate, emojiTemplate) {
 
     var author = $('.author', post);
     author.attr('id', '@' + data.user.username);
-//    author.attr('style',
-//                'background: ' + makeUserColor('@' + data.user.username) + ';');
+    if (data.user.username === 'michelelewis')
+    {
+      post.find('.postRow')
+        .attr('style',
+              'background: ' + makeUserColor('@' + data.user.username) + ';');
+      author.attr('style', 'color: #eeeeee;');
+    }
     author.text(data.user.username);
     author.on('click', this.authorCallback);
     
@@ -157,8 +162,8 @@ function ($, util, appnet, postTemplate, emojiTemplate) {
           link.css('background-position', 'center');
           link.css('background-size', 'contain');
           link.css('background-repeat', 'no-repeat');
-          link.css('width', '200px');
-          link.css('height', '200px');
+          link.css('width', '300px');
+          link.css('height', '300px');
           link.attr('href', embed.url);
           wrapper.append(link);
           hasFound = true;
@@ -211,12 +216,15 @@ function ($, util, appnet, postTemplate, emojiTemplate) {
           duration: 10000,
           interval: 1000
         });
-        $.desknoty({
-          icon: 'patter-top-mobile.png',
-          title: last.username,
-          body: last.text,
-          url: ''
-        });
+        if (window.webkitNotifications)
+        {
+          $.desknoty({
+            icon: 'patter-top-mobile.png',
+            title: last.username,
+            body: last.text,
+            url: ''
+          });
+        }
         if (window.fluid)
         {
           window.fluid.showGrowlNotification({
