@@ -27,10 +27,17 @@ function ($, util, appnet, editRoomModal, Category, pmString, roomString) {
   var currentUser = null;
   var recentPostId = {};
   var hasNotified = false;
+  var autoRefresh = true;
 
   function initialize() {
     $.removeCookie('patterAccessToken', { path: '/' });
     appnet.init('patter2Token', 'patterPrevUrl');
+    $('#refresh-wrapper').hide();
+    $('#refresh-wrapper').removeClass('hidden');
+    if (localStorage.autoRefresh === 'false')
+    {
+      toggleRefresh();
+    }
 
     if (! appnet.isLogged())
     {
@@ -124,6 +131,11 @@ function ($, util, appnet, editRoomModal, Category, pmString, roomString) {
       appnet.api.getAllChannelList(publicChannels, { include_annotations: 1, include_recent_message: 1 },
                                    processPublicChannels, failChannelList);
       wait = checkWait;
+      clearTimeout(processChannelTimer);
+      if (autoRefresh)
+      {
+        processChannelTimer = setTimeout(fetchEvent, wait);
+      }
     }
     refreshPublic = ! refreshPublic;
   }
@@ -589,7 +601,7 @@ function ($, util, appnet, editRoomModal, Category, pmString, roomString) {
     for (var i = 0; i < members.length; i += 1) {
       result.append('<img class="avatarImg img-rounded" ' +
                     'width="40" height="40" src="' +
-                    members[i].avatar + '" alt=""/>');
+                    members[i].avatar + '" alt="Avatar for @' + members[i].user + '"/>');
     }
     return result;
   }
@@ -686,6 +698,38 @@ function ($, util, appnet, editRoomModal, Category, pmString, roomString) {
       return false;
     });
     $('#logout-button').on('click', logout);
+    $('#auto-refresh').on('click', toggleRefresh);
+    $('#refresh').on('click', clickRefresh);
+  }
+
+  function toggleRefresh(event)
+  {
+    if (event)
+    {
+      event.preventDefault();
+    }
+    autoRefresh = ! autoRefresh;
+    if (autoRefresh)
+    {
+      fetchEvent();
+      $('#auto-refresh').html('Auto-Refresh: On');
+      $('#refresh-wrapper').hide();
+    }
+    else
+    {
+      clearTimeout(processChannelTimer);
+      $('#auto-refresh').html('Auto-Refresh: Off');
+      $('#refresh-wrapper').show();
+    }
+    localStorage.autoRefresh = autoRefresh;
+    return false;
+  }
+
+  function clickRefresh(event)
+  {
+    event.preventDefault();
+    fetchEvent();
+    return false;
   }
   
   function logout(event)

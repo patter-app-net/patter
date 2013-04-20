@@ -177,6 +177,7 @@ function ($, util, appnet, userTemplate) {
     var nameNode = $('.userName', result);
     $('.userAvatar', result).attr('href', 'http://alpha.app.net/' + name);
     $('.userAvatarImg', result).attr('src', this.avatars[name]);
+    $('.userAvatarImg', result).attr('alt', 'Avatar Link for @' + this.avatars[name]);
     nameNode.html('@' + name);
     nameNode.attr('id', '@' + name);
     nameNode.addClass(userClass);

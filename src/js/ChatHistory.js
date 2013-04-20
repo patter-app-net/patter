@@ -103,6 +103,7 @@ function ($, util, appnet, postTemplate, emojiTemplate) {
       avatar.attr('href', 'http://alpha.app.net/' + data.user.username);
       var image = post.find('.authorAvatarImg');
       image.attr('src', this.avatarUrls[data.user.username]);
+      image.attr('alt', 'Avatar Link for @' + data.user.username);
     }
     else
     {
