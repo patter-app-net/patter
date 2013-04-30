@@ -4,35 +4,89 @@ module.exports = function (grunt) {
 
   var scp_conf = {};
   try {
+    // For information on how to construct this file checkout out: https://github.com/spmjs/grunt-scp
+    // An Example:
+    // {
+    //  "options": {
+    //     "host": "jonathonduerig.com",
+    //     "username": "duerig",
+    //     "agent": "/tmp/launch-5VBS3x/Listeners"
+    //   },
+    //   "root_path": "/var/www/patter-app.net/"
+    // }
     scp_conf = grunt.file.readJSON('scp.json');
   } catch (e) {
+    grunt.log.writeln(e);
     grunt.log.warn('Couldn\'t find scp.json in root will use default configuration');
-    scp_conf = {
-      options: {
-        host: 'localhost',
-        username: 'username',
-        password: 'password'
-      },
-      your_target: {
-        files: [{
-          cwd: 'directory',
-          src: '**/*',
-          filter: 'isFile',
-          // path on the server
-          dest: '/home/username/static/<%= pkg.name %>/<%= pkg.version %>'
-        }]
-      }
-    };
   }
 
   grunt.initConfig({
     pkg: grunt.file.readJSON('package.json'),
+    config: {
+      remote_root: scp_conf.root_path
+    },
     jshint: {
       files: ['gruntfile.js', 'src/js/*.js'],
       options: grunt.file.readJSON('.jshintrc')
     },
-
-    scp: scp_conf,
+    copy: {
+      mod: {
+        files: [{
+          expand: true,
+          cwd: 'build',
+          src: ['auth.html', 'room.html', 'room.css', 'index.html'],
+          dest: 'dist/mod/'
+        },{
+          expand: true,
+          cwd: 'build',
+          src: ['js/room.js', 'js/lobby.js'],
+          dest: 'dist/mod/'
+        }]
+      },
+      normal: {
+        files: [{
+          expand: true,
+          cwd: 'build',
+          src: ['auth.html', 'room.html', 'room.css', 'index.html'],
+          dest: 'dist/'
+        },{
+          expand: true,
+          cwd: 'build',
+          src: ['js/room.js', 'js/lobby.js'],
+          dest: 'dist/'
+        }]
+      }
+    },
+    scp: {
+      options: scp_conf.options,
+      your_target: {
+        files: [{
+          cwd: 'dist',
+          src: '*',
+          filter: 'isFile',
+          // path on the server
+          dest: '<%= config.remote_root %>'
+        },{
+          cwd: 'dist/js',
+          src: '*',
+          filter: 'isFile',
+          // path on the server
+          dest: '<%= config.remote_root %>js'
+        },{
+          cwd: 'dist/mod',
+          src: '*',
+          filter: 'isFile',
+          // path on the server
+          dest: '<%= config.remote_root %>mod'
+        },{
+          cwd: 'dist/mod/js',
+          src: '*',
+          filter: 'isFile',
+          // path on the server
+          dest: '<%= config.remote_root %>mod/js'
+        }]
+      }
+    },
     clean: ['build', 'dist'],
     requirejs: {
       compile: {
@@ -104,9 +158,18 @@ module.exports = function (grunt) {
   grunt.loadNpmTasks('grunt-contrib-jshint');
   grunt.loadNpmTasks('grunt-contrib-requirejs');
   grunt.loadNpmTasks('grunt-contrib-clean');
+  grunt.loadNpmTasks('grunt-contrib-copy');
   grunt.loadNpmTasks('grunt-scp');
 
-  grunt.registerTask('dist', ['clean', 'jshint', 'requirejs']);
+  grunt.registerTask('ensure_folders', function () {
+    var folders = ['./dist/mod/js', './dist/js'];
+    folders.forEach(function (folder) {
+      grunt.file.mkdir(folder);
+    });
+  });
+
+
+  grunt.registerTask('dist', ['clean', 'ensure_folders', 'jshint', 'requirejs', 'copy', 'scp']);
 
 
 };

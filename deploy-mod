@@ -1,5 +1,0 @@
-#!/bin/sh
-chmod -R og+r * && \
-scp out/auth.html out/room.html out/room.css out/index.html duerig@jonathonduerig.com:/var/www/patter-app.net/mod &&
-scp out/js/room.js out/js/lobby.js duerig@jonathonduerig.com:/var/www/patter-app.net/mod/js
-
