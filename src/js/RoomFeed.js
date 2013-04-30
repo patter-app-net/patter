@@ -26,7 +26,7 @@ function ($, util, appnet, PatterEmbed) {
   {
     clearTimeout(this.timer);
     //    $('#loading-message').html("Fetching Messages From Channel");
-    
+
     // Should the feed load older messages or newer ones.
     var scroll = this.embed.history.root.scrollTop();
     var height = this.embed.history.root.prop('scrollHeight');
@@ -36,7 +36,7 @@ function ($, util, appnet, PatterEmbed) {
       include_annotations: 1,
       count: 200
     };
-    
+
     if (! this.shownFeed) {
       options.count = 40;
     }

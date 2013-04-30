@@ -121,7 +121,7 @@ function ($, util, appnet, postTemplate, emojiTemplate) {
     }
     author.text(data.user.username);
     author.on('click', this.authorCallback);
-    
+
     $('.postBody', post).prepend(body);
 
     renderEmbedImage(data, post);
@@ -335,8 +335,8 @@ function ($, util, appnet, postTemplate, emojiTemplate) {
     }
     var i = 0;
     for (i = 0; i < str.length; i += 1) {
-      var char = str.charCodeAt(i);
-      hash = ((hash << 5) - hash) + char;
+      var chr = str.charCodeAt(i);
+      hash = ((hash << 5) - hash) + chr;
       hash = hash & hash; // Convert to 32bit integer
     }
     return hash;

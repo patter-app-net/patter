@@ -1,0 +1,11 @@
+{
+  "name": "patter",
+  "version": "0.1.0",
+  "devDependencies": {
+    "grunt": "~0.4.1",
+    "grunt-contrib-requirejs": "~0.4.0",
+    "grunt-exec": "~0.4.0",
+    "grunt-contrib-jshint": "~0.4.3",
+    "grunt-rsync": "~0.1.1"
+  }
+}
