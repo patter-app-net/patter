@@ -251,7 +251,7 @@ function ($, util, appnet, editRoomModal, Category, pmString, roomString) {
         publicChannels.push(current);
       }
     }
-    
+
     appnet.api.getAllChannelList(publicChannels, { include_annotations: 1, include_recent_message: 1 },
                                  processPublicChannels, failChannelList);
   }
@@ -497,12 +497,12 @@ function ($, util, appnet, editRoomModal, Category, pmString, roomString) {
     }
     return result;
   }
-  
+
   function renderPmChannel(channel)
   {
     var result = pmTemplate.clone();
     var members = findChannelMembers(channel);
-    
+
     var timestamp = $('<div/>');
     if (channel.recent_message)
     {
@@ -529,7 +529,7 @@ function ($, util, appnet, editRoomModal, Category, pmString, roomString) {
     var result = roomTemplate.clone();
     var members = findChannelMembers(channel);
     var settings = appnet.note.findPatterSettings(channel);
-    
+
     var timestamp = $('<div/>');
     if (channel.recent_message)
     {
@@ -589,7 +589,7 @@ function ($, util, appnet, editRoomModal, Category, pmString, roomString) {
       return false;
     });
   }
-  
+
   function renderChannelName(channel)
   {
     return $('<h4>' + util.htmlEncode(appnet.note.findPatterName(channel)) + '</h4>');
@@ -731,7 +731,7 @@ function ($, util, appnet, editRoomModal, Category, pmString, roomString) {
     fetchEvent();
     return false;
   }
-  
+
   function logout(event)
   {
     event.preventDefault();

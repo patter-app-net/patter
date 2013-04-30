@@ -82,7 +82,7 @@ function ($, util) {
     }
     return result;
   }
-    
+
   function makeData(data)
   {
     var result = null;
@@ -92,7 +92,7 @@ function ($, util) {
     }
     return result;
   }
-  
+
   function makeUrl(pieces)
   {
     var result = '';
@@ -121,7 +121,7 @@ function ($, util) {
       this.call(url, type, args, success, failure);
     };
   }
-    
+
   function addTwo(name, type, prefix, middle, suffix)
   {
     api[name] = function (first, second, args, success, failure) {
@@ -483,7 +483,7 @@ function ($, util) {
     delete localStorage[authCookie];
     window.location.reload(true);
   };
-  
+
   api.call = function (url, type, args, success, failure, data)
   {
     var complete = {
@@ -506,6 +506,6 @@ function ($, util) {
     header.done($.proxy(callSuccess, complete));
     header.fail($.proxy(callFailure, complete));
   };
-  
+
   return api;
 });

@@ -1,7 +1,0 @@
-#!/bin/sh
-"/cygdrive/c/Program Files/nodejs/node" "/Documents and Settings/Beak/Application Data/npm/node_modules/jshint/bin/hint" --config=lint-config.js src/js/*.js && 
-"/cygdrive/c/Program Files/nodejs/node" ../../resources/r.js -o src/build.js && \
-chmod -R og+r * && \
-scp out/auth.html out/room.html out/room.css out/index.html duerig@jonathonduerig.com:/var/www/patter-app.net &&
-scp out/js/room.js out/js/lobby.js duerig@jonathonduerig.com:/var/www/patter-app.net/js
-
