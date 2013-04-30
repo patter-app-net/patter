@@ -2,10 +2,28 @@
 module.exports = function (grunt) {
   'use strict';
 
-  var deploy_conf = {};
+  var scp_conf = {};
   try {
-    deploy_conf = grunt.file.readJSON('deploy.json');
-  } catch (e) {}
+    scp_conf = grunt.file.readJSON('scp.json');
+  } catch (e) {
+    grunt.log.warn('Couldn\'t find scp.json in root will use default configuration');
+    scp_conf = {
+      options: {
+        host: 'localhost',
+        username: 'username',
+        password: 'password'
+      },
+      your_target: {
+        files: [{
+          cwd: 'directory',
+          src: '**/*',
+          filter: 'isFile',
+          // path on the server
+          dest: '/home/username/static/<%= pkg.name %>/<%= pkg.version %>'
+        }]
+      }
+    };
+  }
 
   grunt.initConfig({
     pkg: grunt.file.readJSON('package.json'),
@@ -13,20 +31,9 @@ module.exports = function (grunt) {
       files: ['gruntfile.js', 'src/js/*.js'],
       options: grunt.file.readJSON('.jshintrc')
     },
-    rsync: {
-      mod_html: {
-        src: './',
-        dest: '../dist',
-        recursive: true,
-        exclude: ['.git*','*.scss']
-      },
-      mod_js: {
-        src: './',
-        dest: '../dist',
-        recursive: true,
-        exclude: ['.git*','*.scss']
-      }
-    },
+
+    scp: scp_conf,
+    clean: ['build', 'dist'],
     requirejs: {
       compile: {
         options: {
@@ -58,10 +65,10 @@ module.exports = function (grunt) {
             'appnet': 'js/appnet',
             'appnet-api': 'js/appnet-api',
             'appnet-note': 'js/appnet-note'
-        //    'util': '../../../lib/util',
-        //    'appnet': '../../../lib/appnet',
-        //    'appnet-api': '../../../lib/appnet-api',
-        //    'appnet-note': '../../../lib/appnet-note'
+            //    'util': '../../../lib/util',
+            //    'appnet': '../../../lib/appnet',
+            //    'appnet-api': '../../../lib/appnet-api',
+            //    'appnet-note': '../../../lib/appnet-note'
           },
 
           shim: {
@@ -95,10 +102,11 @@ module.exports = function (grunt) {
   });
 
   grunt.loadNpmTasks('grunt-contrib-jshint');
-  grunt.loadNpmTasks('grunt-rsync');
   grunt.loadNpmTasks('grunt-contrib-requirejs');
+  grunt.loadNpmTasks('grunt-contrib-clean');
+  grunt.loadNpmTasks('grunt-scp');
 
-
+  grunt.registerTask('dist', ['clean', 'jshint', 'requirejs']);
 
 
 };
