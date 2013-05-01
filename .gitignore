@@ -1,4 +1,7 @@
 *~
 deploy-mod
-
+node_modules
 .DS_Store
+build
+dist
+scp.json

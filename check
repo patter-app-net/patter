@@ -1,2 +1,0 @@
-#!/bin/sh
-"/cygdrive/c/Program Files/nodejs/node" "/Documents and Settings/Beak/Application Data/npm/node_modules/jshint/bin/hint" --config=lint-config.js $1

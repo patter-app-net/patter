@@ -7,7 +7,7 @@ require(['jquery', 'util', 'appnet', 'js/roomInfo', 'js/roomMenu',
          'js/RoomFeed'],
 function ($, util, appnet, roomInfo, roomMenu, RoomFeed) {
   'use strict';
-  
+
   var feed = null;
 
   function completeChannel()

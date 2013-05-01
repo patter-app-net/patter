@@ -76,7 +76,7 @@ function ($, util, appnet, roomInfo, UserFields, editTemplate) {
       roomType += 'PM Channel';
     }
     $('#edit-room-type').html(roomType);
-    
+
     // Modal subtitle
     var ownerText = 'Unknown Owner';
     if (editRoomChannel !== null && editRoomChannel.owner)
@@ -84,7 +84,7 @@ function ($, util, appnet, roomInfo, UserFields, editTemplate) {
       ownerText = 'Owned by @' + editRoomChannel.owner.username;
     }
     $('#edit-room-owner').html(ownerText);
-    
+
     $('#edit-room-body').hide();
     if (editRoomChannel === null) {
       if (editRoomType === 'net.patter-app.room') {
@@ -102,7 +102,7 @@ function ($, util, appnet, roomInfo, UserFields, editTemplate) {
     } else {
       $('#edit-room-name').hide();
     }
-    
+
     $('#edit-room-text').val('');
     if (editRoomChannel === null && editRoomType === 'net.app.core.pm') {
       $('#edit-room-text').show();
