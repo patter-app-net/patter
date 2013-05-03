@@ -206,14 +206,14 @@ function ($, util) {
     api[name] = function (list, args, success, failure)
     {
       var start = 0;
-      var end = (list.length < 200 ? list.length : 200);
+      var end = start + (list.length < 200 ? list.length : 200);
       var result = [];
 
       function fetchMore(response)
       {
         result = result.concat(response.data);
         start += 200;
-        end = (list.length < start + 200 ? list.length : 200);
+        end = start + (list.length < start + 200 ? list.length : 200);
         if (start < list.length)
         {
           single(list.slice(start, end), args, fetchMore, failure);
