@@ -26,7 +26,7 @@ module.exports = function (grunt) {
       remote_root: scp_conf.root_path
     },
     jshint: {
-      files: ['gruntfile.js', 'src/js/*.js'],
+      files: ['gruntfile.js', 'src/js/core/*.js'],
       options: grunt.file.readJSON('.jshintrc')
     },
     copy: {
@@ -105,20 +105,20 @@ module.exports = function (grunt) {
           },
 
           paths: {
-            'jquery': 'require-jquery',
-            'jquery-caret': '../lib/jquery.caret.min',
-            'jquery-cookie': '../lib/jquery.cookie',
-            'jquery-desknoty': '../lib/jquery.desknoty',
-            'jquery-easydate': '../lib/jquery.easydate-0.2.4.min',
-            'jquery-imagesloaded': '../lib/jquery.imagesloaded.min',
-            'jquery-jfontsize': '../lib/jquery.jfontsize-1.0',
-            'jquery-titlealert': '../lib/jquery.titlealert.min',
-            'jquery-translator': '../lib/jquery.translator',
-            'bootstrap': '../lib/bootstrap.min',
-            'util': 'js/util',
-            'appnet': 'js/appnet',
-            'appnet-api': 'js/appnet-api',
-            'appnet-note': 'js/appnet-note'
+            'jquery': 'js/deps/require-jquery',
+            'jquery-caret': 'js/deps/jquery.caret.min',
+            'jquery-cookie': 'js/deps/jquery.cookie',
+            'jquery-desknoty': 'js/deps/jquery.desknoty',
+            'jquery-easydate': 'js/deps/jquery.easydate-0.2.4.min',
+            'jquery-imagesloaded': 'js/deps/lib/jquery.imagesloaded.min',
+            'jquery-jfontsize': 'js/deps/jquery.jfontsize-1.0',
+            'jquery-titlealert': 'js/deps/jquery.titlealert.min',
+            'jquery-translator': 'js/deps/jquery.translator',
+            'bootstrap': 'js/deps/bootstrap.min',
+            'util': 'js/core/util',
+            'appnet': 'js/core/appnet',
+            'appnet-api': 'js/core/appnet-api',
+            'appnet-note': 'js/core/appnet-note'
             //    'util': '../../../lib/util',
             //    'appnet': '../../../lib/appnet',
             //    'appnet-api': '../../../lib/appnet-api',
@@ -142,11 +142,11 @@ module.exports = function (grunt) {
             //Optimize the application files. jQuery is not
             //included since it is already in require-jquery.js
             {
-              name: 'js/room',
+              name: 'js/core/room',
               exclude: ['jquery']
             },
             {
-              name: 'js/lobby',
+              name: 'js/core/lobby',
               exclude: ['jquery']
             }
           ]

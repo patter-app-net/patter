@@ -4,7 +4,7 @@
 
 /*global define:true */
 define(['jquery', 'appnet',
-        'text!template/ChatForm.html',
+        'js/deps/text!template/ChatForm.html',
         'jquery-caret'],
 function ($, appnet, chatTemplate) {
   'use strict';

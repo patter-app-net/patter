@@ -4,7 +4,7 @@
 
 /*global define:true */
 define(['jquery', 'util', 'appnet',
-        'text!template/post.html', 'text!template/postEmoji.html',
+        'js/deps/text!template/post.html', 'js/deps/text!template/postEmoji.html',
         'jquery-desknoty', 'jquery-easydate', 'jquery-titlealert'],
 function ($, util, appnet, postTemplate, emojiTemplate) {
   'use strict';

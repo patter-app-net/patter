@@ -4,9 +4,9 @@
 // room. This may also be used as a dialog for creating a new room.
 
 /*global define:true */
-define(['jquery', 'util', 'appnet', 'js/roomInfo',
-        'js/UserFields',
-        'text!template/editRoomModal.html', 'bootstrap'],
+define(['jquery', 'util', 'appnet', 'js/core/roomInfo',
+        'js/core/UserFields',
+        'js/deps/text!template/editRoomModal.html', 'bootstrap'],
 function ($, util, appnet, roomInfo, UserFields, editTemplate) {
   'use strict';
 
