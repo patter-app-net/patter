@@ -1,3 +1,6 @@
+// I don't think we need this anymore, but I am keeping it around in case.
+// XXX: Delete some time
+
 ({
   appDir: ".",
   baseUrl: ".",
