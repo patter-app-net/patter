@@ -20,6 +20,14 @@ module.exports = function (grunt) {
     grunt.log.warn('Couldn\'t find scp.json in root will use default configuration');
   }
 
+  var conf = {};
+  try {
+    conf = grunt.file.readJSON('config.json');
+  } catch (e) {
+    grunt.log.writeln(e);
+    grunt.log.warn('Couldn\'t find config.json in root will use default configuration');
+  }
+
   grunt.initConfig({
     pkg: grunt.file.readJSON('package.json'),
     config: {
@@ -28,6 +36,20 @@ module.exports = function (grunt) {
     jshint: {
       files: ['gruntfile.js', 'src/js/core/*.js'],
       options: grunt.file.readJSON('.jshintrc')
+    },
+    assemble: {
+      dev: {
+        options: conf.assemble.dev,
+        files: {
+          'build/js/core/': ['src/template/config.hbs']
+        }
+      },
+      prod: {
+        options: conf.assemble.prod,
+        files: {
+          'build/js/core/': ['src/template/config.hbs']
+        }
+      }
     },
     copy: {
       mod: {
@@ -160,6 +182,7 @@ module.exports = function (grunt) {
   grunt.loadNpmTasks('grunt-contrib-clean');
   grunt.loadNpmTasks('grunt-contrib-copy');
   grunt.loadNpmTasks('grunt-scp');
+  grunt.loadNpmTasks('assemble');
 
   grunt.registerTask('ensure_folders', function () {
     var folders = ['./dist/mod/js', './dist/js'];
