@@ -3,8 +3,8 @@
 // Overall task for managing a room
 
 /*global require: true */
-require(['jquery', 'util', 'appnet', 'js/roomInfo', 'js/roomMenu',
-         'js/RoomFeed'],
+require(['jquery', 'util', 'appnet', 'js/core/roomInfo', 'js/core/roomMenu',
+         'js/core/RoomFeed'],
 function ($, util, appnet, roomInfo, roomMenu, RoomFeed) {
   'use strict';
 

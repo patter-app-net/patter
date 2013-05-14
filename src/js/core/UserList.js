@@ -4,7 +4,7 @@
 
 /*global define:true */
 define(['jquery', 'util', 'appnet',
-        'text!template/user.html'],
+        'js/deps/text!template/user.html'],
 function ($, util, appnet, userTemplate) {
   'use strict';
 
