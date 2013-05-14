@@ -4,7 +4,7 @@
 
 /*global define:true */
 define(['jquery', 'util', 'appnet',
-        'text!template/post.html', 'text!template/postEmoji.html',
+        'js/deps/text!template/post.html', 'js/deps/text!template/postEmoji.html',
         'jquery-desknoty', 'jquery-easydate', 'jquery-titlealert'],
 function ($, util, appnet, postTemplate, emojiTemplate) {
   'use strict';
@@ -220,7 +220,7 @@ function ($, util, appnet, postTemplate, emojiTemplate) {
         if (window.webkitNotifications)
         {
           $.desknoty({
-            icon: 'patter-top-mobile.png',
+            icon: '/images/patter-top-mobile.png',
             title: last.username,
             body: last.text,
             url: ''
@@ -231,7 +231,7 @@ function ($, util, appnet, postTemplate, emojiTemplate) {
           window.fluid.showGrowlNotification({
             title: last.username,
             description: last.text,
-            icon: 'patter-top-mobile.png',
+            icon: '/images/patter-top-mobile.png',
             sticky: false
           });
         }

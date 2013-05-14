@@ -1,0 +1,14 @@
+{
+    "assemble": {
+        "dev": {
+            "patter_client_id": "PSeXh2zXVCABT3DqCKBSfZMFZCemvWez",
+            "ext": ".js",
+            "flatten": true
+        },
+        "prod": {
+            "patter_client_id": "PSeXh2zXVCABT3DqCKBSfZMFZCemvWez",
+            "ext": ".js",
+            "flatten": true
+        }
+    }
+}

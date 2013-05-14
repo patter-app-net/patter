@@ -3,9 +3,9 @@
 // Overall task for managing a list of subscribed channels
 
 /*global require: true */
-require(['jquery', 'util', 'appnet', 'js/editRoomModal',
-         'js/Category',
-         'text!template/lobbyPm.html', 'text!template/lobbyRoom.html',
+require(['jquery', 'util', 'appnet', 'js/core/editRoomModal',
+         'js/core/Category',
+         'js/deps/text!template/lobbyPm.html', 'js/deps/text!template/lobbyRoom.html',
          'bootstrap', 'jquery-easydate'],
 function ($, util, appnet, editRoomModal, Category, pmString, roomString) {
   'use strict';
