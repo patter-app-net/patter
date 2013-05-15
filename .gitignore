@@ -4,4 +4,4 @@ node_modules
 .DS_Store
 build
 dist
-scp.json
+config.json
