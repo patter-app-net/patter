@@ -3,10 +3,10 @@
 // A form used for submitting messages to a Patter chat room.
 
 /*global define:true */
-define(['jquery', 'appnet',
+define(['jquery', 'appnet', 'js/core/attachModal',
         'js/deps/text!template/ChatForm.html',
         'jquery-caret'],
-function ($, appnet, chatTemplate) {
+function ($, appnet, attachModal, chatTemplate) {
   'use strict';
 
   function ChatForm(root, channel, postCallback)
@@ -28,6 +28,8 @@ function ($, appnet, chatTemplate) {
     {
       root.find('.broadcastButton').hide();
     }
+    root.find('.attachButton').click($.proxy(clickAttach, this));
+    root.find('.attachButton').hide();
     $('.authorizeButton', root).click($.proxy(clickAuthorize, this));
     $('.sendForm', root).hide();
     $('.must-authorize', root).hide();
@@ -44,6 +46,7 @@ function ($, appnet, chatTemplate) {
     {
       $('.sendForm', root).show();
     }
+    attachModal.init();
   }
 
   var clickSend = function (event)
@@ -67,6 +70,13 @@ function ($, appnet, chatTemplate) {
       this.getEntities(text, getImageUrl(text));
       this.input.val('');
     }
+    return false;
+  };
+
+  var clickAttach = function (event)
+  {
+    event.preventDefault();
+    attachModal.show();
     return false;
   };
 

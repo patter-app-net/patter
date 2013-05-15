@@ -1,0 +1,47 @@
+<div id="attach-modal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="attachModalLabel" aria-hidden="true">
+  <div class="modal-header">
+    <button id="attach-x" type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+    <h3 id="attach-type">Create Attachment</h3>
+  </div>
+  <div class="modal-body">
+    <p id="attach-body"></p>
+    <form id="attach-form">
+      <fieldset>
+<!--
+        <textarea id="attach-text" class="input-xlarge"
+                  rows="3" maxlength="256"
+                  placeholder="Message..."></textarea>
+-->
+        <input id="attach-link-text" class="input-xlarge"
+               type="text" placeholder="Link Text">
+      </fieldset>
+      <fieldset>
+        <select id="attach-type" class="input-medium">
+          <option value="link">Link</option>
+          <option value="image">Image</option>
+<!--          <option value="file">File</option> -->
+          <option value="paste">Pasted Text</option>
+        </select>
+      </fieldset>
+      <fieldset id="attach-link-wrapper">
+        <input id="attach-link-url" class="input-xlarge"
+               type="text" placeholder="URL">
+      </fieldset>
+      <fieldset id="attach-image-wrapper">
+        <label>Paste an Image URL.</label>
+        <input id="attach-image-url" class="input-xlarge"
+               type="text" placeholder="URL">
+      </fieldset>
+      <fieldset id="attach-paste-wrapper">
+        <label>Paste text to be embedded verbatim.</label>
+        <textarea id="attach-paste" class="input-xlarge"
+                  rows="10" maxlength="6000"
+                  placeholder="Verbatim text..."></textarea>
+      </fieldset>
+    </form>
+  </div>
+  <div class="modal-footer">
+    <button id="attach-cancel" class="btn" data-dismiss="modal" aria-hidden="true">Cancel</button>
+    <button id="attach-confirm" data-dismiss="modal" data-loading-text="Saving..." class="btn btn-primary">Save</button>
+  </div>
+</div>

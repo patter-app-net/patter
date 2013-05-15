@@ -11,7 +11,9 @@ function ($, util, appnet, PatterEmbed) {
   function RoomFeed(channel, members, formRoot, userRoot, historyRoot)
   {
     this.embed = new PatterEmbed(channel, members, formRoot, userRoot,
-                                 historyRoot, $.proxy(this.update, this), null);
+                                 historyRoot, $.proxy(this.update, this),
+                                 $.proxy(this.mute, this)/*,
+                                 $.proxy(this.deleteMessage, this)*/);
     this.channel = channel;
     this.goBack = false;
     this.timer = null;
@@ -123,6 +125,34 @@ function ($, util, appnet, PatterEmbed) {
       appnet.api.updateMarker(marker, null, null, null);
     }
   }
+
+  RoomFeed.prototype.mute = function (userId)
+  {
+  };
+/*
+  RoomFeed.prototype.deleteMessage = function (messageId, complete, failure)
+  {
+    var context = {
+      messageId: messageId,
+      complete: complete,
+      failure: failure
+    };
+    appnet.api.deleteMessage(this.channel.id, messageId,
+                             $.proxy(completeDelete, context),
+                            $.proxy(failDelete, context));
+  };
+
+  var completeDelete = function (response)
+  {
+    this.complete(this.messageId);
+  };
+
+  var failDelete = function (meta)
+  {
+    this.failure(this.messageId, meta);
+  };
+
+*/
 
   return RoomFeed;
 });
