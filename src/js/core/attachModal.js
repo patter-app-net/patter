@@ -4,7 +4,7 @@
 
 /*global define:true */
 define(['jquery', 'util', 'appnet',
-       'text@template/attachModal.html'],
+       'js/deps/text!template/attachModal.html'],
 function ($, util, appnet, attachTemplate) {
   'use strict';
 

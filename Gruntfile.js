@@ -2,27 +2,22 @@
 module.exports = function (grunt) {
   'use strict';
 
-  var scp_conf = {};
+  var user_conf = {
+    "assemble": {
+      "dev": {
+        "patter_client_id": "PSeXh2zXVCABT3DqCKBSfZMFZCemvWez",
+        "ext": ".js",
+        "flatten": true
+      },
+      "prod": {
+        "patter_client_id": "PSeXh2zXVCABT3DqCKBSfZMFZCemvWez",
+        "ext": ".js",
+        "flatten": true
+      }
+    }
+  };
   try {
-    // For information on how to construct this file checkout out: https://github.com/spmjs/grunt-scp
-    // An Example:
-    // {
-    //  "options": {
-    //     "host": "jonathonduerig.com",
-    //     "username": "duerig",
-    //     "agent": "/tmp/launch-5VBS3x/Listeners"
-    //   },
-    //   "root_path": "/var/www/patter-app.net/"
-    // }
-    scp_conf = grunt.file.readJSON('scp.json');
-  } catch (e) {
-    grunt.log.writeln(e);
-    grunt.log.warn('Couldn\'t find scp.json in root will use default configuration');
-  }
-
-  var conf = {};
-  try {
-    conf = grunt.file.readJSON('config.json');
+    user_conf = grunt.file.readJSON('config.json');
   } catch (e) {
     grunt.log.writeln(e);
     grunt.log.warn('Couldn\'t find config.json in root will use default configuration');
@@ -30,82 +25,46 @@ module.exports = function (grunt) {
 
   grunt.initConfig({
     pkg: grunt.file.readJSON('package.json'),
-    config: {
-      remote_root: scp_conf.root_path
-    },
     jshint: {
       files: ['gruntfile.js', 'src/js/core/*.js'],
       options: grunt.file.readJSON('.jshintrc')
     },
     assemble: {
       dev: {
-        options: conf.assemble.dev,
+        options: user_conf.assemble.dev,
         files: {
           'build/js/core/': ['src/template/config.hbs']
         }
       },
       prod: {
-        options: conf.assemble.prod,
+        options: user_conf.assemble.prod,
         files: {
           'build/js/core/': ['src/template/config.hbs']
         }
       }
     },
-    copy: {
-      mod: {
-        files: [{
-          expand: true,
-          cwd: 'build',
-          src: ['auth.html', 'room.html', 'room.css', 'index.html'],
-          dest: 'dist/mod/'
-        },{
-          expand: true,
-          cwd: 'build',
-          src: ['js/room.js', 'js/lobby.js'],
-          dest: 'dist/mod/'
-        }]
+    swig: {
+      dev: {
+        root: 'src',
+        dest: './build/',
+        src: ['src/*.swig'],
+        site_config: user_conf.dev
       },
+      prod: {
+        root: 'src/',
+        dest: 'build/',
+        src: ['src/*.swig'],
+        site_config: user_conf.prod
+      }
+    },
+    copy: {
       normal: {
         files: [{
           expand: true,
+          flatten: false,
           cwd: 'build',
-          src: ['auth.html', 'room.html', 'room.css', 'index.html'],
+          src: ['*.html', '**/*.css', '**/*.js', '**/*.ico', '**/*.png'],
           dest: 'dist/'
-        },{
-          expand: true,
-          cwd: 'build',
-          src: ['js/room.js', 'js/lobby.js'],
-          dest: 'dist/'
-        }]
-      }
-    },
-    scp: {
-      options: scp_conf.options,
-      your_target: {
-        files: [{
-          cwd: 'dist',
-          src: '*',
-          filter: 'isFile',
-          // path on the server
-          dest: '<%= config.remote_root %>'
-        },{
-          cwd: 'dist/js',
-          src: '*',
-          filter: 'isFile',
-          // path on the server
-          dest: '<%= config.remote_root %>js'
-        },{
-          cwd: 'dist/mod',
-          src: '*',
-          filter: 'isFile',
-          // path on the server
-          dest: '<%= config.remote_root %>mod'
-        },{
-          cwd: 'dist/mod/js',
-          src: '*',
-          filter: 'isFile',
-          // path on the server
-          dest: '<%= config.remote_root %>mod/js'
         }]
       }
     },
@@ -170,6 +129,10 @@ module.exports = function (grunt) {
             {
               name: 'js/core/lobby',
               exclude: ['jquery']
+            },
+            {
+              name: 'js/core/auth',
+              exclude: ['jquery']
             }
           ]
         }
@@ -181,18 +144,18 @@ module.exports = function (grunt) {
   grunt.loadNpmTasks('grunt-contrib-requirejs');
   grunt.loadNpmTasks('grunt-contrib-clean');
   grunt.loadNpmTasks('grunt-contrib-copy');
-  grunt.loadNpmTasks('grunt-scp');
   grunt.loadNpmTasks('assemble');
+  grunt.loadNpmTasks('grunt-swig');
 
   grunt.registerTask('ensure_folders', function () {
-    var folders = ['./dist/mod/js', './dist/js'];
+    var folders = ['./dist/js'];
     folders.forEach(function (folder) {
       grunt.file.mkdir(folder);
     });
   });
 
 
-  grunt.registerTask('dist', ['clean', 'ensure_folders', 'jshint', 'requirejs', 'copy', 'scp']);
-
+  grunt.registerTask('dist', ['clean', 'ensure_folders', 'jshint', 'requirejs', 'assemble', 'swig', 'copy']);
+  grunt.registerTask('dev', ['ensure_folders', 'jshint', 'requirejs', 'assemble', 'swig', 'copy']);
 
 };

@@ -1,19 +1,8 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="utf-8">
-  <meta name="apple-itunes-app" content="app-id=600033550, affiliate-data=myAffiliateData, app-argument=myURL">
-  <title>Patter - A chat client for app.net</title>
-
-  <link rel="shortcut icon" href="favicon.ico"/>
-  <link rel="stylesheet" style="text/css"
-        href="/css/bootstrap/bootstrap.min.css">
-  <link rel="stylesheet" style="text/css"
-        href="/css/bootstrap/bootstrap-responsive.min.css">
-
-  <script data-main="js/core/lobby" src="/js/deps/require-jquery.js"></script>
-</head>
-<body>
+{% extends 'base.swig' %}
+{% block javascript %}
+<script data-main="js/core/lobby" src="/js/deps/require-jquery.js"></script>
+{% endblock %}
+{% block body  %}
   <div class="container-fluid">
 <!--
     <button id="magic" class="btn btn-success">Click to Modify</button>
@@ -142,8 +131,4 @@
 -->
 
     <div id="modal-container"></div>
-
-
-  </div>
-</body>
-</html>
+{% endblock %}
