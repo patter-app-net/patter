@@ -1,16 +1,11 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="utf-8">
-  <title>Patter - Authorization Required</title>
-  <link rel="stylesheet" style="text/css"
-        href="/css/bootstrap/bootstrap.min.css">
-  <link rel="stylesheet" style="text/css"
-        href="/css/bootstrap/bootstrap-responsive.min.css">
+{% extends 'base.swig' %}
+{% block title %}Authorization Required{% endblock %}
+{% block javascript %}
   <script src="/js/core/config.js"></script>
   <script data-main="js/core/auth" src="/js/deps/require-jquery.js"></script>
-</head>
-<body>
+{% endblock %}
+
+{% block body %}
   <div class="container">
     <div id="main" class="hero-unit">
       <h1>Patter Authorization</h1>
@@ -24,5 +19,4 @@
         <p>Patter interacts with <a href="http://app.net">app.net</a> on your behalf, and any message you create will be subject to their policies.</p>
     </div>
   </div>
-</body>
-</html>
+{% endblock %}

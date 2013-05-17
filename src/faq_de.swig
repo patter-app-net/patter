@@ -1,19 +1,8 @@
-﻿<!DOCTYPE html>
-<html lang="de">
-<head>
-  <meta charset="utf-8">
+﻿{% extends 'base.swig' %}
+{% block html_lang %}de{% endblock %}
+{% block title %}FAQ{% endblock %}
 
-
-  <title>Patter FAQ</title>
-
-
-  <link rel="shortcut icon" href="favicon.ico"/>
-  <link rel="stylesheet" style="text/css"
-        href="/css/bootstrap/bootstrap.min.css">
-  <link rel="stylesheet" style="text/css"
-        href="/css/bootstrap/bootstrap-responsive.min.css">
-</head>
-<body>
+{% block body %}
   <div class="container">
     <div class="navbar">
       <div class="navbar-inner">
@@ -99,5 +88,4 @@
       <p>Am besten kontaktierst du zunächst den Entwickler des jeweiligen Clients, den Du verwendest (Patter for iOS ist von @boxenjim). Wenn Du ein Problem mit dem Web-Client hast, oder wenn es um etwas geht, das nicht auf diese Art gelöst werden kann, kannst Du gerne mich (@duerig) kontaktieren. Viel Spaß beim Benutzen von Patter!</p>
     </div>
   </div>
-</body>
-</html>
+{% endblock %}

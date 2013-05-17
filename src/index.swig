@@ -4,9 +4,6 @@
 {% endblock %}
 {% block body  %}
   <div class="container-fluid">
-<!--
-    <button id="magic" class="btn btn-success">Click to Modify</button>
--->
 
     <div id="main-lobby">
       <div class="navbar">
@@ -15,18 +12,6 @@
           <ul class="nav">
             <li><a href="" id="create-patter-button">Create Room</a></li>
             <li><a href="" id="create-pm-button">Compose Private Message</a></li>
-<!--
-            <li class="dropdown">
-              <a href="" class="dropdown-toggle" data-toggle="dropdown">
-                Create
-                <b class="caret"></b>
-              </a>
-              <ul class="dropdown-menu">
-                <li><a href="" id="create-patter-button">Patter Room</a></li>
-                <li><a href="" id="create-pm-button">Private Message</a></li>
-              </ul>
-            </li>
--->
           </ul>
           <ul class="nav pull-right">
             <li><a href="" id="auto-refresh">Auto-Refresh: On</a></li>
@@ -99,36 +84,6 @@
 
       </div>
     </div>
-
-<!--
-
-    <div id="main-fail" class="hero-unit">
-      <h1>Patter Could Not Open Requested Channel</h1>
-      <hr>
-      <p>Please return to <a href="http://patter-app.net">patter-app.net</a> to retry.</p>
-      <p>For troubleshooting, contact @duerig.</p>
-    </div>
-
--->
-
-    <!-------
-      Loading
-      ------->
-<!--
-    <div id="loading-modal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="loadingModalLabel" aria-hidden="true">
-      <div class="modal-header">
-        <h3>Patter is Loading</h3>
-      </div>
-      <div class="modal-body">
-        <div id="loading-message" class="alert alert-info">
-          Fetching Channel Subscriptions
-        </div>
-      </div>
-      <div class="modal-footer">
-        <p>For troubleshooting, contact @duerig on app.net.</p>
-      </div>
-    </div>
--->
 
     <div id="modal-container"></div>
 {% endblock %}

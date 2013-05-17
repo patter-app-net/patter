@@ -1,17 +1,7 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="utf-8">
+{% extends 'base.swig' %}
+{% block title %}FAQ{% endblock %}
 
-  <title>Patter FAQ</title>
-
-  <link rel="shortcut icon" href="favicon.ico"/>
-  <link rel="stylesheet" style="text/css"
-        href="/css/bootstrap/bootstrap.min.css">
-  <link rel="stylesheet" style="text/css"
-        href="/css/bootstrap/bootstrap-responsive.min.css">
-</head>
-<body>
+{% block body %}
   <div class="container">
     <div class="navbar">
       <div class="navbar-inner">
@@ -97,5 +87,4 @@
       <p>You should first contact the author of whichever client you are using (Patter for iOS is by @boxenjim). If you have a problem with the web client or if it is an issue that can't be resolved that way, feel free to contact me (@duerig). Have fun using Patter!</p>
     </div>
   </div>
-</body>
-</html>
+{% endblock %}

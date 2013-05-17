@@ -3,16 +3,16 @@ module.exports = function (grunt) {
   'use strict';
 
   var user_conf = {
-    "assemble": {
-      "dev": {
-        "patter_client_id": "PSeXh2zXVCABT3DqCKBSfZMFZCemvWez",
-        "ext": ".js",
-        "flatten": true
+    'assemble': {
+      'dev': {
+        'patter_client_id': 'PSeXh2zXVCABT3DqCKBSfZMFZCemvWez',
+        'ext': '.js',
+        'flatten': true
       },
-      "prod": {
-        "patter_client_id": "PSeXh2zXVCABT3DqCKBSfZMFZCemvWez",
-        "ext": ".js",
-        "flatten": true
+      'prod': {
+        'patter_client_id': 'PSeXh2zXVCABT3DqCKBSfZMFZCemvWez',
+        'ext': '.js',
+        'flatten': true
       }
     }
   };

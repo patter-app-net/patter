@@ -1,6 +1,5 @@
 body { font-family: 'Open Sans', 'Helvetica Neue', Helvetica, Sans-Serif!important; text-rendering: optimizeLegibility; -webkit-font-smoothing: antialiased;}
-@import url("css/post.css");
-@import url("css/user.css");
+
 .navbar-inner {
   height: 50px!important;
   box-sizing: border-box!important;
