@@ -80,6 +80,9 @@ function ($, util, appnet, roomInfo, roomMenu, RoomFeed) {
     {
       roomInfo.updateChannel();
     }
+    if (window.PATTER.embedded && params.style) {
+      $('body').prepend('<link rel="stylesheet" style="text/css"  href="' + params.style + '">');
+    }
   }
 /*
 

@@ -4,9 +4,9 @@
 
 /*global define: true */
 define(['jquery', 'appnet', 'js/core/roomInfo', 'js/core/editRoomModal',
-        'js/deps/text!template/roomMenu.html',
+        'js/deps/text!template/roomMenu.html', 'js/deps/text!template/embeddedRoomMenu.html',
         'jquery-jfontsize', 'jquery-translator'],
-function ($, appnet, roomInfo, editRoomModal, menuTemplate) {
+function ($, appnet, roomInfo, editRoomModal, menuTemplate, embeddedMenuTemplate) {
   'use strict';
 
   var roomMenu = {};
@@ -16,7 +16,7 @@ function ($, appnet, roomInfo, editRoomModal, menuTemplate) {
   roomMenu.init = function (menuContainer, history)
   {
     container = menuContainer;
-    container.append(menuTemplate);
+    container.append((window.PATTER.embedded) ? embeddedMenuTemplate : menuTemplate);
 
     initTranslate();
     initNotify();
@@ -113,6 +113,7 @@ function ($, appnet, roomInfo, editRoomModal, menuTemplate) {
     } else {
       $('#edit-room-button').html('View Room');
     }
+
   };
 
   function toggleSubscribe()
