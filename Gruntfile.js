@@ -3,18 +3,7 @@ module.exports = function (grunt) {
   'use strict';
 
   var user_conf = {
-    'assemble': {
-      'dev': {
-        'patter_client_id': 'PSeXh2zXVCABT3DqCKBSfZMFZCemvWez',
-        'ext': '.js',
-        'flatten': true
-      },
-      'prod': {
-        'patter_client_id': 'PSeXh2zXVCABT3DqCKBSfZMFZCemvWez',
-        'ext': '.js',
-        'flatten': true
-      }
-    }
+    patter_client_id: 'PSeXh2zXVCABT3DqCKBSfZMFZCemvWez'
   };
   try {
     user_conf = grunt.file.readJSON('config.json');
@@ -30,14 +19,12 @@ module.exports = function (grunt) {
       options: grunt.file.readJSON('.jshintrc')
     },
     assemble: {
-      dev: {
-        options: user_conf.assemble.dev,
-        files: {
-          'build/js/core/': ['src/template/config.hbs']
-        }
+      options: {
+        ext: '.js',
+        flatten: true,
+        patter_client_id: user_conf.patter_client_id
       },
-      prod: {
-        options: user_conf.assemble.prod,
+      patter: {
         files: {
           'build/js/core/': ['src/template/config.hbs']
         }
@@ -66,6 +53,14 @@ module.exports = function (grunt) {
           src: ['*.html', '**/*.css', '**/*.js', '**/*.ico', '**/*.png'],
           dest: 'dist/'
         }]
+      }
+    },
+    connect: {
+      server: {
+        options: {
+          port: 9001,
+          base: 'dist'
+        }
       }
     },
     clean: ['build', 'dist'],
@@ -137,6 +132,24 @@ module.exports = function (grunt) {
           ]
         }
       }
+    },
+    watch: {
+      scripts: {
+        files: ['src/**/*.js'],
+        tasks: ['jshint', 'requirejs', 'assemble', 'copy']
+      },
+      css: {
+        files: ['src/**/*.css'],
+        tasks: ['copy']
+      },
+      swig: {
+        files: ['src/**/*.swig'],
+        tasks: ['swig', 'copy']
+      },
+      html: {
+        files: ['src/**/*.html'],
+        tasks: ['requirejs', 'assemble', 'copy']
+      }
     }
   });
 
@@ -146,6 +159,8 @@ module.exports = function (grunt) {
   grunt.loadNpmTasks('grunt-contrib-copy');
   grunt.loadNpmTasks('assemble');
   grunt.loadNpmTasks('grunt-swig');
+  grunt.loadNpmTasks('grunt-contrib-connect');
+  grunt.loadNpmTasks('grunt-contrib-watch');
 
   grunt.registerTask('ensure_folders', function () {
     var folders = ['./dist/js'];
@@ -157,5 +172,9 @@ module.exports = function (grunt) {
 
   grunt.registerTask('dist', ['clean', 'ensure_folders', 'jshint', 'requirejs', 'assemble', 'swig', 'copy']);
   grunt.registerTask('dev', ['ensure_folders', 'jshint', 'requirejs', 'assemble', 'swig', 'copy']);
-
+  grunt.registerTask('server', [
+    'dev',
+    'connect',
+    'watch'
+  ]);
 };
