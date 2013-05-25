@@ -27,6 +27,31 @@ define(['jquery'], function ($) {
     return vars;
   };
 
+  util.getHashParams = function () {
+    var hashParams = {};
+    var e,
+    a = /\+/g,  // Regex for replacing addition symbol with a space
+    r = /([^&;=]+)=?([^&;]*)/g,
+    d = function (s) { return decodeURIComponent(s.replace(a, ' ')); },
+    q = window.location.hash.substring(1),
+    b = true;
+
+    /*jshint -W084 */
+    while (e = r.exec(q)) {
+      hashParams[d(e[1])] = d(e[2]);
+    }
+
+
+    return hashParams;
+  };
+
+  util.makeAuthorizeUrl = function () {
+    var clientId = window.PATTER.config.client_id;
+    return 'https://alpha.app.net/oauth/authenticate?client_id=' + clientId +
+      '&response_type=token&redirect_uri=' + window.location.href +
+      '&scope=messages%20write_post';
+  };
+
   util.htmlEncode = function (value)
   {
     var result = '';

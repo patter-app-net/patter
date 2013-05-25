@@ -19,15 +19,29 @@ function ($, util) {
     authCookie = newAuthCookie;
     urlCookie = newUrlCookie;
 
-    api.accessToken = $.cookie(authCookie);
+    try
+    {
+      api.accessToken = $.cookie(authCookie);
+    } catch (e) { }
     if (api.accessToken)
     {
-      $.removeCookie(authCookie, { path: '/' });
-      localStorage[authCookie] = api.accessToken;
+      try
+      {
+        $.removeCookie(authCookie, { path: '/' });
+      } catch (e) { }
+      try
+      {
+        localStorage[authCookie] = api.accessToken;
+      }
+      catch (e) { }
     }
     else
     {
-      api.accessToken = localStorage[authCookie];
+      try
+      {
+        api.accessToken = localStorage[authCookie];
+      }
+      catch (e) { }
     }
   };
 

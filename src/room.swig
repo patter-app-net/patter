@@ -14,7 +14,8 @@
 {% endblock %}
 
 {% block javascript %}
-<script data-main="js/core/room" src="/js/deps/require-jquery.js"></script>
+  <script src="/js/core/config.js"></script>
+  <script data-main="js/core/room" src="/js/deps/require-jquery.js"></script>
 {% endblock %}
 
 {% block body %}

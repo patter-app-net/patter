@@ -50,7 +50,22 @@ function ($, util, appnet, roomInfo, roomMenu, RoomFeed) {
   {
     var params = util.getUrlVars();
     var newRoom = params.channel;
-    appnet.init('patter2Token', 'patterPrevUrl');
+    var hashParams = util.getHashParams();
+    var token = hashParams.access_token;
+    if (token)
+    {
+      appnet.api.accessToken = token;
+      try
+      {
+        localStorage.patter2Token = token;
+      }
+      catch (e) { }
+      window.location.hash = '';
+    }
+    else
+    {
+      appnet.init('patter2Token', 'patterPrevUrl');
+    }
     if (! newRoom)
     {
       util.redirect('auth.html');
