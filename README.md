@@ -5,29 +5,36 @@ A major refactoring of Patter into many modules.
 
 ## Setting up patter
 
-Everything depends on you having node, npm, and grunt-cli installed. We are going to install all the dependencies and then setup a credentials file.
+Everything depends on you having node, npm, and grunt-cli installed. We are going to install all the dependencies and then setup a config file.
 
-Your `scp.json` files should look something like this:
+Your `/config.json` files should have your app client_id and should look like this:
 
 ```json
 {
- "options": {
-    "host": "jonathonduerig.com",
-    "username": "duerig",
-  },
-  "root_path": "/var/www/patter-app.net/"
+    "patter_client_id": "PSeXh2zXVCABT3DqCKBSfZMFZCemvWez"
 }
 ```
 
-You will need to add the location of your keyagent, or your password.
+### Run these commands to get started
 
-__Remember: Do not check in your scp.json file__
-
-### Run these commands
+Before getting started make sure you have created a config.json file.
 
 ```sh
 >>> npm install
->>> touch scp.json
->>> vi scp.json
->>> grunt dist
+>>> grunt server
 ```
+
+You should now be able to navigate to http://localhost:9001 and see your local copy of patter running.
+
+### To Distribute Patter
+
+Once you are finished developing patter you can then distribute patter to a production environment. To do so you must generate a version of patter, and then copy all the files to your webserver.
+
+For example:
+
+```sh
+>>> grunt dist
+>>> rsync -avzt dist/* username@remote.host:/var/www/patter.example.com/
+```
+
+Once all your files are uploaded you should then have a working version of patter.

@@ -30,13 +30,29 @@ function ($, util, appnet, attachModal, chatTemplate) {
     }
     root.find('.attachButton').click($.proxy(clickAttach, this));
     root.find('.attachButton').hide();
-    root.find('.authorizeButton').attr('href', util.makeAuthorizeUrl());
+    root.find('.authorizeButton').attr('href', util.makeAuthorizeUrl(window.PATTER.unique_id));
     $('.sendForm', root).hide();
     $('.must-authorize', root).hide();
     $('.read-only', root).hide();
     if (! appnet.isLogged())
     {
       $('.must-authorize', root).show();
+      if (window.PATTER.embedded) {
+        // if the user is an embededd room we have to launch the authorization dialog flow
+        $('.authorizeButton').on('click', function () {
+          var params = {
+            state: window.PATTER.unique_id
+          };
+          window.open('/auth.html?' + $.param(params), 'patter_auth', 'width=720,height=600,status=0,navigation=0,scrollbars=1');
+
+          window.AUTH_DONE = function () {
+            window.location.href = window.location.href;
+          };
+
+          return false;
+        });
+      }
+
     }
     else if (! channel.writers.you)
     {
