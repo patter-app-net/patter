@@ -44,7 +44,9 @@
 <script>
   window.PATTER = window.PATTER || {};
   window.PATTER.embedded = true;
+  window.PATTER.unique_id = Math.random().toString(36).slice(2);
 </script>
+<script src="/js/core/config.js"></script>
 <script data-main="js/core/room" src="/js/deps/require-jquery.js"></script>
 {% endblock %}
 

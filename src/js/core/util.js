@@ -45,11 +45,21 @@ define(['jquery'], function ($) {
     return hashParams;
   };
 
-  util.makeAuthorizeUrl = function () {
+  util.makeAuthorizeUrl = function (state) {
     var clientId = window.PATTER.config.client_id;
-    return 'https://alpha.app.net/oauth/authenticate?client_id=' + clientId +
-      '&response_type=token&redirect_uri=' + window.location.href +
-      '&scope=messages%20write_post';
+
+    var params = {
+      client_id: clientId,
+      response_type: 'token',
+      redirect_uri: window.location.href,
+      scope: ['messages', 'write_post'].join(' ')
+    };
+
+    if (state) {
+      params.state = state;
+    }
+
+    return 'https://alpha.app.net/oauth/authenticate?' + $.param(params);
   };
 
   util.htmlEncode = function (value)
