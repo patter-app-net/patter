@@ -45,8 +45,9 @@ function ($, util, appnet, attachModal, chatTemplate) {
           };
           window.open('/auth.html?' + $.param(params), 'patter_auth', 'width=720,height=600,status=0,navigation=0,scrollbars=1');
 
-          window.AUTH_DONE = function () {
-            window.location.href = window.location.href;
+          window.AUTH_DONE = function (access_token) {
+            window.location = window.location.href + '#access_token=' + access_token;
+            window.location.reload();
           };
 
           return false;

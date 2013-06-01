@@ -29,7 +29,7 @@ function ($, util, appnet, bootstrap, jquery) {
         window.location = prevUrl;
       } else {
         // we need to notify the parent window that we have an authorization
-        window.opener.AUTH_DONE();
+        window.opener.AUTH_DONE(accessToken);
         window.close();
       }
 
