@@ -45,7 +45,15 @@ define(['jquery'], function ($) {
     return hashParams;
   };
 
-  util.makeAuthorizeUrl = function (state) {
+  util.widgetParams = function () {
+    return {
+      width: '147px',
+      height: '30px',
+      type: 'authorize'
+    };
+  };
+
+  util.urlParams = function (state) {
     var clientId = window.PATTER.config.client_id;
 
     var params = {
@@ -58,6 +66,12 @@ define(['jquery'], function ($) {
     if (state) {
       params.state = state;
     }
+
+    return params;
+  };
+
+  util.makeAuthorizeUrl = function (state) {
+    var params = util.urlParams(state);
 
     return 'https://alpha.app.net/oauth/authenticate?' + $.param(params);
   };

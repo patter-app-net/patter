@@ -12,6 +12,18 @@ function ($, util, appnet, bootstrap, jquery) {
     var accessToken = hashParams.access_token;
 
     $('#authorize-button').attr('href', authorization_url);
+    $('#authorize-button').addClass('adn-button');
+
+    var widget_params = util.widgetParams();
+    var auth_params = util.urlParams();
+    var button_params = {};
+    $.map($.extend(widget_params, auth_params), function (val, key) {
+      key = key.replace(/_/g, '-');
+      $('#authorize-button').attr('data-' + key, val);
+    });
+
+    window.ADN.replaceButtons();
+    $('#authorize-button').css('visibility', 'visible');
 
     if (accessToken !== undefined && accessToken !== null) {
       // We have just authorized, redirect to previous URL
