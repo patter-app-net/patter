@@ -9,14 +9,14 @@
     {% block css %}
     {% endblock %}
     <link rel="stylesheet" style="text/css"
-          href="/css/bootstrap/bootstrap.min.css">
-    <link rel="stylesheet" style="text/css"
-          href="/css/bootstrap/bootstrap-responsive.min.css">
+          href="/css/bootstrap/readable.min.css">
     <link href="//netdna.bootstrapcdn.com/font-awesome/3.1.1/css/font-awesome.min.css" rel="stylesheet">
     {% block javascript %}
     {% endblock %}
   </head>
   <body>
+    {% block server %}
+    {% endblock %}
     {% block body %}
     {% endblock %}
     {% block bottom_js %}

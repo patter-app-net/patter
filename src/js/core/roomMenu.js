@@ -5,24 +5,28 @@
 /*global define: true */
 define(['jquery', 'appnet', 'js/core/roomInfo', 'js/core/editRoomModal',
         'js/deps/text!template/roomMenu.html', 'js/deps/text!template/embeddedRoomMenu.html',
-        'jquery-jfontsize', 'jquery-translator'],
+        'jquery-jfontsize', 'jquery-translator', 'bootstrap'],
 function ($, appnet, roomInfo, editRoomModal, menuTemplate, embeddedMenuTemplate) {
   'use strict';
 
   var roomMenu = {};
 
   var container;
+  var header;
 
-  roomMenu.init = function (menuContainer, history)
+  roomMenu.init = function (menuContainer, headerContainer, history)
   {
     container = menuContainer;
-    container.append((window.PATTER.embedded) ? embeddedMenuTemplate : menuTemplate);
+    header = headerContainer;
+//    container.append((window.PATTER.embedded) ? embeddedMenuTemplate : menuTemplate);
 
-    initTranslate();
-    initNotify();
-    $('#edit-room-button').click(clickEditRoom);
-    $('#subscribe-button').click(clickSubscribe);
-    initFontsize(history);
+//    initTranslate();
+//    initNotify();
+    container.find('#view').click(clickEditRoom);
+    container.find('#subscribe').click(clickSubscribe);
+    container.find('#help').click(clickHelp);
+    container.find('#archive').click(clickArchive);
+//    initFontsize(history);
     editRoomModal.init();
     roomMenu.updateChannelView();
   };
@@ -60,14 +64,26 @@ function ($, appnet, roomInfo, editRoomModal, menuTemplate, embeddedMenuTemplate
     event.preventDefault();
     editRoomModal.update(roomInfo.channel);
     editRoomModal.show();
-    return false;
+//    return false;
   }
 
   function clickSubscribe(event)
   {
     event.preventDefault();
     toggleSubscribe();
-    return false;
+//    return false;
+  }
+
+  function clickHelp(event)
+  {
+    event.preventDefault();
+    window.open('faq.html');
+  }
+
+  function clickArchive(event)
+  {
+    event.preventDefault();
+    window.open('archive.html?channel=' + roomInfo.id);
   }
 
   function initFontsize(history)
@@ -88,32 +104,61 @@ function ($, appnet, roomInfo, editRoomModal, menuTemplate, embeddedMenuTemplate
 
   roomMenu.updateChannelView = function ()
   {
-    var name = appnet.note.findPatterName(roomInfo.channel);
+    // Setup room title
+    var name = $.appnet.note.findPatterName(roomInfo.channel);
     if (! name)
     {
-      name = 'PM';
+      name = 'Private Message';
     }
-    var status = appnet.renderStatus(roomInfo.channel);
-    $('#room-name').html('<strong>' + name + '</strong>');
-    $('#room-status').html(status);
+    var participants = 'Public Room';
+    if (! roomInfo.channel.writers.any_user)
+    {
+      var count = roomInfo.channel.writers.user_ids.length + 1;
+      participants = count + ' Participants';
+      if (roomInfo.channel.readers.any_user ||
+          roomInfo.channel.readers['public'])
+      {
+        participants += ' (Publicly Readable)';
+      }
+    }
+    header.find('.room_title').html(name + '<span class="participants">' +
+                                    participants + '</span>');
+
+    // Setup subscribe button
     if (roomInfo.channel.you_muted)
     {
-      $('#subscribe-button').html('Unmute');
+      container.find('#subscribe').html('Unmute');
     }
     else if (roomInfo.channel.you_subscribed)
     {
-      $('#subscribe-button').html('Unsubscribe');
+      container.find('#subscribe').html('Unsubscribe');
     }
     else
     {
-      $('#subscribe-button').html('Subscribe');
-    }
-    if (editRoomModal.canEditChannel(roomInfo.channel)) {
-      $('#edit-room-button').html('Edit Room');
-    } else {
-      $('#edit-room-button').html('View Room');
+      container.find('#subscribe').html('Subscribe');
     }
 
+    // Setup archive button
+    var settings = appnet.note.find('net.patter-app.settings',
+                                    roomInfo.channel.annotations);
+    if (roomInfo.channel.readers['public'] && settings && settings.blurb_id)
+    {
+      container.find('#archive').show();
+    }
+    else
+    {
+      container.find('#archive').hide();
+    }
+
+    // Setup edit/view button
+    if (editRoomModal.canEditChannel(roomInfo.channel))
+    {
+      container.find('#view').html('Edit Room');
+    }
+    else
+    {
+      container.find('#view').html('View Room');
+    }
   };
 
   function toggleSubscribe()

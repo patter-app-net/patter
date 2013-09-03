@@ -1,0 +1,288 @@
+/* CSS crunched with Crunch - http://crunchapp.net/ */
+/* General Styling */
+body,
+.room_title,
+.username,
+.messageContent,
+* {
+  -webkit-font-smoothing: antialiased;
+  font-family: 'Open Sans', 'Helvetica Neue', Helvetica, sans-serif;
+  font-size: 16px;
+  font-weight: 300;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  -ms-box-sizing: border-box;
+  -o-box-sizing: border-box;
+  box-sizing: border-box;
+}
+#container {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  background-color: #faf7f7;
+}
+header,
+footer {
+  width: 100%;
+  height: 50px;
+  background-color: #bf2935;
+  color: #fff;
+  position: absolute;
+}
+.header_btn {
+  width: 41px;
+  height: 36px;
+  text-align: center;
+  line-height: 40px;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.2);
+  background-image: linear-gradient(bottom, #bf2936 100%, #b22531 0%);
+  background-image: -o-linear-gradient(bottom, #bf2936 100%, #b22531 0%);
+  background-image: -moz-linear-gradient(bottom, #bf2936 100%, #b22531 0%);
+  background-image: -webkit-linear-gradient(bottom, #bf2936 100%, #b22531 0%);
+  background-image: -ms-linear-gradient(bottom, #bf2936 100%, #b22531 0%);
+  background-image: -webkit-gradient(linear, left bottom, left top, color-stop(1, #bf2936), color-stop(0, #b22531));
+  border: 1px solid #99202a;
+  -webkit-box-sizing: content-box;
+  -moz-box-sizing: content-box;
+  -ms-box-sizing: content-box;
+  -o-box-sizing: content-box;
+  box-sizing: content-box;
+  font-size: 18px;
+  cursor: pointer;
+}
+.header_btn:hover {
+  background-image: linear-gradient(bottom, #cc2b3b 0%, #e63344 100%);
+  background-image: -o-linear-gradient(bottom, #cc2b3b 0%, #e63344 100%);
+  background-image: -moz-linear-gradient(bottom, #cc2b3b 0%, #e63344 100%);
+  background-image: -webkit-linear-gradient(bottom, #cc2b3b 0%, #e63344 100%);
+  background-image: -ms-linear-gradient(bottom, #cc2b3b 0%, #e63344 100%);
+  background-image: -webkit-gradient(linear, left bottom, left top, color-stop(0, #cc2b3b), color-stop(1, #e63344));
+}
+.header_btn:active {
+  background-image: linear-gradient(bottom, #b22531 100%, #bf2936 0%);
+  background-image: -o-linear-gradient(bottom, #b22531 100%, #bf2936 0%);
+  background-image: -moz-linear-gradient(bottom, #b22531 100%, #bf2936 0%);
+  background-image: -webkit-linear-gradient(bottom, #b22531 100%, #bf2936 0%);
+  background-image: -ms-linear-gradient(bottom, #b22531 100%, #bf2936 0%);
+  background-image: -webkit-gradient(linear, left bottom, left top, color-stop(1, #b22531), color-stop(0, #bf2936));
+}
+#lobby_btn,
+#room_btn {
+  top: 4px;
+}
+#lobby_btn {
+  position: absolute;
+  left: 10px;
+}
+#room_btn {
+  position: absolute;
+  right: 10px;
+}
+#logo {
+  width: 35px;
+  height: 35px;
+  background-size: 35px 35px;
+  background-image: url('../images/logo.png');
+  margin: 6px auto 0 auto;
+}
+header {
+  top: 0;
+  border-top: 1px solid #c94953;
+  border-bottom: 1px solid #4c1015;
+}
+footer {
+  bottom: 0;
+  border-top: 1px solid #4c1015;
+  border-bottom: 1px solid #c94953;
+}
+/* Lobby Styling */
+/* Room Styling */
+#room_header {
+  height: 85px;
+  width: 100%;
+  position: absolute;
+  top: 50px;
+  background-image: url('../images/room_avatar.png');
+  background-size: 100% 100%;
+  color: #fff;
+  box-shadow: inset 1px 0px 5px rgba(0, 0, 0, 0.5);
+}
+.room_title {
+  font-weight: 500;
+  font-size: 24px;
+  position: absolute;
+  bottom: 15px;
+  left: 15px;
+}
+.participants {
+  font-size: 16px;
+  font-style: italic;
+  margin-left: 15px;
+}
+#messages {
+  width: 80%;
+  position: absolute;
+  top: 135px;
+  bottom: 50px;
+  left: 0;
+  overflow: auto;
+}
+#messages .message {
+  width: 97%;
+  margin: 0 auto 5px auto;
+  min-height: 60px;
+  background-color: #cecece;
+  position: relative;
+  padding: 10px;
+}
+#messages .message:first-child {
+  margin-top: 10px;
+}
+#messages .message .userTag,
+#messages .message .messageContent {
+  display: inline-block;
+}
+#messages .message .userTag {
+  width: 20%;
+  line-height: 38px;
+}
+#messages .message .userTag .userPic {
+  width: 40px;
+  height: 40px;
+  background-image: url('https://twimg0-a.akamaihd.net/profile_images/1599940394/photo.jpg');
+  background-size: 40px 40px;
+  display: block;
+  border-radius: 9999px;
+  float: left;
+  margin-right: 10px;
+}
+#messages .message .messageContent {
+  max-width: 800px;
+  padding: 10px 10px 10px 0;
+  min-width: 200px;
+  line-height: 24px;
+}
+#users {
+  width: 20%;
+  position: absolute;
+  top: 135px;
+  bottom: 50px;
+  right: 0;
+  background-color: #c7c5c5;
+  border-left: 1px solid rgba(0, 0, 0, 0.25);
+  overflow: auto;
+}
+#users .user {
+  width: 90%;
+  height: 45px;
+  margin: 0 auto 5px auto;
+  background-color: #404040;
+  color: #fff;
+  box-shadow: 0px 1px 4px rgba(0, 0, 0, 0.2);
+}
+#users .user:first-child {
+  margin-top: 10px;
+}
+#users .me {
+  background-color: #4d3637;
+}
+#users .me .userPic {
+  background-image: url('https://twimg0-a.akamaihd.net/profile_images/1599940394/photo.jpg');
+}
+#users .inactive {
+  background-color: #a6a6a6;
+  color: #d9d9d9;
+}
+#users .inactive .userPic {
+  opacity: 0.5;
+  background-image: url('https://d2rfichhc2fb9n.cloudfront.net/image/5/lH84xoxrN_7ADeqOHap_fuY9N6R7InMiOiJzMyIsImIiOiJhZG4tdXNlci1hc3NldHMiLCJrIjoiYXNzZXRzL3VzZXIvNTkvODEvMTAvNTk4MTEwMDAwMDAwMDAwMC5wbmciLCJvIjoiIn0?h=114&w=114');
+}
+#users .inactive.me {
+  background-color: #968c8c;
+}
+#users .inactive.me .userPic {
+  background-image: url('https://twimg0-a.akamaihd.net/profile_images/1599940394/photo.jpg');
+}
+#users .userPic {
+  width: 32px;
+  height: 32px;
+  background-size: 35px 35px;
+  background-position: center center;
+  border-radius: 9999px;
+  border: 1px solid #363333;
+  display: inline-block;
+  margin: 7px 0 0 5px;
+  overflow: hidden;
+  -webkit-box-sizing: content-box;
+  -moz-box-sizing: content-box;
+  -ms-box-sizing: content-box;
+  -o-box-sizing: content-box;
+  box-sizing: content-box;
+  font-weight: 300;
+  background-image: url('https://d2rfichhc2fb9n.cloudfront.net/image/5/KzfZTPcPxSdLf9EAHZXtg7exEOl7InMiOiJzMyIsImIiOiJhZG4tdXNlci1hc3NldHMiLCJrIjoiYXNzZXRzL3VzZXIvZDcvNjcvMjAvZDc2NzIwMDAwMDAwMDAwMC5qcGciLCJvIjoiIn0?h=114&w=114');
+}
+#users .username {
+  display: inline-block;
+  position: relative;
+  bottom: 12px;
+  left: 6px;
+  font-weight: 500;
+}
+#chatInput input,
+#chatInput a {
+  float: left;
+  display: block;
+}
+#chatInput a {
+  width: 60px;
+  height: 38px;
+  margin: 5px;
+  text-align: center;
+  font-size: 24px;
+  line-height: 43px;
+  background-image: linear-gradient(bottom, #bf2936 100%, #b22531 0%);
+  background-image: -o-linear-gradient(bottom, #bf2936 100%, #b22531 0%);
+  background-image: -moz-linear-gradient(bottom, #bf2936 100%, #b22531 0%);
+  background-image: -webkit-linear-gradient(bottom, #bf2936 100%, #b22531 0%);
+  background-image: -ms-linear-gradient(bottom, #bf2936 100%, #b22531 0%);
+  background-image: -webkit-gradient(linear, left bottom, left top, color-stop(1, #bf2936), color-stop(0, #b22531));
+  border: 1px solid #99202a;
+  -webkit-box-sizing: content-box;
+  -moz-box-sizing: content-box;
+  -ms-box-sizing: content-box;
+  -o-box-sizing: content-box;
+  box-sizing: content-box;
+  font-size: 18px;
+  cursor: pointer;
+}
+#chatInput a:hover {
+  background-image: linear-gradient(bottom, #cc2b3b 0%, #e63344 100%);
+  background-image: -o-linear-gradient(bottom, #cc2b3b 0%, #e63344 100%);
+  background-image: -moz-linear-gradient(bottom, #cc2b3b 0%, #e63344 100%);
+  background-image: -webkit-linear-gradient(bottom, #cc2b3b 0%, #e63344 100%);
+  background-image: -ms-linear-gradient(bottom, #cc2b3b 0%, #e63344 100%);
+  background-image: -webkit-gradient(linear, left bottom, left top, color-stop(0, #cc2b3b), color-stop(1, #e63344));
+}
+#chatInput a:active {
+  background-image: linear-gradient(bottom, #b22531 100%, #bf2936 0%);
+  background-image: -o-linear-gradient(bottom, #b22531 100%, #bf2936 0%);
+  background-image: -moz-linear-gradient(bottom, #b22531 100%, #bf2936 0%);
+  background-image: -webkit-linear-gradient(bottom, #b22531 100%, #bf2936 0%);
+  background-image: -ms-linear-gradient(bottom, #b22531 100%, #bf2936 0%);
+  background-image: -webkit-gradient(linear, left bottom, left top, color-stop(1, #b22531), color-stop(0, #bf2936));
+}
+#chatInput #chatBox {
+  -webkit-appearance: none;
+  border: 1px solid #000;
+  width: 74%;
+  height: 40px;
+  margin: 5px 0 0 5px;
+  padding: 0 0 0 10px;
+  font-weight: 400;
+}
+
+.white-icon {
+  color: #ffffff;
+}

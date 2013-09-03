@@ -17,10 +17,10 @@ function ($, util, appnet, roomInfo, roomMenu, RoomFeed) {
       if (feed === null)
       {
         feed = new RoomFeed(roomInfo.channel, roomInfo.members,
-                            $('.chat-input-row'), $('.user-list'),
-                            $('.chat-history'));
+                            $('#chatInput'), $('#users'),
+                            $('#messages'));
         feed.checkFeed();
-        roomMenu.init($('#room-menu'), feed.embed.history);
+        roomMenu.init($('.menuBar'), $('#room_header'), feed.embed.history);
       }
       else
       {
@@ -48,6 +48,7 @@ function ($, util, appnet, roomInfo, roomMenu, RoomFeed) {
 
   function initialize()
   {
+    $('#intro-modal').modal();
     var params = util.getUrlVars();
     var newRoom = params.channel;
     var hashParams = util.getHashParams();

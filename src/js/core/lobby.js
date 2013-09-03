@@ -145,10 +145,11 @@ function ($, util, appnet, editRoomModal, Category, pmString, roomString) {
     processUsers(response, $.proxy(processMine, response));
   }
 
-  var catWrapper = '<div class="span11">';
+  var catWrapper = '<table class="table">';
 
   var processMine = function (response)
   {
+    var homeCount = 0;
     updateChannelUsers(response.data);
 
     sortChannels(this.data);
@@ -156,7 +157,7 @@ function ($, util, appnet, editRoomModal, Category, pmString, roomString) {
     var hasRoom = false;
     var hasPm = false;
     var home = $(catWrapper);
-    home.append('<h3>Home</h3>');
+//    home.append('<h3>Home</h3>');
     var rooms = $(catWrapper);
     rooms.append('<h3>My Rooms</h3>');
     var pms = $(catWrapper);
@@ -167,7 +168,7 @@ function ($, util, appnet, editRoomModal, Category, pmString, roomString) {
     {
       if (! this.data[i].you_muted)
       {
-        if (added <= 8)
+        if (added < homeCount)
         {
           home.append(renderChannel(this.data[i]));
           if (this.data[i].has_unread)
@@ -339,154 +340,10 @@ function ($, util, appnet, editRoomModal, Category, pmString, roomString) {
     }
   }
 
-//    gettingPublic = true;
-//    channels = [];
-//    appnet.api.getChannelList(publicChannels, { include_annotations: 1 },
-//                              completeChannelList, failChannelList);
-//  }
-/*
-  function processChannelList(minId)
-  {
-    var options = {
-      include_annotations: 1,
-      count: 200
-    };
-    if (minId)
-    {
-      options.before_id = minId;
-    }
-    appnet.api.getSubscriptions(options, completeChannelList, failChannelList);
-  }
-
-  function completeChannelList(response)
-  {
-    var minId = null;
-    if (response.meta.more)
-    {
-      minId = response.meta.min_id;
-    }
-    channels = channels.concat(response.data);
-    if (minId || gettingPublic)
-    {
-      gettingPublic = false;
-      processChannelList(minId);
-    }
-    else
-    {
-      for (var i = 0; i < channels.length; i += 1) {
-        channelMembers[channels[i].owner.id] = channels[i].owner;
-        for (var j = 0; j < channels[i].writers.user_ids.length; j += 1)
-        {
-          var id = channels[i].writers.user_ids[j];
-          if (channelMembers[id] === undefined) {
-            channelMembers[id] = null;
-          }
-        }
-      }
-      getChannelMemberInfo();
-    }
-  }
-*/
   function failChannelList(response)
   {
   }
-/*
-  function processPublicChannels()
-  {
-    var options = {
-      include_annotations: 1,
-      include_deleted: 0,
-      count: 200
-    };
-    appnet.api.getMessages('1614', options, completePublicChannels, null);
-  }
 
-  function completePublicChannels(response)
-  {
-    publicChannels = ['1614'];
-    lastPublic = response.meta.max_id;
-    var i = 0;
-    for (i = 0; i < response.data.length; i += 1)
-    {
-      var current = appnet.note.findChannelRefId(response.data[i]);
-      if (! current) {
-        var val = appnet.note.findAnnotation('net.app.core.channel.invite',
-                                             response.data[i].annotations);
-        if (val) {
-          current = val.channel_id;
-        }
-      }
-      if (current) {
-        publicChannels.push(current);
-      }
-    }
-    fetchEvent();
-  }
-
-
-  function getChannelMemberInfo() {
-    var ids = Object.keys(channelMembers);
-    var needed = [];
-    var count = 0;
-    var i = 0;
-    for (i = 0; i < ids.length; i += 1) {
-      if (! channelMembers[ids[i]])
-      {
-        needed.push(ids[i]);
-        count += 1;
-        if (count >= 200)
-        {
-          break;
-        }
-      }
-    }
-    if (count > 0) {
-      appnet.api.getUserList(needed, null, function (response) {
-        for (var i = 0; i < response.data.length; i += 1) {
-          channelMembers[response.data[i].id] = response.data[i];
-        }
-        getChannelMemberInfo();
-      }, null);
-    }
-    renderAllChannels();
-  }
-
-  function renderAllChannels()
-  {
-    var mine = $('<div/>').append('<h3 class="muted">My Rooms</h3>');
-    var pm = $('<div/>').append('<h3 class="muted">Private Messages</h3>');
-    var other = $('<div/>').append('<h3 class="muted">Public Rooms</h3>');
-    var lastId = 0;
-    var i = 0;
-    for (i = 0; i < channels.length; i += 1) {
-      if (channels[i].id === '1614') {
-        mine = mine;
-//        if (! channels[i].is_deleted &&
-//            channels[i].recent_message_id  > lastPublic) {
-//          processPublicChannels();
-//        }
-      } else if (channels[i].type === 'net.patter-app.room') {
-        if (lastId !== channels[i].id) {
-          if (channels[i].you_subscribed) {
-            mine.append(renderChannel(channels[i]));
-          } else {
-            other.append(renderChannel(channels[i]));
-          }
-        }
-      } else {
-        pm.append(renderChannel(channels[i]));
-      }
-      lastId = channels[i].id;
-    }
-    $('#patter-list').html(mine.contents());
-    $('#pm-list').html(pm.contents());
-    $('#public-list').html(other.contents());
-    if (! shownChannels) {
-      //        $('#loading-modal').modal('hide');
-      shownChannels = true;
-    }
-  }
-*/
   function renderChannel(channel)
   {
     var result = null;
@@ -516,8 +373,8 @@ function ($, util, appnet, editRoomModal, Category, pmString, roomString) {
     result.find('#members').html(renderMembers(members));
     result.find('#thumbs').html(renderThumbs(members));
     var status = result.find('#status');
-    status.html(appnet.renderStatus(channel));
-    status.append('<br>');
+//    status.html(appnet.renderStatus(channel));
+//    status.append('<br>');
     status.append(timestamp);
 
     renderButtons(result, channel);
@@ -547,12 +404,12 @@ function ($, util, appnet, editRoomModal, Category, pmString, roomString) {
     }
     else
     {
-      result.find('#blurb').html(renderThumbs(members));
+      result.find('#blurb').html(renderThumbs(members.slice(0, 6)));
     }
 
     var status = result.find('#status');
-    status.html(appnet.renderStatus(channel));
-    status.append('<br>');
+//    status.html(appnet.renderStatus(channel));
+//    status.append('<br>');
     status.append(timestamp);
 
     renderButtons(result, channel);
@@ -564,7 +421,7 @@ function ($, util, appnet, editRoomModal, Category, pmString, roomString) {
     result.find('#open').attr('href', 'room.html?channel=' + channel.id);
     if (channel.has_unread)
     {
-      result.find('#open').addClass('btn-success');
+      result.addClass('success');
     }
     if (channel.you_subscribed)
     {

@@ -32,7 +32,8 @@ function ($, util, appnet, PatterEmbed) {
     // Should the feed load older messages or newer ones.
     var scroll = this.embed.history.root.scrollTop();
     var height = this.embed.history.root.prop('scrollHeight');
-    this.goBack = this.shownFeed && this.more && (scroll <= height / 3);
+//    this.goBack = this.shownFeed && this.more && (scroll <= height / 3);
+    this.goBack = false;
 
     var options = {
       include_annotations: 1,

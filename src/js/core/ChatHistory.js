@@ -3,17 +3,18 @@
 // A pane showing a scrollable list of chats and posts
 
 /*global define:true */
-define(['jquery', 'util', 'appnet',
+define(['jquery', 'underscore', 'util', 'appnet',
         'js/deps/text!template/post.html', 'js/deps/text!template/postEmoji.html',
         'jquery-desknoty', 'jquery-easydate', 'jquery-titlealert'],
-function ($, util, appnet, postTemplate, emojiTemplate) {
+function ($, _, util, appnet, postString, emojiTemplate) {
   'use strict';
+
+  var postTemplate = _.template(postString);
 
   // id is the DOM id of the node to add the history too.
   function ChatHistory(root, authorCallback, muteCallback, avatarUrls)
   {
     this.root = root;
-    this.post = $(postTemplate);
     this.shownPosts = {};
     this.authorCallback = authorCallback;
     this.muteCallback = muteCallback;
@@ -26,15 +27,14 @@ function ($, util, appnet, postTemplate, emojiTemplate) {
 
   ChatHistory.prototype.update = function (data, goBack)
   {
-    var allPosts = $('<div/>');
+    var allPosts = $('<ul/>');
     var last = null;
     var i = 0;
     for (i = data.length - 1; i > -1; i -= 1)
     {
       if (this.validPost(data[i]))
       {
-        var post = this.post.clone();
-        this.renderPost(data[i], post);
+        var post = this.renderPost(data[i]);
         allPosts.append(post);
         last = {
           username: '@' + data[i].user.username,
@@ -69,9 +69,26 @@ function ($, util, appnet, postTemplate, emojiTemplate) {
     this.atBottom = (this.root.scrollTop() >= bottom);
   };
 
-  ChatHistory.prototype.renderPost = function (data, post)
+  ChatHistory.prototype.renderPost = function (data)
   {
     var body = embedEmoji(appnet.textToHtml(data.text, data.entities).html());
+    var name = '';
+    if (data.user)
+    {
+      name = data.user.username;
+    }
+    var avatarUrl = '';
+    if (this.avatarUrls[data.user.username])
+    {
+      avatarUrl = this.avatarUrls[data.user.username];
+    }
+    var params = {
+      body: body,
+      name: name,
+      avatarUrl: avatarUrl
+    };
+    return postTemplate(params);
+/*
     var userMention;
     if (appnet.user !== null) {
       userMention = new RegExp('@' + appnet.user.username + '[^a-zA-Z\\-_]');
@@ -84,7 +101,8 @@ function ($, util, appnet, postTemplate, emojiTemplate) {
         $('.postRow', post).addClass('mentionPost');
       }
     }
-
+*/
+/*
     var broadcast = appnet.note.findAnnotation('net.patter-app.broadcast',
                                                data.annotations);
     if (broadcast !== null)
@@ -96,7 +114,8 @@ function ($, util, appnet, postTemplate, emojiTemplate) {
     {
       $('.broadcastLink', post).remove();
     }
-
+*/
+/*
     if (this.avatarUrls[data.user.username] !== undefined)
     {
       var avatar = post.find('.authorAvatar');
@@ -138,7 +157,7 @@ function ($, util, appnet, postTemplate, emojiTemplate) {
       that.muteCallback(username);
       return false;
     });
-
+*/
 //    $('.mention', row).each(function (index, element) {
 //      element.setAttribute('style',
 //                           'color: ' + makeUserColor(element.id) + ';');
@@ -156,6 +175,8 @@ function ($, util, appnet, postTemplate, emojiTemplate) {
         if (embed !== null && embed.type === 'photo') {
           var link = $('<a target="_blank"></a>');
           var url = embed.url;
+          var width = '200px';
+          var height = '200px';
           if (embed.thumbnail_url) {
             url = embed.thumbnail_url;
           }
@@ -163,8 +184,8 @@ function ($, util, appnet, postTemplate, emojiTemplate) {
           link.css('background-position', 'center');
           link.css('background-size', 'contain');
           link.css('background-repeat', 'no-repeat');
-          link.css('width', '300px');
-          link.css('height', '300px');
+          link.css('width', width);
+          link.css('height', height);
           link.attr('href', embed.url);
           wrapper.append(link);
           hasFound = true;
@@ -207,11 +228,11 @@ function ($, util, appnet, postTemplate, emojiTemplate) {
     var fromBottom = this.root.prop('scrollHeight') - this.root.scrollTop();
     if (addBefore)
     {
-      this.root.prepend(posts);
+      this.root.find('.messageList').prepend(posts);
     }
     else
     {
-      this.root.append(posts);
+      this.root.find('.messageList').append(posts);
       if (! util.has_focus) {
         $.titleAlert('New Message', {
           duration: 10000,

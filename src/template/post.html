@@ -1,3 +1,4 @@
+<!--
 <div class="postRowWrap">
   <div class="postRow">
     <span class="authorContainer">
@@ -11,9 +12,11 @@
 
     </span>
     <span class="postInfo">
+-->
 <!--
       <a class="muteButton" href=""><i class="icon-warning-sign"></i></a>
 -->
+<!--
       <a class="broadcastLink" target="_blank"><span class="broadcastIcon"></a>
       <span class="postTimestamp"></span>
     </span>
@@ -21,3 +24,9 @@
     </div>
   </div>
 </div>
+-->
+<li class="message">
+  <span class="userTag"><a title="Avatar link for @<%- name %>" href="https://alpha.app.net/<%- name %>" target="_blank"><span class="userPic" <% if (avatarUrl !== '') { %>style="background-image: url('<%- avatarUrl %>')"<% } %>></span></a><span class="username"><%- name %></span></span>
+  <span class="messageContent"><%= body %></span>
+</li>
+

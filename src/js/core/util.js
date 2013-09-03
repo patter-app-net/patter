@@ -20,7 +20,8 @@ define(['jquery'], function ($) {
     var i = 0;
     for (i = 0; i < hashes.length; i += 1)
     {
-      hash = hashes[i].split('=');
+      hash = hashes[i].split('#');
+      hash = hash[0].split('=');
       vars.push(hash[0]);
       vars[hash[0]] = hash[1];
     }

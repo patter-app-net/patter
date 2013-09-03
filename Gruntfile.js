@@ -3,7 +3,13 @@ module.exports = function (grunt) {
   'use strict';
 
   var user_conf = {
-    patter_client_id: 'PSeXh2zXVCABT3DqCKBSfZMFZCemvWez'
+    patter_client_id: 'PSeXh2zXVCABT3DqCKBSfZMFZCemvWez',
+    dev: {
+      using_server: false
+    },
+    prod: {
+      using_server: false
+    }
   };
   try {
     user_conf = grunt.file.readJSON('config.json');
@@ -50,7 +56,7 @@ module.exports = function (grunt) {
           expand: true,
           flatten: false,
           cwd: 'build',
-          src: ['*.html', '**/*.css', '**/*.js', '**/*.ico', '**/*.png'],
+          src: ['*.html', '**/*.css', '**/*.js', '**/*.ico', '**/*.png', 'fonts/*'],
           dest: 'dist/'
         }]
       }
@@ -90,6 +96,7 @@ module.exports = function (grunt) {
             'jquery-jfontsize': 'js/deps/jquery.jfontsize-1.0',
             'jquery-titlealert': 'js/deps/jquery.titlealert.min',
             'jquery-translator': 'js/deps/jquery.translator',
+            'underscore': 'js/deps/underscore-min',
             'bootstrap': 'js/deps/bootstrap.min',
             'util': 'js/core/util',
             'appnet': 'js/core/appnet',
@@ -111,7 +118,10 @@ module.exports = function (grunt) {
             'jquery-jfontsize': ['jquery'],
             'jquery-titlealert': ['jquery'],
             'jquery-translator': ['jquery'],
-            'bootstrap': ['jquery']
+            'bootstrap': ['jquery'],
+            'underscore': {
+              'exports': '_'
+            }
           },
 
           modules: [

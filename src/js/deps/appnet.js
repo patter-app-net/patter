@@ -5,14 +5,103 @@
  *
  */
 
-/*global jQuery: true */
+/*global jQuery: true, require: true, module: true, exports: true */
+if (typeof exports !== 'undefined')
+{
+  jQuery = {};
+
+  jQuery.param = function (object)
+  {
+    'use strict';
+    // Query String able to use escaping
+    var query = require('querystring');
+
+    var result = '',
+        key = '',
+        postfix = '&';
+
+    var i;
+    for (i in object)
+    {
+      // If not prefix like a[one]...
+//      if (! prefix)
+//      {
+      key = query.escape(i);
+//      }
+//      else
+//      {
+//        key = prefix + '[' + query.escape(i) + ']';
+//      }
+
+      // String pass as is...
+      if (typeof(object[i]) === 'string')
+      {
+        result += key + '=' + query.escape(object[i]) + postfix;
+        continue;
+      }
+
+      // objectects and arrays pass depper
+/*
+      if (typeof(object[i]) === 'object' || typeof(object[i]) === 'array')
+      {
+        result += toURL(object[i], key) + postfix;
+        continue;
+      }
+*/
+      // Other passed stringified
+      if (object[i].toString)
+      {
+        result += key + '=' + query.escape(object[i].toString()) + postfix;
+        continue;
+      }
+    }
+    // Delete trailing delimiter (&) Yep it's pretty durty way but
+    // there was an error gettin length of the objectect;
+    result = result.substr(0, result.length - 1);
+    return result;
+  };
+
+  jQuery.ajax = function (options)
+  {
+    'use strict';
+    var http = require('q-io/http');
+    var Reader = require('q-io/reader');
+    var Q = require('q');
+    var streamifier = require('streamifier');
+    var request = {
+      url: options.url,
+      method: options.type,
+      headers: options.headers,
+    };
+    if (options.data)
+    {
+      request.headers['Content-Type'] = 'application/json';
+      var newStream = streamifier.createReadStream(options.data);
+      request.body = Reader(newStream);
+    }
+    var result = http.request(http.normalizeRequest(request));
+    return result.then(function (response) {
+      if (response.status !== 200)
+      {
+        throw response;
+      }
+      return Q.post(response.body, 'read', []);
+    });
+  };
+
+  jQuery.extend = require('xtend');
+
+  jQuery.wait = require('q').delay;
+}
+
 (function ($) {
   'use strict';
   var appnet = {
     userToken: null,
     appToken: null,
     endpoints: null,
-    core: {}
+    core: {},
+    note: {}
   };
 
   appnet.authorize = function (user, app)
@@ -56,12 +145,17 @@
 
 }(jQuery));
 
+if (typeof module !== 'undefined')
+{
+  module.exports = jQuery.appnet;
+}
+
 /*global jQuery: true */
 (function ($) {
 'use strict';
   $.appnet.endpoints = {
     "format_version": 3,
-    "data_version": 4,
+    "data_version": 5,
     "scopes": {
         "basic": "See basic information about this user",
         "stream": "Read this user's stream",
@@ -80,14 +174,16 @@
         "channel",
         "message",
         "file",
-        "stream",
+        "AppStream",
+        "UserStream",
         "filter",
         "interaction",
         "marker",
         "text",
         "token",
         "place",
-        "explore"
+        "explore",
+        "config"
     ],
     "migrations": [ ],
     "parameter_category": {
@@ -123,7 +219,14 @@
         "post_or_message": [ "text" ],
         "placesearch":     [ "latitude", "longitude", "q", "radius", "count", "remove_closed",
                              "altitude", "horizontal_accuracy", "vertical_accuracy" ],
-
+        "search": [ "index", "order", "query", "text", "hashtags", "links",
+                    "link_domains", "mentions", "leading_mentions",
+                    "annotation_types", "attachment_types", "crosspost_url",
+                    "crosspost_domain", "place_id", "is_reply", "is_directed",
+                    "has_location", "has_checkin", "is_crosspost",
+                    "has_attachment", "has_oembed_photo", "has_oembed_video",
+                    "has_oembed_html5video", "has_oembed_rich", "language",
+                    "client_id", "creator_id", "reply_to", "thread_id" ],
         "user_ids":    [ "ids" ],
         "post_ids":    [ "ids" ],
         "channel_ids": [ "ids" ],
@@ -946,6 +1049,23 @@
             "scope": "basic",
             "description": "Report a Post",
             "link": "http://developers.app.net/docs/resources/post/report/#report-a-post"
+        },
+        {
+            "id": "217",
+            "group": "post",
+            "name": "search",
+            "url_params": [],
+            "data_params": [],
+            "array_params": [],
+	    "get_params": [ "general_post", "search" ],
+            "method": "GET",
+            "url": [
+                "posts/search"
+            ],
+            "token": "Any",
+            "scope": "basic",
+            "description": "Search for Posts",
+            "link": "http://developers.app.net/docs/resources/post/search/#search-for-posts"
         },
         {
             "id": "300",
@@ -1961,12 +2081,29 @@
 	    "get_params": [ "pagination" ],
             "method": "GET",
             "url": [
-                "stream/explore/"
+                "posts/stream/explore/"
             ],
             "token": "None",
             "scope": "basic",
             "description": "Retrieve an Explore Stream",
             "link": "http://developers.app.net/docs/resources/explore/#retrieve-an-explore-stream"
+        },
+        {
+            "id": "1500",
+            "group": "config",
+            "name": "get",
+            "url_params": [],
+            "data_params": [],
+            "array_params": [],
+	    "get_params": [],
+            "method": "GET",
+            "url": [
+                "config/"
+            ],
+            "token": "None",
+            "scope": "basic",
+            "description": "Retrieve the Configuration Object",
+            "link": "http://developers.app.net/docs/resources/config/#retrieve-the-configuration-object"
         }
     ]
 };
@@ -1982,12 +2119,19 @@
 /*global jQuery: true */
 (function ($) {
   'use strict';
-
   function wait(time)
   {
-    return $.Deferred(function (newDeferred) {
-      setTimeout($.bind(newDeferred.resolve, newDeferred), time);
-    }).promise();
+    console.log('Waiting ' + time + ' ms to retry');
+    if ($.wait === undefined)
+    {
+      return $.Deferred(function (newDeferred) {
+        setTimeout($.bind(newDeferred.resolve, newDeferred), time);
+      }).promise();
+    }
+    else
+    {
+      return $.wait(time);
+    }
   }
 
   function makeArgs(args)
@@ -2050,26 +2194,43 @@
       options.data = makeData(data);
     }
     var promise = $.ajax(options);
-/*
     // If we get a 429 busy response, we should retry once after
     // waiting the requisite time.
-    promise.fail(function (response) {
-      if (response.statusCode() === 429)
+    return promise.fail(function (response) {
+      var status;
+      if (typeof exports !== 'undefined')
       {
-        var delaySec = parseInt(response.getRequestHeader('Retry-After'), 10);
-        var result = wait(delaySec * 1000);
-        result.then(function () {
-          return $.ajax(options);
-        });
-        return result;
+        status = response.status;
       }
       else
       {
-        throw response;
+        status = response.statusCode();
+      }
+      if (status === 429)
+      {
+        var delaySec;
+        if (typeof exports !== 'undefined')
+        {
+          delaySec = parseInt(response.headers['Retry-After'], 10);
+        }
+        else
+        {
+          delaySec = parseInt(response.getRequestHeader('Retry-After'), 10);
+        }
+        var result = wait(delaySec * 1000);
+        return result.then(function () {
+          return $.ajax(options);
+        });
+      }
+      else
+      {
+        if (typeof exports !== 'undefined')
+        {
+          throw response;
+        }
+        return response;
       }
     });
-*/
-    return promise;
   };
 
 }(jQuery));
@@ -2138,7 +2299,7 @@
     {
       args.ids = vars.list.join(',');
     }
-    $.extend(args, argsIn);
+    args = $.extend({}, args, argsIn);
     return $.appnet.core.call(url, vars.end.method, args, vars.data);
   }
 
@@ -2255,6 +2416,8 @@
     $.appnet.all = {};
     addAll('getSubscriptions', $.appnet.channel.getUserSubscribed);
     addAllOne('getMessages', $.appnet.message.getChannel);
+    addAllOne('getUserPosts', $.appnet.post.getUser);
+    addAllOne('getFollowing', $.appnet.user.getFollowing);
     addAllList('getChannelList', $.appnet.channel.getList);
     addAllList('getUserList', $.appnet.user.getList);
   }
@@ -2288,28 +2451,33 @@
 
       function fetchMore(response)
       {
+        if ($.wait !== undefined)
+        {
+          response = JSON.parse(response.toString());
+        }
         result = result.concat(response.data);
         if (response.meta.more)
         {
           args.before_id = response.meta.min_id;
           var promise = single(args);
-          promise.then(fetchMore);
-          return promise;
+          return promise.then(fetchMore);
         }
         else
         {
+          var meta = {};
+          if (response.meta.max_id)
+          {
+            meta.max_id = response.meta.max_id;
+          }
           return {
             data: result,
-            meta: {
-              max_id: response.meta.max_id
-            }
+            meta: meta
           };
         }
       }
 
       var first = single(args);
-      first.then(fetchMore);
-      return first;
+      return first.then(fetchMore);
     };
   }
 
@@ -2323,14 +2491,17 @@
 
       function fetchMore(response)
       {
+        if ($.wait !== undefined)
+        {
+          response = JSON.parse(response.toString());
+        }
         result = result.concat(response.data);
         start += 200;
         end = start + (list.length < start + 200 ? list.length : 200);
         if (start < list.length)
         {
           var promise = single(list.slice(start, end), args);
-          promise.then(fetchMore);
-          return promise;
+          return promise.then(fetchMore);
         }
         else
         {
@@ -2339,11 +2510,41 @@
       }
 
       var first = single(list.slice(start, end), args);
-      first.then(fetchMore);
-      return first;
+      return first.then(fetchMore);
     };
   }
 
   run($.appnet.endpoints);
+
+}(jQuery));
+
+/*
+ * note.js
+ *
+ * Functions for manipulating app.net annotations
+ *
+ */
+
+/*global jQuery: true */
+(function ($) {
+  'use strict';
+
+  $.appnet.note.find = function (type, list)
+  {
+    var result = null;
+    var i = 0;
+    if (list)
+    {
+      for (i = 0; i < list.length; i += 1)
+      {
+        if (list[i].type === type)
+        {
+          result = list[i].value;
+          break;
+        }
+      }
+    }
+    return result;
+  };
 
 }(jQuery));

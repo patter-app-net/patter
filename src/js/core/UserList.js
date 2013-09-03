@@ -3,10 +3,12 @@
 // A pane showing a scrollable list of recent users and members
 
 /*global define:true */
-define(['jquery', 'util', 'appnet',
+define(['jquery', 'underscore', 'util', 'appnet',
         'js/deps/text!template/user.html'],
-function ($, util, appnet, userTemplate) {
+function ($, _, util, appnet, userString) {
   'use strict';
+
+  var userTemplate = _.template(userString);
 
   function UserList(root, userCallback)
   {
@@ -16,15 +18,11 @@ function ($, util, appnet, userTemplate) {
     this.postTimes = {};
     this.avatars = {};
     this.myUser = null;
-    this.activeList = {};
-    this.idleList = {};
-    this.user = $(userTemplate);
   }
 
   var timeout = {
     // Times in minutes;
-    gone: 10,
-    idle: 3
+    idle: 10
   };
 
   UserList.prototype.updatePosts = function (data)
@@ -78,111 +76,68 @@ function ($, util, appnet, userTemplate) {
 
   UserList.prototype.renderUserList = function ()
   {
-    var goneTime = new Date().getTime() - 1000 * 60 * timeout.gone;
+    var list = $('<ul/>');
+    var idleTime = new Date().getTime() - 1000 * 60 * timeout.idle;
     var keys = Object.keys(this.postTimes);
-    var i = 0;
-    this.recent = {};
     keys.sort();
+    var i = 0;
     for (i = 0; i < keys.length; i += 1)
     {
-      var postTime = this.postTimes[keys[i]];
-      var shouldShow = ((postTime !== null && postTime >= goneTime) ||
-                        this.members[keys[i]] !== undefined);
-      if (shouldShow)
+      if (! this.isIdle(keys[i], idleTime))
       {
-        this.updateUser(keys[i], postTime);
-      }
-      else
-      {
-        this.removeUser(keys[i]);
+        list.append(this.renderUser(keys[i]));
       }
     }
+    for (i = 0; i < keys.length; i += 1)
+    {
+      if (this.isIdle(keys[i], idleTime))
+      {
+        list.append(this.renderUser(keys[i]));
+      }
+    }
+    this.root.find('.userList').html(list.contents());
   };
 
-  UserList.prototype.updateUser = function (name, postTime)
+  UserList.prototype.isIdle = function (name, idleTime)
   {
-    var userClass = getUserClass(name, postTime);
-    if (userClass === 'myAccount')
+    var result = true;
+    var postTime = this.postTimes[name];
+    if (postTime && postTime >= idleTime)
     {
-      if (this.myUser === null)
-      {
-        this.myUser = this.renderUser(name, userClass);
-        this.root.append(this.myUser);
-      }
+      result = false;
     }
-    else if (userClass === 'activeUser')
-    {
-      if (this.idleList[name] !== undefined)
-      {
-        this.activeList[name] = this.idleList[name];
-        delete this.idleList[name];
-        $('.userName', this.activeList[name]).removeClass('idleUser');
-        $('.userName', this.activeList[name]).addClass('activeUser');
-      }
-      else if (this.activeList[name] === undefined)
-      {
-        this.activeList[name] = this.renderUser(name, userClass);
-        this.root.append(this.activeList[name]);
-      }
-    }
-    else if (userClass === 'idleUser')
-    {
-      if (this.activeList[name] !== undefined)
-      {
-        this.idleList[name] = this.activeList[name];
-        delete this.activeList[name];
-        $('.userName', this.idleList[name]).removeClass('activeUser');
-        $('.userName', this.idleList[name]).addClass('idleUser');
-      }
-      else if (this.idleList[name] === undefined)
-      {
-        this.idleList[name] = this.renderUser(name, userClass);
-        this.root.append(this.idleList[name]);
-      }
-    }
+    return result;
   };
 
   function getUserClass(name, postTime)
   {
-    var result = 'idleUser';
+    var result = ' inactive';
     var idleTime = new Date().getTime() - 1000 * 60 * timeout.idle;
     if (appnet.user !== null && name === appnet.user.username)
     {
-      result = 'myAccount';
+      result = ' me';
     }
     else if (postTime !== null && postTime >= idleTime)
     {
-      result = 'activeUser';
+      result = '';
     }
     return result;
   }
 
-  UserList.prototype.removeUser = function (name)
+  UserList.prototype.renderUser = function (name)
   {
-    if (this.idleList[name] !== undefined)
+    var userClass = getUserClass(name, this.postTimes[name]);
+    var avatarUrl = '';
+    if (this.avatars[name])
     {
-      this.idleList[name].remove();
-      delete this.idleList[name];
+      avatarUrl = this.avatars[name];
     }
-    if (this.activeList[name] !== undefined)
-    {
-      this.activeList[name].remove();
-      delete this.activeList[name];
-    }
-  };
-
-  UserList.prototype.renderUser = function (name, userClass)
-  {
-    var result = this.user.clone();
-    var nameNode = $('.userName', result);
-    $('.userAvatar', result).attr('href', 'http://alpha.app.net/' + name);
-    $('.userAvatarImg', result).attr('src', this.avatars[name]);
-    $('.userAvatarImg', result).attr('alt', 'Avatar Link for @' + this.avatars[name]);
-    nameNode.html('@' + name);
-    nameNode.attr('id', '@' + name);
-    nameNode.addClass(userClass);
-    nameNode.on('click', this.userCallback);
-    return result;
+    var data = {
+      name: name,
+      avatarUrl: avatarUrl,
+      extraClasses: userClass
+    };
+    return userTemplate(data);
   };
 
   return UserList;

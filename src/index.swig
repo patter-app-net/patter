@@ -3,17 +3,25 @@
 <script data-main="js/core/lobby" src="/js/deps/require-jquery.js"></script>
 {% endblock %}
 {% block body  %}
-  <div class="container-fluid">
+  <div class="container">
 
     <div id="main-lobby">
-      <div class="navbar">
-        <div class="navbar-inner">
-          <a class="brand patter-logo" style="padding: 8px 20px 1px;" href="index.html"><img src="/images/patter-logo-alt.png" width="70" height="15"></a>
-          <ul class="nav">
+      <div class="navbar navbar-default" role="navigation">
+        <div class="navbar-header">
+    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse">
+      <span class="sr-only">Toggle navigation</span>
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+    </button>
+          <a class="navbar-brand patter-logo" style="padding: 8px 20px 1px;" href="index.html"><img src="/images/patter-logo-alt.png" width="70" height="15"></a>
+        </div>
+        <div class="collapse navbar-collapse navbar-ex1-collapse">
+          <ul class="nav navbar-nav">
             <li><a href="" id="create-patter-button">Create Room</a></li>
             <li><a href="" id="create-pm-button">Compose Private Message</a></li>
           </ul>
-          <ul class="nav pull-right">
+          <ul class="nav navbar-nav navbar-right">
             <li><a href="" id="auto-refresh">Auto-Refresh: On</a></li>
             <li><a href="faq.html">FAQ (en)</a></li>
             <li><a href="faq_de.html">FAQ (de)</a></li>
