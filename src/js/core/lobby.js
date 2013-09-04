@@ -3,11 +3,11 @@
 // Overall task for managing a list of subscribed channels
 
 /*global require: true */
-require(['jquery', 'util', 'appnet', 'js/core/editRoomModal',
+require(['jquery', 'appnet', 'util', 'js/options', 'js/core/editRoomModal',
          'js/core/Category',
          'js/deps/text!template/lobbyPm.html', 'js/deps/text!template/lobbyRoom.html',
-         'bootstrap', 'jquery-easydate'],
-function ($, util, appnet, editRoomModal, Category, pmString, roomString) {
+         'bootstrap', 'jquery-easydate', 'jquery-appnet'],
+function ($, appnet, util, options, editRoomModal, Category, pmString, roomString) {
   'use strict';
 
   var wait = 1 * 1000;
@@ -15,7 +15,7 @@ function ($, util, appnet, editRoomModal, Category, pmString, roomString) {
 
   var pmTemplate = $(pmString);
   var roomTemplate = $(roomString);
-
+/*
   var cats = [new Category('fun', 'Fun'),
               new Category('lifestyle', 'Lifestyle'),
               new Category('profession', 'Professional'),
@@ -23,30 +23,45 @@ function ($, util, appnet, editRoomModal, Category, pmString, roomString) {
               new Category('community', 'Community'),
               new Category('tech', 'Tech'),
               new Category('event', 'Event')];
-
+*/
   var currentUser = null;
   var recentPostId = {};
   var hasNotified = false;
   var autoRefresh = true;
 
-  function initialize() {
-    $.removeCookie('patterAccessToken', { path: '/' });
-    appnet.init('patter2Token', 'patterPrevUrl');
-    $('#refresh-wrapper').hide();
-    $('#refresh-wrapper').removeClass('hidden');
-    if (localStorage.autoRefresh === 'false')
+  function initialize()
+  {
+    options.initialize();
+    if (options.token)
     {
-      toggleRefresh();
+      appnet.api.accessToken = options.token;
+      $.appnet.authorize(options.token);
+      initLobby();
     }
-
-    if (! appnet.isLogged())
+    else
     {
       util.redirect('auth.html');
     }
+  }
 
-//    $("#main-fail").hide();
-//    $("#loading-modal").modal({backdrop: 'static',
-//      keyboard: false});
+  function initLobby()
+  {
+    $('#search-rooms').submit(clickSearch);
+    $('#recent-rooms').click(clickRecent);
+    $('#home-tab').click(function (event) {
+      $('#default-view').show();
+      $('#results-view').hide();
+    });
+    $('#refresh-wrapper').hide();
+    $('#refresh-wrapper').removeClass('hidden');
+    try
+    {
+      if (localStorage.autoRefresh === 'false')
+      {
+        toggleRefresh();
+      }
+    } catch (e) {}
+
     initButtons();
     appnet.updateUser(completeUserInfo, failUserInfo);
   }
@@ -101,24 +116,24 @@ function ($, util, appnet, editRoomModal, Category, pmString, roomString) {
     processChannelTimer = setTimeout(fetchEvent, wait);
     if (shownChannels)
     {
-      if (gettingPublic)
-      {
-        getPublicRooms();
-      }
-      else
-      {
-        appnet.api.getAllSubscriptions(options, processMyChannels,
-                                       failChannelList);
-      }
+//      if (gettingPublic)
+//      {
+//        getPublicRooms();
+//      }
+//      else
+//      {
+      appnet.api.getAllSubscriptions(options, processMyChannels,
+                                     failChannelList);
+//      }
     }
     else
     {
       appnet.api.getSubscriptions(options, processMyChannels, failChannelList);
     }
     shownChannels = true;
-    gettingPublic = ! gettingPublic;
+//    gettingPublic = ! gettingPublic;
   }
-
+/*
   function getPublicRooms()
   {
     if (refreshPublic)
@@ -139,7 +154,7 @@ function ($, util, appnet, editRoomModal, Category, pmString, roomString) {
     }
     refreshPublic = ! refreshPublic;
   }
-
+*/
   function processMyChannels(response)
   {
     processUsers(response, $.proxy(processMine, response));
@@ -195,7 +210,7 @@ function ($, util, appnet, editRoomModal, Category, pmString, roomString) {
         added += 1;
       }
     }
-    $('#home-wrapper').html(home);
+//    $('#home-wrapper').html(home);
     $('#rooms').html(rooms);
     $('#pms').html(pms);
     if (hasHome) {
@@ -213,94 +228,6 @@ function ($, util, appnet, editRoomModal, Category, pmString, roomString) {
     } else {
       $('#pm-tab').removeClass('alert-success');
     }
-  };
-
-  function processDirectory(response)
-  {
-    var options = {
-      include_annotations: 1,
-      include_deleted: 0
-    };
-    if (response.data.counts.messages !== lastDirectoryCount)
-    {
-      lastDirectoryCount = response.data.counts.messages;
-      appnet.api.getAllMessages('1614', options,
-                                processDirectoryMessages, failChannelList);
-    }
-    else
-    {
-      appnet.api.getAllChannelList(publicChannels, { include_annotations: 1, include_recent_message: 1 },
-                                   processPublicChannels, failChannelList);
-    }
-  }
-
-  function processDirectoryMessages(response)
-  {
-    publicChannels = [];
-    var i = 0;
-    for (i = 0; i < response.data.length; i += 1)
-    {
-      var current = appnet.note.findChannelRefId(response.data[i]);
-      if (! current) {
-        var val = appnet.note.findAnnotation('net.app.core.channel.invite',
-                                             response.data[i].annotations);
-        if (val) {
-          current = val.channel_id;
-        }
-      }
-      if (current) {
-        publicChannels.push(current);
-      }
-    }
-
-    appnet.api.getAllChannelList(publicChannels, { include_annotations: 1, include_recent_message: 1 },
-                                 processPublicChannels, failChannelList);
-  }
-
-  function processPublicChannels(response)
-  {
-    processUsers(response, $.proxy(processPublic, response));
-  }
-
-  var processPublic = function (response)
-  {
-    updateChannelUsers(response.data);
-
-    sortChannels(this.data);
-    var i = 0;
-    var j = 0;
-    var foundCat = false;
-    var general = $(catWrapper);
-    general.append('<h3>General Rooms</h3>');
-    for (j = 0; j < cats.length; j += 1)
-    {
-      cats[j].tag = $(catWrapper);
-      cats[j].tag.append('<h3>' + cats[j].title + '</h3>');
-    }
-    for (i = 0; i < this.data.length; i += 1)
-    {
-      if (! this.data[i].you_muted)
-      {
-        foundCat = false;
-        for (j = 0; j < cats.length; j += 1)
-        {
-          if (cats[j].match(this.data[i]))
-          {
-            foundCat = true;
-            cats[j].tag.append(renderChannel(this.data[i]));
-          }
-        }
-        if (! foundCat)
-        {
-          general.append(renderChannel(this.data[i]));
-        }
-      }
-    }
-    for (j = 0; j < cats.length; j += 1)
-    {
-      cats[j].wrapper.html(cats[j].tag);
-    }
-    $('#general').html(general);
   };
 
   function processUsers(response, callback)
@@ -533,7 +460,7 @@ function ($, util, appnet, editRoomModal, Category, pmString, roomString) {
     gettingPublic = false;
     fetchEvent();
     refreshPublic = false;
-    getPublicRooms();
+//    getPublicRooms();
   }
 
   function failSubscribe(meta)
@@ -596,6 +523,107 @@ function ($, util, appnet, editRoomModal, Category, pmString, roomString) {
     util.redirect('index.html');
     return false;
   }
+
+  var findMethod;
+  var findBefore;
+
+  function searchMethod(text)
+  {
+    var result = function(params) {
+      params.query = text;
+      params.creator_id = '137703';
+      return $.appnet.post.search(params);
+    };
+    return result;
+  }
+
+  function recentMethod()
+  {
+    var result = function(params) {
+      return $.appnet.post.getUser('@patter_rooms', params);
+    };
+    return result;
+  }
+
+  function clickSearch(event)
+  {
+    event.preventDefault();
+    var text = $('#search-text').val();
+    findBegin(searchMethod(text), 'Searching for ' + text);
+    $('#search-text').val('');
+    return false;
+  }
+
+  function clickRecent(event)
+  {
+    event.preventDefault();
+    findBegin(recentMethod(), 'Searching for recently created rooms');
+    return false;
+  }
+
+  function findBegin(method, heading)
+  {
+    findMethod = method;
+    findBefore = null;
+    $('#default-view').hide();
+    $('#results-heading').html(heading);
+    $('#results-body').html('');
+    $('#results-view').show();
+
+    findMethod({ include_deleted: 0, include_annotations: 1 }).then(processDirectory, function (response) {
+      $('#results-body').html('Search failed');
+    });
+  }
+
+  function processDirectory(response)
+  {
+    findBefore = response.meta.min_id;
+    var publicChannels = [];
+    var i = 0;
+    for (i = 0; i < response.data.length; i += 1)
+    {
+      var current = appnet.note.findChannelRefId(response.data[i]);
+      if (! current) {
+        var val = appnet.note.findAnnotation('net.app.core.channel.invite',
+                                             response.data[i].annotations);
+        if (val) {
+          current = val.channel_id;
+        }
+      }
+      if (current) {
+        publicChannels.push(current);
+      }
+    }
+
+    appnet.api.getAllChannelList(publicChannels, { include_annotations: 1, include_recent_message: 1 },
+                                 processPublicChannels, failChannelList);
+  }
+
+  function processPublicChannels(response)
+  {
+    processUsers(response, $.proxy(processPublic, response));
+  }
+
+  var processPublic = function (response)
+  {
+    updateChannelUsers(response.data);
+
+//    sortChannels(this.data);
+    var someRendered = false;
+    var i = 0;
+    for (i = 0; i < this.data.length; i += 1)
+    {
+      if (! this.data[i].you_muted)
+      {
+        $('#results-body').append(renderChannel(this.data[i]));
+        someRendered = true;
+      }
+    }
+    if (! someRendered)
+    {
+      $('#results-body').html('No results found');
+    }
+  };
 
   $(document).ready(initialize);
 });

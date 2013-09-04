@@ -4,6 +4,7 @@ body,
 .room_title,
 .username,
 .messageContent,
+#chatbox,
 * {
   -webkit-font-smoothing: antialiased;
   font-family: 'Open Sans', 'Helvetica Neue', Helvetica, sans-serif;
@@ -104,7 +105,7 @@ footer {
   width: 100%;
   position: absolute;
   top: 50px;
-  background-image: url('../images/room_avatar.png');
+  background-image: url('../images/room_avatar.jpg');
   background-size: 100% 100%;
   color: #fff;
   box-shadow: inset 1px 0px 5px rgba(0, 0, 0, 0.5);
@@ -131,11 +132,14 @@ footer {
 }
 #messages .message {
   width: 97%;
-  margin: 0 auto 5px auto;
+  margin: 0 auto 2px auto;
   min-height: 60px;
-  background-color: #cecece;
+  background-color: #eeeeee;
   position: relative;
   padding: 10px;
+}
+#messages .mentioned {
+  background-color: #ddeedd;
 }
 #messages .message:first-child {
   margin-top: 10px;
@@ -160,9 +164,16 @@ footer {
 }
 #messages .message .messageContent {
   max-width: 800px;
-  padding: 10px 10px 10px 0;
+  padding: 10px 90px 10px 0;
   min-width: 200px;
   line-height: 24px;
+}
+.postTimestamp {
+    font-family: 'Open Sans';
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    margin-top: -14px;
 }
 #users {
   width: 20%;

@@ -36,6 +36,11 @@ function ($, util, appnet, roomInfo, UserFields, editTemplate) {
       $('#edit-room-save').click();
       return false;
     });
+    $('#avatar-form').submit(function (event) {
+      event.preventDefault();
+//      updateAvatar();
+      return false;
+    });
   };
 
   editRoomModal.show = function ()

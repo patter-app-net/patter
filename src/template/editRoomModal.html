@@ -66,6 +66,14 @@
           </div>
           <div id="edit-room-error-div"></div>
         </form>
+        <form id="avatar-form">
+          <label>Your room avatar is stored in your personal app.net file storage. For best results, it should be 1024x80 pixels in size.</label>
+          <label class="checkbox">
+            <input type="checkbox" id="black-title">Show room name in black</input>
+          </label>
+          <input id="upload-file" type="file" name="content" size="40">
+          <button id="upload-button" class="btn" data-loading-text="Uploading...">Upload Avatar</button>
+        </form>
       </div>
       <div class="modal-footer">
         <button id="edit-room-cancel" class="btn" data-dismiss="modal" aria-hidden="true">Cancel</button>

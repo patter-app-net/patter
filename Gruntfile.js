@@ -69,7 +69,7 @@ module.exports = function (grunt) {
         }
       }
     },
-    clean: ['build', 'dist'],
+//    clean: ['build', 'dist'],
     requirejs: {
       compile: {
         options: {
@@ -101,7 +101,9 @@ module.exports = function (grunt) {
             'util': 'js/core/util',
             'appnet': 'js/core/appnet',
             'appnet-api': 'js/core/appnet-api',
-            'appnet-note': 'js/core/appnet-note'
+            'appnet-note': 'js/core/appnet-note',
+            'backbone': 'js/deps/backbone-min',
+            'jquery-appnet': 'js/deps/appnet'
             //    'util': '../../../lib/util',
             //    'appnet': '../../../lib/appnet',
             //    'appnet-api': '../../../lib/appnet-api',
@@ -121,6 +123,9 @@ module.exports = function (grunt) {
             'bootstrap': ['jquery'],
             'underscore': {
               'exports': '_'
+            },
+            'backbone': {
+              'exports': 'Backbone'
             }
           },
 
@@ -180,7 +185,7 @@ module.exports = function (grunt) {
   });
 
 
-  grunt.registerTask('dist', ['clean', 'ensure_folders', 'jshint', 'requirejs', 'assemble', 'swig', 'copy']);
+  grunt.registerTask('dist', [/*'clean',*/ 'ensure_folders', 'jshint', 'requirejs', 'assemble', 'swig', 'copy']);
   grunt.registerTask('dev', ['ensure_folders', 'jshint', 'requirejs', 'assemble', 'swig', 'copy']);
   grunt.registerTask('server', [
     'dev',

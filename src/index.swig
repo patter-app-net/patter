@@ -39,6 +39,7 @@
           <li id="home-tab" class="active"><a href="#home" data-toggle="tab">Home</a></li>
           <li id="room-tab"><a href="#rooms" data-toggle="tab">My Rooms</a></li>
           <li id="pm-tab"><a href="#pms" data-toggle="tab">Private Messages</a></li>
+<!--
           <li><a href="#general" data-toggle="tab">General</a></li>
           <li><a href="#fun" data-toggle="tab">Fun</a></li>
           <li><a href="#lifestyle" data-toggle="tab">Lifestyle</a></li>
@@ -47,30 +48,44 @@
           <li><a href="#community" data-toggle="tab">Community</a></li>
           <li><a href="#tech" data-toggle="tab">Tech</a></li>
           <li><a href="#event" data-toggle="tab">Event</a></li>
+-->
         </ul>
         <div class="tab-content">
           <div id="home" class="tab-pane active">
-            <div id="home-wrapper">
-              <h1>Loading</h1>
+          <div id="results-view">
+            <h1 id="results-heading"></h1>
+            <table id="results-body"></table>
+          </div>
+          <div id="default-view">
+          <div class="row">
+            <div class="col-md-9">
+              <h1>Welcome to Patter</h1>
+              <p>With Patter, you can chat privately with friends or join public chat rooms. There are a few options below for finding rooms to chat in:</p>
+              <div class="panel panel-default">
+                <div class="panel-body">
+                  <p>Search the Patter directory for rooms on a particular topic.</p>
+                  <form role="form" class="form-inline" id="search-rooms">
+                    <div class="form-group">
+                      <label class="sr-only" for="search-text">Search Public Directory</label>
+                      <input type="text" class="form-control" id="search-text" placeholder="Search Directory">
+                    </div>
+                    <button type="submit" class="btn btn-default"><i class="icon-search"></i></button>
+                  </form>
+                </div>
+              </div>
+              <div class="panel panel-default">
+                <div class="panel-body">
+                  <p>Browse recently-created rooms in the Patter directory.</p>
+                  <button class="btn btn-default" id="recent-rooms">Recent Rooms</button>
+                </div>
+              </div>
             </div>
-            <div class="hidden-phone pull-right">
+            <div class="col-md-3">
               <h3>Patter News</h3>
-              <iframe frameborder="0" src="http://blog-app.net/embed.html#2508" width="300" height="600" >
+              <iframe frameborder="0" src="http://blog-app.net/embed.html#2508" width="100%" height="600" >
               </iframe>
             </div>
           </div>
-          <div id="rooms" class="tab-pane"><h1>Loading</h1></div>
-          <div id="pms" class="tab-pane"><h1>Loading</h1></div>
-          <div id="general" class="tab-pane"><h1>Loading</h1></div>
-          <div id="fun" class="tab-pane"><h1>Loading</h1></div>
-          <div id="lifestyle" class="tab-pane"><h1>Loading</h1></div>
-          <div id="profession" class="tab-pane"><h1>Loading</h1></div>
-          <div id="language" class="tab-pane"><h1>Loading</h1></div>
-          <div id="community" class="tab-pane"><h1>Loading</h1></div>
-          <div id="tech" class="tab-pane"><h1>Loading</h1></div>
-          <div id="event" class="tab-pane"><h1>Loading</h1></div>
-        </div>
-      </div>
 
       <br>
       <div class="well well-small">
@@ -90,7 +105,25 @@
 <img alt="" border="0" src="https://www.paypalobjects.com/en_US/i/scr/pixel.gif" width="1" height="1">
 </form>
 
+      </div></div>
+
+
+          </div>
+          <div id="rooms" class="tab-pane"><h1>Loading</h1></div>
+          <div id="pms" class="tab-pane"><h1>Loading</h1></div>
+<!--
+          <div id="general" class="tab-pane"><h1>Loading</h1></div>
+          <div id="fun" class="tab-pane"><h1>Loading</h1></div>
+          <div id="lifestyle" class="tab-pane"><h1>Loading</h1></div>
+          <div id="profession" class="tab-pane"><h1>Loading</h1></div>
+          <div id="language" class="tab-pane"><h1>Loading</h1></div>
+          <div id="community" class="tab-pane"><h1>Loading</h1></div>
+          <div id="tech" class="tab-pane"><h1>Loading</h1></div>
+          <div id="event" class="tab-pane"><h1>Loading</h1></div>
+-->
+        </div>
       </div>
+
     </div>
 
     <div id="modal-container"></div>

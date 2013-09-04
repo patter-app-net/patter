@@ -87,7 +87,30 @@ function ($, _, util, appnet, postString, emojiTemplate) {
       name: name,
       avatarUrl: avatarUrl
     };
-    return postTemplate(params);
+    var post = $(postTemplate(params));
+
+    renderEmbedImage(data, post);
+
+    var timestamp = $('.postTimestamp', post);
+    timestamp.attr('title', data.created_at);
+    formatTimestamp(timestamp);
+
+    var userMention;
+    if (appnet.user !== null) {
+      userMention = new RegExp('@' + appnet.user.username + '[^a-zA-Z\\-_]');
+/*
+      if (data.user.username === appnet.user.username)
+      {
+        $('.postRow', post).addClass('myPost');
+      }
+*/
+      if (userMention.test(body))
+      {
+        post.addClass('mentioned');
+      }
+    }
+
+    return post;
 /*
     var userMention;
     if (appnet.user !== null) {
@@ -175,8 +198,8 @@ function ($, _, util, appnet, postString, emojiTemplate) {
         if (embed !== null && embed.type === 'photo') {
           var link = $('<a target="_blank"></a>');
           var url = embed.url;
-          var width = '200px';
-          var height = '200px';
+          var width = '300px';
+          var height = '300px';
           if (embed.thumbnail_url) {
             url = embed.thumbnail_url;
           }
@@ -186,6 +209,9 @@ function ($, _, util, appnet, postString, emojiTemplate) {
           link.css('background-repeat', 'no-repeat');
           link.css('width', width);
           link.css('height', height);
+          link.css('display', 'block');
+          link.css('margin-left', 'auto');
+          link.css('margin-right', 'auto');
           link.attr('href', embed.url);
           wrapper.append(link);
           hasFound = true;

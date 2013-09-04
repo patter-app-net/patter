@@ -105,7 +105,7 @@ function ($, appnet, roomInfo, editRoomModal, menuTemplate, embeddedMenuTemplate
   roomMenu.updateChannelView = function ()
   {
     // Setup room title
-    var name = $.appnet.note.findPatterName(roomInfo.channel);
+    var name = appnet.note.findPatterName(roomInfo.channel);
     if (! name)
     {
       name = 'Private Message';
@@ -139,8 +139,8 @@ function ($, appnet, roomInfo, editRoomModal, menuTemplate, embeddedMenuTemplate
     }
 
     // Setup archive button
-    var settings = appnet.note.find('net.patter-app.settings',
-                                    roomInfo.channel.annotations);
+    var settings = appnet.note.findAnnotation('net.patter-app.settings',
+                                              roomInfo.channel.annotations);
     if (roomInfo.channel.readers['public'] && settings && settings.blurb_id)
     {
       container.find('#archive').show();
