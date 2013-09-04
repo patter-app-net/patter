@@ -48,8 +48,8 @@ define(['jquery'], function ($) {
 
   util.widgetParams = function () {
     return {
-      width: '147px',
-      height: '30px',
+      width: '300px',
+      height: '42px',
       type: 'authorize'
     };
   };
