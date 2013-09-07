@@ -14,7 +14,7 @@
       <span class="icon-bar"></span>
       <span class="icon-bar"></span>
     </button>
-          <a class="navbar-brand patter-logo" style="padding: 8px 20px 1px;" href="index.html"><img src="/images/patter-logo-alt.png" width="70" height="15"></a>
+          <a class="navbar-brand patter-logo" href="index.html"><img src="/images/patter-logo-alt.png" width="70" height="15"></a>
         </div>
         <div class="collapse navbar-collapse navbar-ex1-collapse">
           <ul class="nav navbar-nav">
