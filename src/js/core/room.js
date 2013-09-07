@@ -48,7 +48,7 @@ function ($, util, appnet, roomInfo, roomMenu, RoomFeed) {
 
   function initialize()
   {
-    $('#intro-modal').modal();
+//    $('#intro-modal').modal();
     var params = util.getUrlVars();
     var newRoom = params.channel;
     var hashParams = util.getHashParams();

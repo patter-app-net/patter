@@ -26,7 +26,7 @@
 </div>
 -->
 <li class="message">
-  <span class="userTag"><a title="Avatar link for @<%- name %>" href="https://alpha.app.net/<%- name %>" target="_blank"><span class="userPic" <% if (avatarUrl !== '') { %>style="background-image: url('<%- avatarUrl %>')"<% } %>></span></a><span class="username"><%- name %></span></span>
+  <span class="userTag"><a title="Avatar link for @<%- name %>" href="https://alpha.app.net/<%- name %>" target="_blank"><span class="userPic" <% if (avatarUrl !== '') { %>style="background-image: url('<%- avatarUrl %>')"<% } %>></span></a><span class="username"><a class="author" href=""><%- name %></a></span></span>
   <span class="messageContent"><%= body %></span>
   <span class="embedImageWrapper"></span>
   <span class="postTimestamp"></span>

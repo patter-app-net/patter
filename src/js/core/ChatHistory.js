@@ -110,6 +110,10 @@ function ($, _, util, appnet, postString, emojiTemplate) {
       }
     }
 
+    var author = post.find('.author');
+    author.attr('id', '@' + data.user.username);
+    author.on('click', this.authorCallback);
+
     return post;
 /*
     var userMention;

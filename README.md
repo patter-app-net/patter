@@ -1,7 +1,14 @@
-patter-mod
-==========
+Patter
+======
 
-A major refactoring of Patter into many modules.
+Patter is a web client for participating in public and private chat
+rooms over app.net. If you wish to contribute or have any other
+problems, contact Jonathon Duerig (@duerig on [app.net](http://app.net)).
+
+Although you can run your own private instances, the main deployment
+is located at:
+
+[patter-app.net](http://patter-app.net)
 
 ## Setting up patter
 

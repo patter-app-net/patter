@@ -86,7 +86,7 @@
     <footer>
       <div id="chatInput">
         <form id="chat-form">
-          <input type="text" id="chatBox" placeholder="Enter text here.">
+          <input type="text" id="chatBox" placeholder="Enter text here." maxlength="2000" autofocus="true">
         </form>
         <a id="chatSend"><span class="ss-standard ss-icon white-icon">Chat</span></a>
         <a id="chatBroadcast"><span class="ss-standard ss-icon white-icon">Wifi</span></a>
