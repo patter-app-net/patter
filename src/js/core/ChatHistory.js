@@ -116,20 +116,6 @@ function ($, _, util, appnet, postString, emojiTemplate) {
 
     return post;
 /*
-    var userMention;
-    if (appnet.user !== null) {
-      userMention = new RegExp('@' + appnet.user.username + '[^a-zA-Z\\-_]');
-      if (data.user.username === appnet.user.username)
-      {
-        $('.postRow', post).addClass('myPost');
-      }
-      else if (userMention.test(body))
-      {
-        $('.postRow', post).addClass('mentionPost');
-      }
-    }
-*/
-/*
     var broadcast = appnet.note.findAnnotation('net.patter-app.broadcast',
                                                data.annotations);
     if (broadcast !== null)
@@ -143,38 +129,6 @@ function ($, _, util, appnet, postString, emojiTemplate) {
     }
 */
 /*
-    if (this.avatarUrls[data.user.username] !== undefined)
-    {
-      var avatar = post.find('.authorAvatar');
-      avatar.attr('href', 'http://alpha.app.net/' + data.user.username);
-      var image = post.find('.authorAvatarImg');
-      image.attr('src', this.avatarUrls[data.user.username]);
-      image.attr('alt', 'Avatar Link for @' + data.user.username);
-    }
-    else
-    {
-      post.find('.authorAvatar').remove();
-    }
-
-    var author = $('.author', post);
-    author.attr('id', '@' + data.user.username);
-    if (data.user.username === 'michelelewis')
-    {
-      post.find('.postRow')
-        .attr('style',
-              'background: ' + makeUserColor('@' + data.user.username) + ';');
-      author.attr('style', 'color: #eeeeee;');
-    }
-    author.text(data.user.username);
-    author.on('click', this.authorCallback);
-
-    $('.postBody', post).prepend(body);
-
-    renderEmbedImage(data, post);
-
-    var timestamp = $('.postTimestamp', post);
-    timestamp.attr('title', data.created_at);
-    formatTimestamp(timestamp);
 
     var mute = post.find('.muteButton');
     var that = this;
@@ -185,10 +139,6 @@ function ($, _, util, appnet, postString, emojiTemplate) {
       return false;
     });
 */
-//    $('.mention', row).each(function (index, element) {
-//      element.setAttribute('style',
-//                           'color: ' + makeUserColor(element.id) + ';');
-//    });
   };
 
   function renderEmbedImage(data, post) {

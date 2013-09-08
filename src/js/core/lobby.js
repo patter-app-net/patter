@@ -15,15 +15,7 @@ function ($, appnet, util, options, editRoomModal, Category, pmString, roomStrin
 
   var pmTemplate = $(pmString);
   var roomTemplate = $(roomString);
-/*
-  var cats = [new Category('fun', 'Fun'),
-              new Category('lifestyle', 'Lifestyle'),
-              new Category('profession', 'Professional'),
-              new Category('language', 'Language/Region'),
-              new Category('community', 'Community'),
-              new Category('tech', 'Tech'),
-              new Category('event', 'Event')];
-*/
+
   var currentUser = null;
   var recentPostId = {};
   var hasNotified = false;
@@ -69,8 +61,6 @@ function ($, appnet, util, options, editRoomModal, Category, pmString, roomStrin
 
   function completeUserInfo(response) {
     currentUser = response.data;
-//    $('#loading-message').html("Fetching Channels");
-//    processPublicChannels();
     fetchEvent();
   }
 
@@ -117,45 +107,16 @@ function ($, appnet, util, options, editRoomModal, Category, pmString, roomStrin
     processChannelTimer = setTimeout(fetchEvent, wait);
     if (shownChannels)
     {
-//      if (gettingPublic)
-//      {
-//        getPublicRooms();
-//      }
-//      else
-//      {
       appnet.api.getAllSubscriptions(options, processMyChannels,
                                      failChannelList);
-//      }
     }
     else
     {
       appnet.api.getSubscriptions(options, processMyChannels, failChannelList);
     }
     shownChannels = true;
-//    gettingPublic = ! gettingPublic;
   }
-/*
-  function getPublicRooms()
-  {
-    if (refreshPublic)
-    {
-      appnet.api.getChannel('1614', { include_annotations: 1 },
-                            processDirectory, failChannelList);
-    }
-    else
-    {
-      appnet.api.getAllChannelList(publicChannels, { include_annotations: 1, include_recent_message: 1 },
-                                   processPublicChannels, failChannelList);
-      wait = checkWait;
-      clearTimeout(processChannelTimer);
-      if (autoRefresh)
-      {
-        processChannelTimer = setTimeout(fetchEvent, wait);
-      }
-    }
-    refreshPublic = ! refreshPublic;
-  }
-*/
+
   function processMyChannels(response)
   {
     processUsers(response, $.proxy(processMine, response));
@@ -173,7 +134,6 @@ function ($, appnet, util, options, editRoomModal, Category, pmString, roomStrin
     var hasRoom = false;
     var hasPm = false;
     var home = $(catWrapper);
-//    home.append('<h3>Home</h3>');
     var rooms = $(catWrapper);
     rooms.append('<h3>My Rooms</h3>');
     var pms = $(catWrapper);
@@ -211,7 +171,6 @@ function ($, appnet, util, options, editRoomModal, Category, pmString, roomStrin
         added += 1;
       }
     }
-//    $('#home-wrapper').html(home);
     $('#rooms').html(rooms);
     $('#pms').html(pms);
     if (hasHome) {
@@ -301,8 +260,6 @@ function ($, appnet, util, options, editRoomModal, Category, pmString, roomStrin
     result.find('#members').html(renderMembers(members));
     result.find('#thumbs').html(renderThumbs(members));
     var status = result.find('#status');
-//    status.html(appnet.renderStatus(channel));
-//    status.append('<br>');
     status.append(timestamp);
 
     renderButtons(result, channel);
@@ -336,8 +293,6 @@ function ($, appnet, util, options, editRoomModal, Category, pmString, roomStrin
     }
 
     var status = result.find('#status');
-//    status.html(appnet.renderStatus(channel));
-//    status.append('<br>');
     status.append(timestamp);
 
     renderButtons(result, channel);
@@ -461,7 +416,6 @@ function ($, appnet, util, options, editRoomModal, Category, pmString, roomStrin
     gettingPublic = false;
     fetchEvent();
     refreshPublic = false;
-//    getPublicRooms();
   }
 
   function failSubscribe(meta)

@@ -16,7 +16,6 @@ function ($, util, appnet, attachModal, chatTemplate) {
     this.channelName = appnet.note.findPatterName(channel);
     this.postCallback = postCallback;
 
-//    root.html(chatTemplate);
     this.input = root.find('#chatBox');
     root.find('#chat-form').submit($.proxy(clickSend, this));
     root.find('#chatSend').click($.proxy(clickSend, this));
