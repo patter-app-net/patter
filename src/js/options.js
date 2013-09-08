@@ -13,6 +13,8 @@ function () {
     // embedded -- True if this is an embedded view
     // unique_id -- Unique per-instance id
     // client_id -- Per-client id set by grunt
+    // state -- state for authorization
+    // noStorage -- True if we do not have access to local storage
   };
 
   options.initialize = function ()
@@ -23,6 +25,7 @@ function () {
     {
       options.channel = query.channel;
     }
+    options.state = query.state;
 
     // Initialize token option from hashtag or localStorage
     var hash = getHashParams();
@@ -30,6 +33,15 @@ function () {
     {
       options.token = hash.access_token;
       window.location.hash = '';
+//      window.location = window.location.href.substr(0, window.location.href.indexOf('#'));
+      try
+      {
+        localStorage.patter2Token = options.token;
+      }
+      catch (e)
+      {
+        options.noStorage = true;
+      }
     }
     else
     {
@@ -40,7 +52,10 @@ function () {
           options.token = localStorage.patter2Token;
         }
       }
-      catch (e) { }
+      catch (e)
+      {
+        options.noStorage = true;
+      }
     }
 
     // Initialize options set from the PATTER variable

@@ -31,7 +31,7 @@ function ($, util, appnet, attachModal, chatTemplate) {
     }
     root.find('#chatEmbed').click($.proxy(clickAttach, this));
     root.find('#chatEmbed').hide();
-    $('.authorizeButton').attr('href', util.makeAuthorizeUrl(window.PATTER.unique_id));
+    $('.authorize-chat-button').attr('href', util.makeAuthorizeUrl(window.PATTER.unique_id));
     $('#chatInput').hide();
     $('.must-authorize').hide();
     $('.read-only').hide();
@@ -40,7 +40,7 @@ function ($, util, appnet, attachModal, chatTemplate) {
       $('.must-authorize').show();
       if (window.PATTER.embedded) {
         // if the user is an embededd room we have to launch the authorization dialog flow
-        $('.authorizeButton').on('click', function () {
+        $('.authorize-chat-button').on('click', function () {
           var params = {
             state: window.PATTER.unique_id
           };

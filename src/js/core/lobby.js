@@ -34,13 +34,14 @@ function ($, appnet, util, options, editRoomModal, Category, pmString, roomStrin
     options.initialize();
     if (options.token)
     {
+      $('#main-body').show();
       appnet.api.accessToken = options.token;
       $.appnet.authorize(options.token);
       initLobby();
     }
     else
     {
-      util.redirect('auth.html');
+      util.initAuthBody(options);
     }
   }
 

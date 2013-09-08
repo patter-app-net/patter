@@ -56,11 +56,17 @@ define(['jquery'], function ($) {
 
   util.urlParams = function (state) {
     var clientId = window.PATTER.config.client_id;
+    var pos = window.location.href.indexOf('#');
+    var uri = window.location.href;
+    if (pos >= 0)
+    {
+      uri = window.location.href.substr(0, pos);
+    }
 
     var params = {
       client_id: clientId,
       response_type: 'token',
-      redirect_uri: window.location.href,
+      redirect_uri: uri,
       scope: ['messages', 'write_post'].join(' ')
     };
 
@@ -75,6 +81,29 @@ define(['jquery'], function ($) {
     var params = util.urlParams(state);
 
     return 'https://alpha.app.net/oauth/authenticate?' + $.param(params);
+  };
+
+  util.initAuthBody = function (options) {
+    $('#auth-body').show();
+    var authUrl = util.makeAuthorizeUrl(options.state);
+    $('.authorize-button').attr('href', authUrl);
+    $('.authorize-button').addClass('adn-button');
+    $('#authorize-menu').attr('title', authUrl);
+    $('#authorize-menu').click(function (event) {
+      window.location.href = authUrl;
+      return false;
+    });
+
+    var widget_params = util.widgetParams();
+    var auth_params = util.urlParams();
+    var button_params = {};
+    $.map($.extend(widget_params, auth_params), function (val, key) {
+      key = key.replace(/_/g, '-');
+      $('.authorize-button').attr('data-' + key, val);
+    });
+
+    window.ADN.replaceButtons();
+    $('.authorize-button').css('visibility', 'visible');
   };
 
   util.htmlEncode = function (value)

@@ -3,9 +3,9 @@
 // Overall task for managing a room
 
 /*global require: true */
-require(['jquery', 'util', 'appnet', 'js/core/roomInfo', 'js/core/roomMenu',
-         'js/core/RoomFeed'],
-function ($, util, appnet, roomInfo, roomMenu, RoomFeed) {
+require(['jquery', 'util', 'appnet', 'js/options', 'js/core/roomInfo',
+         'js/core/roomMenu', 'js/core/RoomFeed'],
+function ($, util, appnet, options, roomInfo, roomMenu, RoomFeed) {
   'use strict';
 
   var feed = null;
@@ -14,6 +14,7 @@ function ($, util, appnet, roomInfo, roomMenu, RoomFeed) {
   {
     if (roomInfo.channel !== null)
     {
+      $('#container').show();
       if (feed === null)
       {
         feed = new RoomFeed(roomInfo.channel, roomInfo.members,
@@ -36,114 +37,52 @@ function ($, util, appnet, roomInfo, roomMenu, RoomFeed) {
 
   function failChannel()
   {
-    console.log('failChannel');
-    util.redirect('index.html');
+    failInit('Could not fetch this Patter room. Your connection may be down or you may not have permission to read it.');
   }
 
   function failUser()
   {
-    console.log('failUser');
-    roomInfo.updateChannel();
+    failInit('Could fetch user information. Check your connection.');
+  }
+
+  function failInit(message)
+  {
+    if (appnet.isLogged())
+    {
+      $('#fail-modal #fail-body').html(message);
+      $('#fail-modal').modal();
+    }
+    else
+    {
+      util.initAuthBody(options);
+    }
   }
 
   function initialize()
   {
-//    $('#intro-modal').modal();
-    var params = util.getUrlVars();
-    var newRoom = params.channel;
-    var hashParams = util.getHashParams();
-    var token = hashParams.access_token;
-    if (token)
+    options.initialize();
+    if (options.token) {
+      appnet.api.accessToken = options.token;
+    }
+    if (! options.channel)
     {
-      appnet.api.accessToken = token;
-      try
+      failInit('There was no channel number in the room URL.');
+    }
+    else
+    {
+      roomInfo.id = options.channel;
+      roomInfo.changeCallback = completeChannel;
+      if (appnet.isLogged())
       {
-        localStorage.patter2Token = token;
+        appnet.updateUser($.proxy(roomInfo.updateChannel, roomInfo), failUser);
       }
-      catch (e) { }
-      window.location.hash = '';
-    }
-    else
-    {
-      appnet.init('patter2Token', 'patterPrevUrl');
-    }
-    if (! newRoom)
-    {
-      util.redirect('auth.html');
-    }
-    roomInfo.id = newRoom;
-    roomInfo.changeCallback = completeChannel;
-    if (appnet.isLogged())
-    {
-      appnet.updateUser($.proxy(roomInfo.updateChannel, roomInfo), failUser);
-    }
-    else
-    {
-      roomInfo.updateChannel();
-    }
-    if (window.PATTER.embedded && params.style) {
-      $('body').prepend('<link rel="stylesheet" style="text/css"  href="' + params.style + '">');
+      else
+      {
+        roomInfo.updateChannel();
+      }
     }
   }
-/*
 
-//function showMessage(
-
-function initializePatter(newRoom) {
-  $("#main-fail").hide();
-  $("#form-post").hide();
-  $("#must-authorize").hide();
-  $("#read-only").hide();
-  $("#loading-modal").modal({backdrop: 'static', keyboard: false});
-  $(window).resize(scrollChatToBottom);
-  chatRoom = newRoom;
-
-  initButtons();
-  initEmbedModal();
-  initEditRoomModal();
-  if (appnet.isLogged()) {
-    $('#loading-message').html("Fetching User Information");
-    appnet.updateUser(resetWindow, $.proxy(initFail, 'User Lookup'));
-  } else {
-    resetWindow();
-  }
-}
-
-function initFail(meta) {
-  $("#main-fail").show();
-}
-
-function initButtons() {
-}
-
-function resetWindow()
-{
-  clearTimeout(processTimer);
-  currentChannel = null;
-  namedUsers = {};
-  userPostTimes = {};
-  avatarUrls = {};
-  lastUserList = "";
-  if (appnet.user !== null) {
-    namedUsers[appnet.user.username] = 1;
-    userPostTimes[appnet.user.username] = null;
-    avatarUrls[appnet.user.username] = appnet.user.avatar_image.url;
-  }
-
-  $("#main_post").val("");
-  $("#global-tab-container").empty();
-  $("#user-list").empty();
-
-  if (! appnet.isLogged() && chatRoom === null) {
-    appnet.api.authorize();
-  } else if (chatRoom === null) {
-    util.redirect("index.html");
-  } else {
-    getChannelInfo();
-  }
-}
-
-*/
   $(document).ready(initialize);
 
 });

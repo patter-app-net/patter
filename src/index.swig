@@ -3,7 +3,7 @@
 <script data-main="js/core/lobby" src="/js/deps/require-jquery.js"></script>
 {% endblock %}
 {% block body  %}
-  <div class="container">
+  <div class="container" id="main-body" style="display: none">
 
     <div id="main-lobby">
       <div class="navbar navbar-default" role="navigation">

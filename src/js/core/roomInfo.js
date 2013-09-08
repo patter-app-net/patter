@@ -44,7 +44,14 @@ define(['jquery', 'util', 'appnet'], function ($, util, appnet) {
     {
       this.members[owner.username] = owner;
     }
-    getWriterInfo();
+    if (appnet.isLogged() && roomInfo.channel.writers.user_ids.length > 0)
+    {
+      getWriterInfo();
+    }
+    else if (this.changeCallback)
+    {
+      this.changeCallback();
+    }
   };
 
   var failChannelInfo = function (meta)

@@ -4,25 +4,52 @@
 {% block css %}
 <link rel="stylesheet" type="text/css" href="/fonts/ss-standard.css">
 <link rel="stylesheet" type="text/css" href="/fonts/ss-social.css">
-<link href='https://fonts.googleapis.com/css?family=Cabin:400,400italic|Open+Sans:400italic,400' rel='stylesheet' type='text/css'>
-<!--
-<link rel="stylesheet" style="text/css"
-      href="/css/post.css" title="sms">
-<link rel="stylesheet" style="text/css"
-      href="/css/user.css" title="sms">
-<link rel="stylesheet" style="text/css"
-      href="/css/room.css" title="sms">
--->
-<link rel="stylesheet" style="text/css"
-      href="/css/reset.css" title="sms">
-<link rel="stylesheet" style="text/css"
-      href="/css/style.css" title="sms">
-                                                                                   <meta name="apple-mobile-web-app-capable" content="yes" />
+
+<script type='text/javascript'>
+(function () {
+  var styles = [
+    'https://fonts.googleapis.com/css?family=Cabin:400,400italic|Open+Sans:400italic,400',
+    '/css/reset.css',
+    '/css/style.css'
+  ];
+
+  var query = window.location.search.substring(1);
+  var vars = query.split('&');
+  var query_params = {};
+  for (var i = 0; i < vars.length; i++) {
+    var pair = vars[i].split('=');
+    query_params[decodeURIComponent(pair[0])] = decodeURIComponent(pair[1]);
+  }
+
+  // replace the default styles with your own
+  if (query_params['replace_styles']) {
+    styles = query_params['replace_styles'].split(',');
+  }
+  // Append styles to the default styles
+  if (query_params['append_styles']) {
+    styles.push(query_params['append_styles']);
+  }
+
+  for (var i = 0; i < styles.length; i++) {
+    document.write('<link rel="stylesheet" type="text/css" href="' + styles[i] + '">');
+  }
+
+}())
+</script>
+
+   <meta name="apple-mobile-web-app-capable" content="yes" />
    <meta name="apple-mobile-web-app-status-bar-style" content="black" />
    <meta name="viewport" content = "width=device-width, initial-scale=1.0, user-scalable=no" />
 {% endblock %}
 
 {% block javascript %}
+  <script>
+    window.PATTER = window.PATTER || {};
+    if (window !== window.top) {
+      window.PATTER.embedded = true;
+      window.PATTER.unique_id = Math.random().toString(36).slice(2);
+    }
+  </script>
   <script src="/js/core/config.js"></script>
   <script data-main="js/core/room" src="/js/deps/require-jquery.js"></script>
 {% endblock %}
@@ -52,7 +79,23 @@
 {% endblock %}
 
 {% block body %}
-  <div id="container">
+    <div class="modal fade" id="fail-modal">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h4 class="modal-title">Failed to Load Patter Room</h4>
+          </div>
+          <div class="modal-body">
+            <p id="fail-body"></p>
+          </div>
+          <div class="modal-footer">
+            <a href="index.html" class="btn btn-primary">Return to Lobby</a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  <div id="container" style="display: none">
     <header class="menuBar">
       <a id="lobby_btn" class="header_btn" href="index.html"><span class="ss-standard ss-icon white-icon">home</span></a>
       <div id="logo"></div>
@@ -93,7 +136,7 @@
         <a id="chatEmbed"><span class="ss-standard ss-icon white-icon">Attach</span></a>
       </div>
       <div class="must-authorize">
-        <p>You must <a class="authorizeButton btn btn-primary">Authorize</a>
+        <p>You must <a class="authorize-chat-button btn btn-primary">Authorize</a>
            Patter to chat.</p>
       </div>
       <div class="read-only">
