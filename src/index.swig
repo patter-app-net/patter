@@ -1,4 +1,10 @@
 {% extends 'base.swig' %}
+
+{% block css %}
+  <link rel="stylesheet" style="text/css"
+        href="/css/jqcloud.css">
+{% endblock %}
+
 {% block javascript %}
 <script data-main="js/core/lobby" src="/js/deps/require-jquery.js"></script>
 {% endblock %}
@@ -22,7 +28,6 @@
             <li><a href="" id="create-pm-button">Compose Private Message</a></li>
           </ul>
           <ul class="nav navbar-nav navbar-right">
-            <li><a href="" id="auto-refresh">Auto-Refresh: On</a></li>
             <li><a href="faq.html">FAQ (en)</a></li>
             <li><a href="faq_de.html">FAQ (de)</a></li>
             <li><a href="" id="logout-button">Logout</a></li>
@@ -37,46 +42,59 @@
       <div class="tabbable tabs-left">
         <ul class="nav nav-tabs">
           <li id="home-tab" class="active"><a href="#home" data-toggle="tab">Home</a></li>
-          <li id="room-tab"><a href="#rooms" data-toggle="tab">My Rooms</a></li>
-          <li id="pm-tab"><a href="#pms" data-toggle="tab">Private Messages</a></li>
-<!--
-          <li><a href="#general" data-toggle="tab">General</a></li>
-          <li><a href="#fun" data-toggle="tab">Fun</a></li>
-          <li><a href="#lifestyle" data-toggle="tab">Lifestyle</a></li>
-          <li><a href="#profession" data-toggle="tab">Professional</a></li>
-          <li><a href="#language" data-toggle="tab">Language/Region</a></li>
-          <li><a href="#community" data-toggle="tab">Community</a></li>
-          <li><a href="#tech" data-toggle="tab">Tech</a></li>
-          <li><a href="#event" data-toggle="tab">Event</a></li>
--->
+          <li id="room-tab"><a id="room-tab-link" href="#rooms" data-toggle="tab">My Rooms <span class="badge" style="display: none" id="unread"></span></a></li>
+          <li id="pm-tab"><a id="pm-tab-link" href="#pms" data-toggle="tab">Private Messages <span class="badge" style="display: none" id="unread"></span></a></li>
+          <li id="search-tab" style="display: none"><a id="search-tab-link" href="#search" data-toggle="tab">Search</a></li>
         </ul>
         <div class="tab-content">
           <div id="home" class="tab-pane active">
-          <div id="results-view">
+          <div id="results-view" style="display: none">
             <h1 id="results-heading"></h1>
+            <div class="text-center"><button id="results-back" class="btn btn-default">Go Back</button></div>
             <table id="results-body"></table>
+            <div class="text-center"><button id="results-more" class="btn btn-default">More Results</button></div>
           </div>
           <div id="default-view">
           <div class="row">
             <div class="col-md-9">
               <h1>Welcome to Patter</h1>
               <p>With Patter, you can chat privately with friends or join public chat rooms. There are a few options below for finding rooms to chat in:</p>
-              <div class="panel panel-default">
-                <div class="panel-body">
-                  <p>Search the Patter directory for rooms on a particular topic.</p>
-                  <form role="form" class="form-inline" id="search-rooms">
-                    <div class="form-group">
-                      <label class="sr-only" for="search-text">Search Public Directory</label>
-                      <input type="text" class="form-control" id="search-text" placeholder="Search Directory">
+              <div class="row">
+                <div class="col-md-12">
+                  <div class="panel panel-default">
+                    <div class="panel-body">
+                      <p>Search the Patter Directory for topics or keywords</p>
+                      <form role="form" class="form-inline" id="search-rooms">
+                        <div class="form-group">
+                          <label class="sr-only" for="search-text">Search Public Directory</label>
+                          <input type="text" class="form-control" id="search-text" placeholder="Search Directory">
+                        </div>
+                        <button type="submit" class="btn btn-default"><i class="icon-search"></i></button>
+                      </form>
                     </div>
-                    <button type="submit" class="btn btn-default"><i class="icon-search"></i></button>
-                  </form>
+                  </div>
                 </div>
-              </div>
-              <div class="panel panel-default">
-                <div class="panel-body">
-                  <p>Browse recently-created rooms in the Patter directory.</p>
-                  <button class="btn btn-default" id="recent-rooms">Recent Rooms</button>
+                <div class="col-md-6">
+                  <div class="panel panel-default">
+                    <div class="panel-body">
+                      <p>Browse by Keyword</p>
+                      <div id="tag-cloud" style="width: 300px; height: 200px;"></div>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-md-6">
+                  <div class="panel panel-default">
+                    <div class="panel-body">
+                      <p>Find rooms that are active right now</p>
+                      <button class="btn btn-default" id="active-rooms">Active Rooms</button>
+                    </div>
+                  </div>
+                  <div class="panel panel-default">
+                    <div class="panel-body">
+                      <p>Browse recently-created rooms</p>
+                      <button class="btn btn-default" id="recent-rooms">Recent Rooms</button>
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
@@ -111,16 +129,7 @@
           </div>
           <div id="rooms" class="tab-pane"><h1>Loading</h1></div>
           <div id="pms" class="tab-pane"><h1>Loading</h1></div>
-<!--
-          <div id="general" class="tab-pane"><h1>Loading</h1></div>
-          <div id="fun" class="tab-pane"><h1>Loading</h1></div>
-          <div id="lifestyle" class="tab-pane"><h1>Loading</h1></div>
-          <div id="profession" class="tab-pane"><h1>Loading</h1></div>
-          <div id="language" class="tab-pane"><h1>Loading</h1></div>
-          <div id="community" class="tab-pane"><h1>Loading</h1></div>
-          <div id="tech" class="tab-pane"><h1>Loading</h1></div>
-          <div id="event" class="tab-pane"><h1>Loading</h1></div>
--->
+          <div id="search" class="tab-pane"><h1>Loading</h1></div>
         </div>
       </div>
 

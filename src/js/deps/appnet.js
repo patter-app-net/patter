@@ -2211,7 +2211,7 @@ if (typeof module !== 'undefined')
         var delaySec;
         if (typeof exports !== 'undefined')
         {
-          delaySec = parseInt(response.headers['Retry-After'], 10);
+          delaySec = parseInt(response.headers['retry-after'], 10);
         }
         else
         {

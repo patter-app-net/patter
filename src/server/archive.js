@@ -13,8 +13,6 @@ var _ = require('underscore');
 
 var pageSize = 50;
 
-appnet.authorize(null, config.token);
-
 function execute(request, response)
 {
   fs.read(__dirname + '/../dist/archive.html').then(function (archiveFile) {
@@ -46,6 +44,7 @@ function fetchArchive(response, archiveTemplate, channelId, afterId, beforeId)
   var isBefore = (! afterId);
   var channel;
   var settings;
+  appnet.authorize(null, config.token);
   var promise = appnet.channel.get(channelId,
                                    { include_annotations: 1,
                                      include_recent_message: 1 });
@@ -93,6 +92,7 @@ function processChannel(response, archiveTemplate, buffer, settings,
       options.count = '' + pageSize;
       options.before_id = beforeId;
     }
+    appnet.authorize(null, config.token);
     result = appnet.message.getChannel(buffer.data.id, options);
   }
   else

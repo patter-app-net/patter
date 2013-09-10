@@ -56,7 +56,7 @@ module.exports = function (grunt) {
           expand: true,
           flatten: false,
           cwd: 'build',
-          src: ['*.html', '**/*.css', '**/*.js', '**/*.ico', '**/*.png', '**/*.jpg', 'fonts/*'],
+          src: ['*.html', '**/*.css', 'js/**/*.js', '**/*.ico', '**/*.png', '**/*.jpg', '**/*.gif', 'fonts/*'],
           dest: 'dist/'
         }]
       }
@@ -103,11 +103,8 @@ module.exports = function (grunt) {
             'appnet-api': 'js/core/appnet-api',
             'appnet-note': 'js/core/appnet-note',
             'backbone': 'js/deps/backbone-min',
-            'jquery-appnet': 'js/deps/appnet'
-            //    'util': '../../../lib/util',
-            //    'appnet': '../../../lib/appnet',
-            //    'appnet-api': '../../../lib/appnet-api',
-            //    'appnet-note': '../../../lib/appnet-note'
+            'jquery-appnet': 'js/deps/appnet',
+            'jquery-cloud': 'js/deps/jqcloud-1.0.4.min'
           },
 
           shim: {
@@ -120,6 +117,7 @@ module.exports = function (grunt) {
             'jquery-jfontsize': ['jquery'],
             'jquery-titlealert': ['jquery'],
             'jquery-translator': ['jquery'],
+            'jquery-cloud': ['jquery'],
             'bootstrap': ['jquery'],
             'underscore': {
               'exports': '_'

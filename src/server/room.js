@@ -11,8 +11,6 @@ var fs = require('q-io/fs');
 var appnet = require(config.appnetPath);
 var _ = require('underscore');
 
-appnet.authorize(null, config.token);
-
 function execute(request, response)
 {
   fs.read(__dirname + '/../dist/room.html').then(function (roomFile) {
@@ -32,6 +30,7 @@ function fetchRoom(request, response, roomTemplate)
   }
   else
   {
+    appnet.authorize(null, config.token);
     var promise = appnet.channel.get(channelId, {include_annotations: 1});
     promise.then(function (buffer) {
       try {
