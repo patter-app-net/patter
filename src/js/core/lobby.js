@@ -155,7 +155,7 @@ function ($, appnet, util, options, editRoomModal, RoomList, RoomListView,
       tagCloud[i].link = '#';
     }
 
-    $('#tag-cloud').jQCloud(tagCloud);
+    $('#tag-cloud').jQCloud(tagCloud, { removeOverflowing: false });
   }
 
   function makeHandler (text)
@@ -189,8 +189,8 @@ function ($, appnet, util, options, editRoomModal, RoomList, RoomListView,
   {
     event.preventDefault();
     var text = $('#search-text');
-    text.val('');
     searchFor(text.val());
+    text.val('');
   }
 
   function searchFor(text)

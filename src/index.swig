@@ -78,7 +78,7 @@
                   <div class="panel panel-default">
                     <div class="panel-body">
                       <p>Browse by Keyword</p>
-                      <div id="tag-cloud" style="width: 300px; height: 200px;"></div>
+                      <div id="tag-cloud" style="width: 300px; height: 400px;"></div>
                     </div>
                   </div>
                 </div>

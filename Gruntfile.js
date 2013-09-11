@@ -69,7 +69,7 @@ module.exports = function (grunt) {
         }
       }
     },
-//    clean: ['build', 'dist'],
+    clean: ['build', 'dist'],
     requirejs: {
       compile: {
         options: {
@@ -183,7 +183,7 @@ module.exports = function (grunt) {
   });
 
 
-  grunt.registerTask('dist', [/*'clean',*/ 'ensure_folders', 'jshint', 'requirejs', 'assemble', 'swig', 'copy']);
+  grunt.registerTask('dist', ['clean', 'ensure_folders', 'jshint', 'requirejs', 'assemble', 'swig', 'copy']);
   grunt.registerTask('dev', ['ensure_folders', 'jshint', 'requirejs', 'assemble', 'swig', 'copy']);
   grunt.registerTask('server', [
     'dev',
