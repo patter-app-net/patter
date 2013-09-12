@@ -13,7 +13,7 @@
 <script data-main="js/core/lobby" src="/js/deps/require-jquery.js"></script>
 {% endblock %}
 {% block body  %}
-  <div class="container" id="main-body" style="display: none">
+  <div class="container" id="main-body">
 
     <div id="main-lobby">
       <div class="navbar navbar-default" role="navigation">
@@ -46,68 +46,52 @@
       <div class="tabbable tabs-left">
         <ul class="nav nav-tabs">
           <li id="home-tab" class="active"><a href="#home" data-toggle="tab">Home</a></li>
-          <li id="room-tab"><a id="room-tab-link" href="#rooms" data-toggle="tab">My Rooms <span class="badge" style="display: none" id="unread"></span></a></li>
-          <li id="pm-tab"><a id="pm-tab-link" href="#pms" data-toggle="tab">Private Messages <span class="badge" style="display: none" id="unread"></span></a></li>
+          <li id="room-tab" style="display: none"><a id="room-tab-link" href="#rooms" data-toggle="tab">My Rooms <span class="badge" style="display: none" id="unread"></span></a></li>
+          <li id="pm-tab" style="display: none"><a id="pm-tab-link" href="#pms" data-toggle="tab">Private Messages <span class="badge" style="display: none" id="unread"></span></a></li>
+          <li id="public-tab" style="display: none"><a id="public-tab-link" href="#public" data-toggle="tab">Public Rooms</a></li>
           <li id="search-tab" style="display: none"><a id="search-tab-link" href="#search" data-toggle="tab">Search</a></li>
         </ul>
         <div class="tab-content">
           <div id="home" class="tab-pane active">
-          <div id="results-view" style="display: none">
-            <h1 id="results-heading"></h1>
-            <div class="text-center"><button id="results-back" class="btn btn-default">Go Back</button></div>
-            <table id="results-body"></table>
-            <div class="text-center"><button id="results-more" class="btn btn-default">More Results</button></div>
-          </div>
-          <div id="default-view">
-          <div class="row">
-            <div class="col-md-9">
-              <h1>Welcome to Patter</h1>
-              <p>With Patter, you can chat privately with friends or join public chat rooms. There are a few options below for finding rooms to chat in:</p>
-              <div class="row">
-                <div class="col-md-12">
-                  <div class="panel panel-default">
-                    <div class="panel-body">
-                      <p>Search the Patter Directory for topics or keywords</p>
-                      <form role="form" class="form-inline" id="search-rooms">
-                        <div class="form-group">
-                          <label class="sr-only" for="search-text">Search Public Directory</label>
-                          <input type="text" class="form-control" id="search-text" placeholder="Search Directory">
-                        </div>
-                        <button type="submit" class="btn btn-default"><i class="icon-search"></i></button>
-                      </form>
-                    </div>
+            <div class="row">
+              <div class="col-md-9">
+                <div id="fallback-home" style="display: none">
+                  <h1>Welcome to Patter</h1>
+                  <p>With Patter, you can chat privately with friends or join public chat rooms. There are several ways to get started:</p>
+                  <div class="row well well-small">
+                  <div class="col-md-3"><button id="new-find-rooms" class="btn btn-primary">Find Public Rooms</button></div><div class="col-md-9"> Find a public room about a topic you are interested in.</div>
+                  </div>
+                  <br>
+                  <div class="row well well-small">
+                  <div class="col-md-3"><button id="new-send-pm" class="btn btn-primary">Private Message</button></div><div class="col-md-9"> If you already have friends here, send them a message.</div>
+                  </div>
+                  <br>
+                  <div class="row well well-small">
+                  <div class="col-md-3"><a href="http://test.patter-app.net/room.html?channel=964" class="btn btn-primary">Welcome to Patter</a></div><div class="col-md-9"> If you have questions about how to use Patter or suggestions for how to make it better, come say hi.</div>
                   </div>
                 </div>
-                <div class="col-md-6">
-                  <div class="panel panel-default">
-                    <div class="panel-body">
-                      <p>Browse by Keyword</p>
-                      <div id="tag-cloud" style="width: 300px; height: 400px;"></div>
-                    </div>
+                <div id="loading-home">
+                  <div class="text-center">
+                    <h4>Loading...</h4>
+                    <img src="images/spinner-big.gif" width="32" height="32"
+                         alt="Loading...">
                   </div>
                 </div>
-                <div class="col-md-6">
-                  <div class="panel panel-default">
-                    <div class="panel-body">
-                      <p>Find rooms that are active right now</p>
-                      <button class="btn btn-default" id="active-rooms">Active Rooms</button>
-                    </div>
-                  </div>
-                  <div class="panel panel-default">
-                    <div class="panel-body">
-                      <p>Browse recently-created rooms</p>
-                      <button class="btn btn-default" id="recent-rooms">Recent Rooms</button>
-                    </div>
+                <div id="error-home" style="display: none">
+                  <div class="text-center">
+                    <h4>Failed on Load</h4>
+                    <p id="error-message"></p>
+                    <button id="retry-button" class="btn btn-default">Retry</button>
                   </div>
                 </div>
+                <div id="main-home" style="display: none"></div>
+              </div>
+              <div class="col-md-3">
+                <h3>Patter News</h3>
+                <iframe frameborder="0" src="http://blog-app.net/embed.html#2508" width="100%" height="600" >
+                </iframe>
               </div>
             </div>
-            <div class="col-md-3">
-              <h3>Patter News</h3>
-              <iframe frameborder="0" src="http://blog-app.net/embed.html#2508" width="100%" height="600" >
-              </iframe>
-            </div>
-          </div>
 
       <br>
       <div class="well well-small">
@@ -127,13 +111,14 @@
 <img alt="" border="0" src="https://www.paypalobjects.com/en_US/i/scr/pixel.gif" width="1" height="1">
 </form>
 
-      </div></div>
+      </div>
 
 
           </div>
-          <div id="rooms" class="tab-pane"><h1>Loading</h1></div>
-          <div id="pms" class="tab-pane"><h1>Loading</h1></div>
-          <div id="search" class="tab-pane"><h1>Loading</h1></div>
+          <div id="rooms" class="tab-pane"></div>
+          <div id="pms" class="tab-pane"></div>
+          <div id="public" class="tab-pane"></div>
+          <div id="search" class="tab-pane"></div>
         </div>
       </div>
 

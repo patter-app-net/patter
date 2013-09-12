@@ -5,9 +5,10 @@
 /*global require: true */
 require(['jquery', 'appnet', 'util', 'js/options', 'js/core/editRoomModal',
          'js/core/RoomList', 'js/core/RoomListView',
+         'js/deps/text!template/public-tab.html',
          'bootstrap', 'jquery-cloud', 'jquery-appnet'],
 function ($, appnet, util, options, editRoomModal, RoomList, RoomListView,
-          pmString, roomString) {
+          publicTabString) {
   'use strict';
 
   var tagCloud = [
@@ -32,36 +33,27 @@ function ($, appnet, util, options, editRoomModal, RoomList, RoomListView,
     {
       appnet.api.accessToken = options.token;
       $.appnet.authorize(options.token);
+      initButtons();
       initLobby();
     }
     else
     {
       util.initAuthBody(options);
     }
+    $('#public').html(publicTabString);
   }
 
   function initLobby()
   {
-    /*
-    $('#search-rooms').submit(clickSearch);
-    $('#recent-rooms').click(clickRecent);
-    $('#active-rooms').click(clickActive);
-    $('#home-tab').click(hideResults);
-    $('#results-back').click(hideResults);
-    $('#results-more').click(clickMoreResults);
-    $('#refresh-wrapper').hide();
-    $('#refresh-wrapper').removeClass('hidden');
-    try
-    {
-      if (localStorage.autoRefresh === 'false')
-      {
-        toggleRefresh();
-      }
-    } catch (e) {}
-
-     */
-    initButtons();
-    appnet.updateUser(completeUserInfo, failUserInfo);
+    var promise = $.appnet.user.get('me');
+    promise.then(function (response) {
+      currentUser = response.data;
+      pollUpdate();
+    }, function (error) {
+      $('#loading-home').hide();
+      $('#error-message').html('Could not get user information');
+      $('#error-home').show();
+    });
   }
 
 
@@ -73,16 +65,34 @@ function ($, appnet, util, options, editRoomModal, RoomList, RoomListView,
       editRoomModal.show();
       return false;
     });
-    $('#create-pm-button').on('click', function (event) {
-      event.preventDefault();
-      editRoomModal.update(null, 'net.app.core.pm');
-      editRoomModal.show();
-      return false;
-    });
+    $('#create-pm-button').on('click', clickPm);
     $('#logout-button').on('click', logout);
+    $('#new-send-pm').on('click', clickPm);
+    $('#new-find-rooms').on('click', function (event) {
+      event.preventDefault();
+      $('#public-tab-link').tab('show');
+      initTags();
+    });
+    $('#retry-button').on('click', function (event) {
+      event.preventDefault();
+      $('#error-home').hide();
+      $('#loading-home').show();
+      initLobby();
+    });
+  }
+
+  function clickPm(event) {
+    event.preventDefault();
+    editRoomModal.update(null, 'net.app.core.pm');
+    editRoomModal.show();
+    return false;
   }
 
   var channelMembers = {};
+
+  var unread = new RoomList({
+    users: channelMembers
+  });
 
   var rooms = new RoomList({
     users: channelMembers
@@ -96,16 +106,22 @@ function ($, appnet, util, options, editRoomModal, RoomList, RoomListView,
     users: channelMembers
   });
 
-  function completeUserInfo(response) {
-    currentUser = response.data;
-
-    $('#main-body').show();
+  function completeInitialize() {
+    var unreadView = new RoomListView({
+      model: unread,
+      el: $('#main-home'),
+      tabEl: $('#home-tab'),
+      showUnreadState: true,
+      hideWhenRead: true
+    });
+    unread.reset(unread.subscriptionMethod, {}, '');
+    unread.set({ hasMore: false });
 
     var roomView = new RoomListView({
       model: rooms,
       el: $('#rooms'),
       tabEl: $('#room-tab'),
-      showUnread: true
+      showUnreadState: true
     });
     rooms.reset(rooms.subscriptionMethod,
                 { channel_types: 'net.patter-app.room' }, '');
@@ -114,7 +130,7 @@ function ($, appnet, util, options, editRoomModal, RoomList, RoomListView,
       model: pms,
       el: $('#pms'),
       tabEl: $('#pm-tab'),
-      showUnread: true
+      showUnreadState: true
     });
     pms.reset(rooms.subscriptionMethod,
               { channel_types: 'net.app.core.pm' }, '');
@@ -126,33 +142,42 @@ function ($, appnet, util, options, editRoomModal, RoomList, RoomListView,
     });
     searches.reset(rooms.recentlyCreatedMethod, {}, '');
 
+    $('#room-tab').show();
+    $('#pm-tab').show();
+    $('#public-tab').show();
+
+
     $('#home-tab').click(hideSearch);
     $('#room-tab').click(hideSearch);
     $('#pm-tab').click(hideSearch);
+    $('#public-tab').click(initTags);
+    $('#home-tab').click(updateUnread);
     $('#room-tab').click(updateRooms);
     $('#pm-tab').click(updatePms);
 
     $('#search-rooms').submit(clickSearch);
     $('#recent-rooms').click(clickRecent);
     $('#active-rooms').click(clickActive);
-
-    initTags();
-
-    initUpdates();
   }
 
-  function initTags()
+  var tagsAreSetup = false;
+  function initTags(event)
   {
-    var i = 0;
-    for (i = 0; i < tagCloud.length; i += 1)
+    hideSearch();
+    if (! tagsAreSetup)
     {
-      tagCloud[i].handlers = {
-        click: makeHandler( tagCloud[i].text)
-      };
-      tagCloud[i].link = '#';
-    }
+      var i = 0;
+      for (i = 0; i < tagCloud.length; i += 1)
+      {
+        tagCloud[i].handlers = {
+          click: makeHandler( tagCloud[i].text)
+        };
+        tagCloud[i].link = '#';
+      }
 
-    $('#tag-cloud').jQCloud(tagCloud, { removeOverflowing: false });
+      $('#tag-cloud').jQCloud(tagCloud, { removeOverflowing: false });
+      tagsAreSetup = true;
+    }
   }
 
   function makeHandler (text)
@@ -172,14 +197,19 @@ function ($, appnet, util, options, editRoomModal, RoomList, RoomListView,
     $('#search-tab').hide();
   }
 
-  function updatePms()
+  function updateUnread()
   {
-    pms.processUpdates();
+    unread.processUpdates();
   }
 
   function updateRooms()
   {
     rooms.processUpdates();
+  }
+
+  function updatePms()
+  {
+    pms.processUpdates();
   }
 
   function clickSearch(event)
@@ -220,23 +250,24 @@ function ($, appnet, util, options, editRoomModal, RoomList, RoomListView,
     searches.fetchMore();
   }
 
-  function initUpdates()
-  {
-    update();
-  }
-
   var updateSince = null;
   var updateTimer;
   var updatePoll = true;
+  var hasUpdated = false;
+
+  function pollUpdate()
+  {
+    clearTimeout(updateTimer);
+    if (updatePoll)
+    {
+      updateTimer = setTimeout(pollUpdate, checkWait);
+    }
+    update();
+  }
 
   function update()
   {
     util.formatTimestamp($('.timestamp'));
-    clearTimeout(updateTimer);
-    if (updatePoll)
-    {
-      updateTimer = setTimeout(update, checkWait);
-    }
     var params = {
       include_annotations: 1,
       include_recent_message: 1,
@@ -278,8 +309,25 @@ function ($, appnet, util, options, editRoomModal, RoomList, RoomListView,
 
   function processUpdate(updates, minId)
   {
+    if (! hasUpdated)
+    {
+      completeInitialize();
+      if (updates.length === 0)
+      {
+        $('#loading-home').hide();
+        $('#fallback-home').show();
+      }
+      else
+      {
+        unread.once('renderComplete', function () {
+          $('#loading-home').hide();
+          $('#main-home').show();
+        });
+      }
+    }
     var pmUpdates = [];
     var roomUpdates = [];
+    var unreadUpdates = [];
     var i = 0;
     for (i = updates.length - 1; i >= 0; i -= 1)
     {
@@ -292,50 +340,16 @@ function ($, appnet, util, options, editRoomModal, RoomList, RoomListView,
       {
         roomUpdates.push(channel);
       }
+
+      if (channel.has_unread)
+      {
+        unreadUpdates.push(channel);
+      }
     }
     pms.addUpdates(pmUpdates, minId);
     rooms.addUpdates(roomUpdates, minId);
-  }
-
-  function failUserInfo(meta) {
-//    util.redirect('auth.html');
-  }
-
-  function clickSubscribe(channelId, isSubscribed)
-  {
-    var options = {
-      include_annotations: 1,
-      include_recent_message: 1
-    };
-    if (isSubscribed)
-    {
-      appnet.api.deleteSubscription(channelId, options,
-                                    completeSubscribe, failSubscribe);
-    }
-    else
-    {
-      appnet.api.createSubscription(channelId, options,
-                                    completeSubscribe, failSubscribe);
-    }
-  }
-
-  function clickMute(channelId)
-  {
-    var options = {
-      include_annotations: 1,
-      include_recent_message: 1
-    };
-    appnet.api.muteChannel(channelId, options,
-                           completeSubscribe, failSubscribe);
-  }
-
-  function completeSubscribe(response)
-  {
-//    fetchEvent();
-  }
-
-  function failSubscribe(meta)
-  {
+    unread.addUpdates(unreadUpdates, null, !hasUpdated);
+    hasUpdated = true;
   }
 
   function logout(event)

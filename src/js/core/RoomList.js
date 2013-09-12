@@ -49,7 +49,7 @@ function ($, _, Backbone, allChannels)
       addUnreadIds(list, this.get('rooms'), used);
     },
 
-    addUpdates: function (newRooms, minId) {
+    addUpdates: function (newRooms, minId, shouldProcess) {
       var i = 0;
       for (i = 0; i < newRooms.length; i += 1)
       {
@@ -62,6 +62,15 @@ function ($, _, Backbone, allChannels)
       }
       var that = this;
       this.fetchNewUsers(newRooms).then(function () {
+        if (shouldProcess)
+        {
+          that.processUpdates();
+        }
+        else
+        {
+          that.trigger('update', newRooms);
+        }
+      }, function () {
         that.trigger('update', newRooms);
       });
     },
@@ -79,6 +88,8 @@ function ($, _, Backbone, allChannels)
         this.set({ rooms: newRooms, updates: [] });
         var that = this;
         this.fetchNewUsers(roomsToChannels(newRooms)).then(function () {
+          that.trigger('updateComplete');
+        }, function (error) {
           that.trigger('updateComplete');
         });
       }

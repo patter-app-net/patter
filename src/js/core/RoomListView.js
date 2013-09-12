@@ -45,6 +45,7 @@ function ($, _, Backbone, util, RoomItemView, listTemplateString,
       this.$('#body').html('');
       this.renderRooms(this.model.get('rooms'));
       this.renderTab();
+      this.model.trigger('renderComplete');
       return this;
     },
 
@@ -153,9 +154,10 @@ function ($, _, Backbone, util, RoomItemView, listTemplateString,
         result = new RoomItemView({
           model: room,
           users: this.model.get('users'),
-          showUnread: this.options.showUnread,
+          showUnreadState: this.options.showUnreadState,
           showWhenMuted: this.options.showWhenMuted,
-          showWhenUnsubscribed: this.options.showWhenUnsubscribed
+          showWhenUnsubscribed: this.options.showWhenUnsubscribed,
+          hideWhenUnread: this.options.hideWhenUnread
         });
         this.options.viewMap[id] = result;
       }
