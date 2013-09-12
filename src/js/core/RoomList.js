@@ -3,8 +3,9 @@
 // A backbone model for an embedded list of room information
 
 /*global define:true */
-define(['jquery', 'underscore', 'backbone', 'jquery-appnet'],
-function ($, _, Backbone)
+define(['jquery', 'underscore', 'backbone',
+        'js/core/allChannels', 'jquery-appnet'],
+function ($, _, Backbone, allChannels)
 {
   'use strict';
 
@@ -52,7 +53,8 @@ function ($, _, Backbone)
       var i = 0;
       for (i = 0; i < newRooms.length; i += 1)
       {
-        this.get('updates').push(newRooms[i]);
+        var newItem = allChannels.add(newRooms[i]);
+        this.get('updates').push(newItem);
       }
       if (minId && ! this.get('params').before_id)
       {
@@ -60,7 +62,7 @@ function ($, _, Backbone)
       }
       var that = this;
       this.fetchNewUsers(newRooms).then(function () {
-        that.trigger('update');
+        that.trigger('update', newRooms);
       });
     },
 
@@ -71,12 +73,12 @@ function ($, _, Backbone)
       if (updates.length > 0)
       {
         updates.reverse();
-        addUpdates(newRooms, updates, used);
-        addUpdates(newRooms, this.get('rooms'), used);
+        addUpdatesToList(newRooms, updates, used);
+        addUpdatesToList(newRooms, this.get('rooms'), used);
         sortChannels(newRooms);
         this.set({ rooms: newRooms, updates: [] });
         var that = this;
-        this.fetchNewUsers(newRooms).then(function () {
+        this.fetchNewUsers(roomsToChannels(newRooms)).then(function () {
           that.trigger('updateComplete');
         });
       }
@@ -91,8 +93,15 @@ function ($, _, Backbone)
         newChannels = response.data;
         return that.fetchNewUsers(newChannels);
       }).then(function (response) {
-        that.set({ rooms: that.get('rooms').concat(newChannels) });
-        that.trigger('fetchSuccess', newChannels);
+        var added = [];
+        var i = 0;
+        for (i = 0; i < newChannels.length; i += 1)
+        {
+          var newItem = allChannels.add(newChannels[i]);
+          that.get('rooms').push(newItem);
+          added.push(newItem);
+        }
+        that.trigger('fetchSuccess', added);
       }, function (error) {
         that.trigger('fetchFail');
       });
@@ -152,11 +161,22 @@ function ($, _, Backbone)
     },
 
     activeMethod: function () {
+      var that = this;
       this.get('params').include_annotations = 1;
       this.get('params').include_recent_message = 1;
       var promise = $.appnet.core.call('/recent',
                                        'GET', this.get('params'));
-      return promise.then(updateMeta(this));
+      return promise.then(updateMeta(this)).then(function (response) {
+        var ids = [];
+        var i = 0;
+        for (i = 0; i < response.data.length; i += 1)
+        {
+          ids.push(response.data[i].id);
+        }
+
+        return $.appnet.channel.getList(ids, { include_annotations: 1,
+                                               include_recent_message: 1 });
+      });
     },
 
     searchMethod: function () {
@@ -177,6 +197,17 @@ function ($, _, Backbone)
       });
     }
   });
+
+  function roomsToChannels(list)
+  {
+    var result = [];
+    var i = 0;
+    for (i = 0; i < list.length; i += 1)
+    {
+      result.push(list[i].get('channel'));
+    }
+    return result;
+  }
 
   function updateMeta(that)
   {
@@ -232,8 +263,10 @@ function ($, _, Backbone)
 
   function sortChannels(channelList)
   {
-    channelList.sort(function (left, right) {
+    channelList.sort(function (leftModel, rightModel) {
       var result = 0;
+      var left = leftModel.get('channel');
+      var right = rightModel.get('channel');
       if (left.recent_message_id && right.recent_message_id) {
         result = parseInt(right.recent_message_id, 10) -
           parseInt(left.recent_message_id, 10);
@@ -248,15 +281,20 @@ function ($, _, Backbone)
 
   // Add all the channels from rooms into newRooms, excluding those
   // that have already been used once.
-  function addUpdates(newRooms, rooms, used)
+  function addUpdatesToList(newRooms, rooms, used)
   {
     var i = 0;
     for (i = 0; i < rooms.length; i += 1)
     {
-      if (! used[rooms[i].id])
+      var id = rooms[i].get('channel').id;
+      if (! used[id])
       {
-        used[rooms[i].id] = 1;
+        used[id] = 1;
         newRooms.push(rooms[i]);
+      }
+      else
+      {
+        rooms[i].cleanup();
       }
     }
   }
@@ -266,12 +304,13 @@ function ($, _, Backbone)
     var i = 0;
     for (i = 0; i < rooms.length; i += 1)
     {
-      if (! used[rooms[i].id])
+      var id = rooms[i].get('channel').id;
+      if (! used[id])
       {
-        used[rooms[i].id] = 1;
-        if (rooms[i].has_unread)
+        used[id] = 1;
+        if (rooms[i].get('channel').has_unread)
         {
-          newRooms.push(rooms[i].id);
+          newRooms.push(id);
         }
       }
     }

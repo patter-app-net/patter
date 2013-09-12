@@ -3,7 +3,9 @@
 // General utility functions of use to any JavaScript project
 
 /*global define:true */
-define(['jquery'], function ($) {
+define(['jquery', 'moment'],
+function ($, moment)
+{
   'use strict';
 
   var util = {};
@@ -137,6 +139,43 @@ define(['jquery'], function ($) {
           '<strong>Error:</strong> ' + message +
           '</div>';
     $('#' + id).html(newAlert);
+  };
+
+  util.formatTimestamp = function (list) {
+    list.each(function (index, node) {
+      if (node.title)
+      {
+        node.innerHTML = (moment(node.title).fromNow(true));
+      }
+    });
+/*
+    node.easydate({
+      locale: {
+        'future_format': '%s&nbsp;%t',
+        'past_format': '%t&nbsp;%s',
+        'second': 's',
+        'seconds': 's',
+        'minute': 'm',
+        'minutes': 'm',
+        'hour': 'h',
+        'hours': 'h',
+        'day': 'day',
+        'days': 'days',
+        'week': 'week',
+        'weeks': 'weeks',
+        'month': 'month',
+        'months': 'months',
+        'year': 'year',
+        'years': 'years',
+        'yesterday': 'yesterday',
+        'tomorrow': 'tomorrow',
+        'now': 'now',
+        'ago': '&nbsp;',
+        'in': 'in'
+      },
+      live: false
+    });
+*/
   };
 
   util.has_focus = true;

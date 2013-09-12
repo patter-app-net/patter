@@ -5,7 +5,7 @@
 /*global define:true */
 define(['jquery', 'underscore', 'util', 'appnet',
         'js/deps/text!template/post.html', 'js/deps/text!template/postEmoji.html',
-        'jquery-desknoty', 'jquery-easydate', 'jquery-titlealert'],
+        'jquery-desknoty', 'jquery-titlealert'],
 function ($, _, util, appnet, postString, emojiTemplate) {
   'use strict';
 
@@ -93,7 +93,7 @@ function ($, _, util, appnet, postString, emojiTemplate) {
 
     var timestamp = $('.postTimestamp', post);
     timestamp.attr('title', data.created_at);
-    formatTimestamp(timestamp);
+    util.formatTimestamp(timestamp);
 
     var userMention;
     if (appnet.user !== null) {
@@ -279,41 +279,12 @@ function ($, _, util, appnet, postString, emojiTemplate) {
     return false;
   };
 
-  function formatTimestamp(node) {
-    node.easydate({
-      locale: {
-        'future_format': '%s %t',
-        'past_format': '%t %s',
-        'second': 's',
-        'seconds': 's',
-        'minute': 'm',
-        'minutes': 'm',
-        'hour': 'h',
-        'hours': 'h',
-        'day': 'day',
-        'days': 'days',
-        'week': 'week',
-        'weeks': 'weeks',
-        'month': 'month',
-        'months': 'months',
-        'year': 'year',
-        'years': 'years',
-        'yesterday': 'yesterday',
-        'tomorrow': 'tomorrow',
-        'now': 'now',
-        'ago': ' ',
-        'in': 'in'
-      },
-      live: false
-    });
-  }
-
   var timestampTimer = null;
 
   function updateTimestamps()
   {
     clearTimeout(timestampTimer);
-    formatTimestamp($('.postTimestamp'));
+    util.formatTimestamp($('.postTimestamp'));
     timestampTimer = setTimeout(updateTimestamps, 60 * 1000);
   }
 

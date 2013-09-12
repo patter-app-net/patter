@@ -98,6 +98,7 @@ module.exports = function (grunt) {
             'jquery-translator': 'js/deps/jquery.translator',
             'underscore': 'js/deps/underscore-min',
             'bootstrap': 'js/deps/bootstrap.min',
+            'moment': 'js/deps/moment.min',
             'util': 'js/core/util',
             'appnet': 'js/core/appnet',
             'appnet-api': 'js/core/appnet-api',

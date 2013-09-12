@@ -1,8 +1,12 @@
 {% extends 'base.swig' %}
 
 {% block css %}
+  <link rel="stylesheet" type="text/css" href="/fonts/ss-standard.css">
+  <link rel="stylesheet" type="text/css" href="/fonts/ss-social.css">
   <link rel="stylesheet" style="text/css"
         href="/css/jqcloud.css">
+  <link rel="stylesheet" style="text/css"
+        href="/css/lobby.css">
 {% endblock %}
 
 {% block javascript %}
@@ -136,4 +140,9 @@
     </div>
 
     <div id="modal-container"></div>
+{% endblock %}
+
+{% block bottom_js %}
+  <script type="text/javascript" src="fonts/ss-standard.js"></script>
+  <script type="text/javascript" src="fonts/ss-social.js"></script>
 {% endblock %}

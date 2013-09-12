@@ -207,6 +207,9 @@ ul.messageList {
 #users .user:first-child {
   margin-top: 10px;
 }
+#users .userTag {
+  white-space: nowrap;
+}
 #users .me {
   background-color: #4d3637;
 }
