@@ -4,8 +4,8 @@
 
 /*global define:true */
 define(['jquery', 'underscore', 'backbone',
-        'js/core/allChannels', 'jquery-appnet'],
-function ($, _, Backbone, allChannels)
+        'js/core/allChannels', 'js/core/allUsers', 'jquery-appnet'],
+function ($, _, Backbone, allChannels, allUsers)
 {
   'use strict';
 
@@ -16,7 +16,6 @@ function ($, _, Backbone, allChannels)
         title: '',
         rooms: [],
         updates: [],
-        users: null,
         method: null,
         params: {},
         hasMore: true
@@ -49,32 +48,25 @@ function ($, _, Backbone, allChannels)
       addUnreadIds(list, this.get('rooms'), used);
     },
 
-    addUpdates: function (newRooms, minId, shouldProcess) {
+    // newRooms is a list of room models
+    addUpdates: function (newRooms, minId) {
       var i = 0;
       for (i = 0; i < newRooms.length; i += 1)
       {
-        var newItem = allChannels.add(newRooms[i]);
-        this.get('updates').push(newItem);
+        if (this.get('updates').indexOf(newRooms[i]) === -1 &&
+            this.get('rooms').indexOf(newRooms[i]) === -1)
+        {
+          this.get('updates').push(newRooms[i]);
+        }
       }
       if (minId && ! this.get('params').before_id)
       {
         this.get('params').before_id = minId;
       }
-      var that = this;
-      this.fetchNewUsers(newRooms).then(function () {
-        if (shouldProcess)
-        {
-          that.processUpdates();
-        }
-        else
-        {
-          that.trigger('update', newRooms);
-        }
-      }, function () {
-        that.trigger('update', newRooms);
-      });
+      this.trigger('update', newRooms);
     },
 
+    // Fold all updates into the rooms list and update appropriately
     processUpdates: function () {
       var newRooms = [];
       var used = {};
@@ -86,12 +78,7 @@ function ($, _, Backbone, allChannels)
         addUpdatesToList(newRooms, this.get('rooms'), used);
         sortChannels(newRooms);
         this.set({ rooms: newRooms, updates: [] });
-        var that = this;
-        this.fetchNewUsers(roomsToChannels(newRooms)).then(function () {
-          that.trigger('updateComplete');
-        }, function (error) {
-          that.trigger('updateComplete');
-        });
+        this.trigger('updateComplete');
       }
     },
 
@@ -102,7 +89,7 @@ function ($, _, Backbone, allChannels)
       var promise = this.get('method')();
       promise.then(function (response) {
         newChannels = response.data;
-        return that.fetchNewUsers(newChannels);
+        return allUsers.fetchNewUsers(newChannels);
       }).then(function (response) {
         var added = [];
         var i = 0;
@@ -116,52 +103,6 @@ function ($, _, Backbone, allChannels)
       }, function (error) {
         that.trigger('fetchFail');
       });
-    },
-
-    fetchNewUsers: function (channels) {
-      var newUsers = this.findNewUserList(channels);
-      if (newUsers.length > 0)
-      {
-        var that = this;
-        return $.appnet.user.getList(newUsers).then(function (response) {
-          that.updateUserList(response.data);
-        });
-      }
-      else
-      {
-        return $.when(null);
-      }
-    },
-
-    findNewUserList: function (channels) {
-      var result = [];
-      var i = 0;
-      for (i = 0; i < channels.length; i += 1)
-      {
-        var channel = channels[i];
-        if (channel.owner)
-        {
-          this.get('users')[channel.owner.id] = channel.owner;
-        }
-        var j = 0;
-        for (j = 0; j < channel.writers.user_ids.length; j += 1)
-        {
-          var id = channel.writers.user_ids[j];
-          if (! this.get('users')[id])
-          {
-            result.push(id);
-          }
-        }
-      }
-      return result;
-    },
-
-    updateUserList: function (newUsers) {
-      var i = 0;
-      for (i = 0; i < newUsers.length; i += 1)
-      {
-        this.get('users')[newUsers[i].id] = newUsers[i];
-      }
     },
 
     subscriptionMethod: function () {

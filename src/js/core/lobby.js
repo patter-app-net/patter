@@ -5,10 +5,11 @@
 /*global require: true */
 require(['jquery', 'appnet', 'util', 'js/options', 'js/core/editRoomModal',
          'js/core/RoomList', 'js/core/RoomListView',
+         'js/core/allChannels', 'js/core/allUsers',
          'js/deps/text!template/public-tab.html',
          'bootstrap', 'jquery-cloud', 'jquery-appnet'],
 function ($, appnet, util, options, editRoomModal, RoomList, RoomListView,
-          publicTabString) {
+          allChannels, allUsers, publicTabString) {
   'use strict';
 
   var tagCloud = [
@@ -33,8 +34,14 @@ function ($, appnet, util, options, editRoomModal, RoomList, RoomListView,
     {
       appnet.api.accessToken = options.token;
       $.appnet.authorize(options.token);
-      initButtons();
       initLobby();
+      $('#retry-button').on('click', function (event) {
+        event.preventDefault();
+        $('#error-home').hide();
+        $('#loading-home').show();
+        initLobby();
+      });
+      $('#logout').on('click', logout);
     }
     else
     {
@@ -48,6 +55,7 @@ function ($, appnet, util, options, editRoomModal, RoomList, RoomListView,
     var promise = $.appnet.user.get('me');
     promise.then(function (response) {
       currentUser = response.data;
+      $('#username').html(util.htmlEncode('@' + currentUser.username));
       pollUpdate();
     }, function (error) {
       $('#loading-home').hide();
@@ -59,25 +67,17 @@ function ($, appnet, util, options, editRoomModal, RoomList, RoomListView,
 
   function initButtons() {
     editRoomModal.init();
-    $('#create-patter-button').on('click', function (event) {
+    $('#compose-room').on('click', function (event) {
       event.preventDefault();
       editRoomModal.update(null, 'net.patter-app.room');
       editRoomModal.show();
-      return false;
     });
-    $('#create-pm-button').on('click', clickPm);
-    $('#logout-button').on('click', logout);
+    $('#compose-pm').on('click', clickPm);
     $('#new-send-pm').on('click', clickPm);
     $('#new-find-rooms').on('click', function (event) {
       event.preventDefault();
       $('#public-tab-link').tab('show');
       initTags();
-    });
-    $('#retry-button').on('click', function (event) {
-      event.preventDefault();
-      $('#error-home').hide();
-      $('#loading-home').show();
-      initLobby();
     });
   }
 
@@ -85,7 +85,6 @@ function ($, appnet, util, options, editRoomModal, RoomList, RoomListView,
     event.preventDefault();
     editRoomModal.update(null, 'net.app.core.pm');
     editRoomModal.show();
-    return false;
   }
 
   var channelMembers = {};
@@ -107,12 +106,15 @@ function ($, appnet, util, options, editRoomModal, RoomList, RoomListView,
   });
 
   function completeInitialize() {
+    initButtons();
     var unreadView = new RoomListView({
       model: unread,
       el: $('#main-home'),
       tabEl: $('#home-tab'),
       showUnreadState: true,
-      hideWhenRead: true
+      hideWhenRead: true,
+      showMore: false,
+      noneText: 'No unread subscriptions'
     });
     unread.reset(unread.subscriptionMethod, {}, '');
     unread.set({ hasMore: false });
@@ -121,7 +123,9 @@ function ($, appnet, util, options, editRoomModal, RoomList, RoomListView,
       model: rooms,
       el: $('#rooms'),
       tabEl: $('#room-tab'),
-      showUnreadState: true
+      showUnreadState: true,
+      showMore: true,
+      noneText: 'No subscribed rooms'
     });
     rooms.reset(rooms.subscriptionMethod,
                 { channel_types: 'net.patter-app.room' }, '');
@@ -130,7 +134,9 @@ function ($, appnet, util, options, editRoomModal, RoomList, RoomListView,
       model: pms,
       el: $('#pms'),
       tabEl: $('#pm-tab'),
-      showUnreadState: true
+      showUnreadState: true,
+      showMore: true,
+      noneText: 'No private messages'
     });
     pms.reset(rooms.subscriptionMethod,
               { channel_types: 'net.app.core.pm' }, '');
@@ -138,7 +144,9 @@ function ($, appnet, util, options, editRoomModal, RoomList, RoomListView,
     var searchView = new RoomListView({
       model: searches,
       el: $('#search'),
-      showWhenUnsubscribed: true
+      showWhenUnsubscribed: true,
+      showMore: true,
+      noneText: 'No Rooms Found'
     });
     searches.reset(rooms.recentlyCreatedMethod, {}, '');
 
@@ -285,7 +293,10 @@ function ($, appnet, util, options, editRoomModal, RoomList, RoomListView,
       {
         updateSince = response.meta.max_id;
       }
-      processUpdate(response.data, response.meta.min_id);
+      return allUsers.fetchNewUsers(response.data).then(function () {
+        processUpdate(response.data, response.meta.min_id);
+      });
+    }).then(function () {
       var used = {};
       var channels = [];
       pms.getUnreadIdList(channels, used);
@@ -294,16 +305,9 @@ function ($, appnet, util, options, editRoomModal, RoomList, RoomListView,
                                          { include_annotations: 1,
                                            include_recent_message: 1 });
     }).then(function (response) {
-      var updates = [];
-      var i = 0;
-      for (i = 0; i < response.data.length; i += 1)
-      {
-        if (! response.data[i].has_unread)
-        {
-          updates.push(response.data[i]);
-        }
-      }
-      processUpdate(updates);
+      return allUsers.fetchNewUsers(response.data).then(function () {
+        processUpdate(response.data);
+      });
     });
   }
 
@@ -312,17 +316,14 @@ function ($, appnet, util, options, editRoomModal, RoomList, RoomListView,
     if (! hasUpdated)
     {
       completeInitialize();
+      $('#loading-home').hide();
       if (updates.length === 0)
       {
-        $('#loading-home').hide();
         $('#fallback-home').show();
       }
       else
       {
-        unread.once('renderComplete', function () {
-          $('#loading-home').hide();
-          $('#main-home').show();
-        });
+        $('#main-home').show();
       }
     }
     var pmUpdates = [];
@@ -332,24 +333,29 @@ function ($, appnet, util, options, editRoomModal, RoomList, RoomListView,
     for (i = updates.length - 1; i >= 0; i -= 1)
     {
       var channel = updates[i];
+      var room = allChannels.add(channel);
       if (channel.type === 'net.app.core.pm')
       {
-        pmUpdates.push(channel);
+        pmUpdates.push(room);
       }
       else if (channel.type === 'net.patter-app.room')
       {
-        roomUpdates.push(channel);
+        roomUpdates.push(room);
       }
 
       if (channel.has_unread)
       {
-        unreadUpdates.push(channel);
+        unreadUpdates.push(room);
       }
     }
     pms.addUpdates(pmUpdates, minId);
     rooms.addUpdates(roomUpdates, minId);
-    unread.addUpdates(unreadUpdates, null, !hasUpdated);
-    hasUpdated = true;
+    unread.addUpdates(unreadUpdates, null);
+    if (! hasUpdated)
+    {
+      unread.processUpdates();
+      hasUpdated = true;
+    }
   }
 
   function logout(event)

@@ -12,6 +12,8 @@ function ($, _, Backbone, util, RoomItemView, listTemplateString,
 {
   'use strict';
 
+  var listTemplate = _.template(listTemplateString);
+
   var RoomListView = Backbone.View.extend({
 
     tagName: 'div',
@@ -27,7 +29,7 @@ function ($, _, Backbone, util, RoomItemView, listTemplateString,
       this.options.viewMap = {};
       this.options.roomMap = {};
 
-      this.$el.html(listTemplateString);
+      this.$el.html(listTemplate({ noneText: this.options.noneText }));
       this.listenTo(this.model, 'reset', this.render);
       this.listenTo(this.model, 'fetchBegin', this.fetchBegin);
       this.listenTo(this.model, 'fetchSuccess', this.fetchSuccess);
@@ -131,7 +133,7 @@ function ($, _, Backbone, util, RoomItemView, listTemplateString,
       {
         this.$('#none-found').hide();
       }
-      if (this.model.get('hasMore'))
+      if (this.model.get('hasMore') && this.options.showMore)
       {
         this.$('#more').show();
       }
@@ -153,11 +155,10 @@ function ($, _, Backbone, util, RoomItemView, listTemplateString,
       {
         result = new RoomItemView({
           model: room,
-          users: this.model.get('users'),
           showUnreadState: this.options.showUnreadState,
           showWhenMuted: this.options.showWhenMuted,
           showWhenUnsubscribed: this.options.showWhenUnsubscribed,
-          hideWhenUnread: this.options.hideWhenUnread
+          hideWhenRead: this.options.hideWhenRead
         });
         this.options.viewMap[id] = result;
       }

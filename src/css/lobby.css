@@ -1,3 +1,86 @@
 .timestamp {
   white-space: nowrap;
 }
+
+
+
+
+header,
+footer {
+  width: 100%;
+  height: 50px;
+  background-color: #bf2935;
+  color: #fff;
+  position: absolute;
+}
+.header_btn {
+  width: 41px;
+  height: 36px;
+  text-align: center;
+  line-height: 40px;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.2);
+  background-image: linear-gradient(bottom, #bf2936 100%, #b22531 0%);
+  background-image: -o-linear-gradient(bottom, #bf2936 100%, #b22531 0%);
+  background-image: -moz-linear-gradient(bottom, #bf2936 100%, #b22531 0%);
+  background-image: -webkit-linear-gradient(bottom, #bf2936 100%, #b22531 0%);
+  background-image: -ms-linear-gradient(bottom, #bf2936 100%, #b22531 0%);
+  background-image: -webkit-gradient(linear, left bottom, left top, color-stop(1, #bf2936), color-stop(0, #b22531));
+  border: 1px solid #99202a;
+  -webkit-box-sizing: content-box;
+  -moz-box-sizing: content-box;
+  -ms-box-sizing: content-box;
+  -o-box-sizing: content-box;
+  box-sizing: content-box;
+  font-size: 18px;
+  cursor: pointer;
+  color: white;
+}
+.header_btn:hover {
+  background-image: linear-gradient(bottom, #cc2b3b 0%, #e63344 100%);
+  background-image: -o-linear-gradient(bottom, #cc2b3b 0%, #e63344 100%);
+  background-image: -moz-linear-gradient(bottom, #cc2b3b 0%, #e63344 100%);
+  background-image: -webkit-linear-gradient(bottom, #cc2b3b 0%, #e63344 100%);
+  background-image: -ms-linear-gradient(bottom, #cc2b3b 0%, #e63344 100%);
+  background-image: -webkit-gradient(linear, left bottom, left top, color-stop(0, #cc2b3b), color-stop(1, #e63344));
+  color: white;
+  text-decoration: none;
+}
+.header_btn:active {
+  background-image: linear-gradient(bottom, #b22531 100%, #bf2936 0%);
+  background-image: -o-linear-gradient(bottom, #b22531 100%, #bf2936 0%);
+  background-image: -moz-linear-gradient(bottom, #b22531 100%, #bf2936 0%);
+  background-image: -webkit-linear-gradient(bottom, #b22531 100%, #bf2936 0%);
+  background-image: -ms-linear-gradient(bottom, #b22531 100%, #bf2936 0%);
+  background-image: -webkit-gradient(linear, left bottom, left top, color-stop(1, #b22531), color-stop(0, #bf2936));
+  color: white;
+  text-decoration: none;
+}
+#lobby_btn,
+#room_btn {
+  top: 4px;
+}
+#lobby_btn {
+  position: absolute;
+  left: 10px;
+}
+#room_btn {
+  position: absolute;
+  right: 10px;
+}
+#logo {
+  width: 35px;
+  height: 35px;
+  background-size: 35px 35px;
+  background-image: url('../images/logo.png');
+  margin: 6px auto 0 auto;
+}
+header {
+  top: 0;
+  border-top: 1px solid #c94953;
+  border-bottom: 1px solid #4c1015;
+}
+footer {
+  bottom: 0;
+  border-top: 1px solid #4c1015;
+  border-bottom: 1px solid #c94953;
+}

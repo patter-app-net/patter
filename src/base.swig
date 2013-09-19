@@ -17,6 +17,8 @@
     {% endblock %}
   </head>
   <body>
+    {% block faq_header %}
+    {% endblock %}
     {% block server %}
     {% endblock %}
 

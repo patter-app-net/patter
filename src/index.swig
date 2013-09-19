@@ -13,9 +13,38 @@
 <script data-main="js/core/lobby" src="/js/deps/require-jquery.js"></script>
 {% endblock %}
 {% block body  %}
+    <header class="menuBar">
+      <a id="lobby_btn" class="header_btn" href="index.html" data-toggle="dropdown" data-target="#compose"><span class="ss-standard ss-icon white-icon" style="color: white">plus</span></a>
+
+      <div id="logo"></div>
+
+      <a id="room_btn" data-toggle="dropdown" data-target="#settings" class="header_btn"><span class="ss-standard ss-icon white-icon">gear</span></a>
+
+      <div id="compose" class="dropdown">
+        <ul class="dropdown-menu" role="menu">
+          <li role="presentation"><a role="menuitem" id="compose-pm" href="#" data-toggle="dropdown" data-target="#compose">Send Private Message</a></li>
+          <li role="presentation"><a role="menuitem" id="compose-room" href="#" data-toggle="dropdown" data-target="#compose">Create Room</a></li>
+        </ul>
+      </div>
+
+
+      <div id="settings" class="dropdown pull-right">
+        <ul class="dropdown-menu" role="menu">
+          <li role="presentation" class="dropdown-header" id="username">@username</li>
+          <li role="presentation" class="divider"></li>
+          <li role="presentation"><a role="menuitem" href="faq.html">FAQ</a></li>
+          <li role="presentation" class="divider"></li>
+          <li role="presentation"><a role="menuitem" id="logout" href="#" data-toggle="dropdown" data-target="#settings">Logout</a></li>
+        </ul>
+      </div>
+    </header>
+
   <div class="container" id="main-body">
 
     <div id="main-lobby">
+
+<br/><br/><br/>
+<!--
       <div class="navbar navbar-default" role="navigation">
         <div class="navbar-header">
     <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse">
@@ -38,10 +67,7 @@
           </ul>
         </div>
       </div>
-
-      <div class="well well-small hidden" id="refresh-wrapper">
-        <a href="" id="refresh" class="btn btn-success"><i class="icon-refresh"></i> Refresh</a>
-      </div>
+-->
 
       <div class="tabbable tabs-left">
         <ul class="nav nav-tabs">

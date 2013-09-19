@@ -1,14 +1,10 @@
-﻿{% extends 'base.swig' %}
+﻿{% extends 'faq_base.swig' %}
 {% block html_lang %}de{% endblock %}
 {% block title %}FAQ{% endblock %}
 
 {% block body %}
+  <script>window.document.getElementById('lang_de').className = 'active';</script>
   <div class="container">
-    <div class="navbar">
-      <div class="navbar-inner">
-        <a class="brand patter-logo" style="padding: 8px 20px 1px;" href="index.html"><img src="/images/patter-logo-alt.png" width="70" height="15"></a>
-      </div>
-    </div>
     <div class="page-header">
       <h1>Patter FAQ</h1>
     </div>

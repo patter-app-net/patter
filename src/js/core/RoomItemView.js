@@ -4,9 +4,10 @@
 
 /*global define:true */
 define(['jquery', 'underscore', 'backbone', 'util',
+        'js/core/allUsers',
         'js/deps/text!template/RoomItemView.html',
         'jquery-appnet'],
-function ($, _, Backbone, util, roomTemplateString)
+function ($, _, Backbone, util, allUsers, roomTemplateString)
 {
   'use strict';
 
@@ -14,7 +15,6 @@ function ($, _, Backbone, util, roomTemplateString)
 
   // Options:
   //
-  // users -- Hash of all users loaded
   // showUnreadState -- This view should change based on unread status
   // showWhenMuted -- This view should display even when muted
   // showWhenUnsubscribed -- This view should display even when unsubscribed
@@ -41,11 +41,11 @@ function ($, _, Backbone, util, roomTemplateString)
       var channel = this.model.get('channel');
       if ((channel.you_subscribed || this.options.showWhenUnsubscribed) &&
           (! channel.you_muted || this.options.showWhenMuted) &&
-          (channel.has_unread || ! this.options.hideWhenUnread))
+          (channel.has_unread || ! this.options.hideWhenRead))
       {
         var settings = $.appnet.note.find('net.patter-app.settings',
                                           channel.annotations);
-        var members = findChannelMembers(channel, this.options.users);
+        var members = findChannelMembers(channel);
         var isRoom =  channel.type === 'net.patter-app.room';
         var data = {
           id: this.model.get('channel').id,
@@ -119,7 +119,7 @@ function ($, _, Backbone, util, roomTemplateString)
 
   });
 
-  function findChannelMembers(channel, users)
+  function findChannelMembers(channel)
   {
     var isPatter = (channel.type === 'net.patter-app.room');
     var members = [];
@@ -133,11 +133,12 @@ function ($, _, Backbone, util, roomTemplateString)
     for (i = 0; i < channel.writers.user_ids.length; i += 1)
     {
       var id = channel.writers.user_ids[i];
-      if (users[id])/* &&
+      var user = allUsers.lookup(id);
+      if (user)/* &&
           (id !== currentUser.id || isPatter))*/
       {
-        members.push({user: users[id].username,
-                      avatar: users[id].avatar_image.url});
+        members.push({user: user.username,
+                      avatar: user.avatar_image.url});
       }
     }
     members.sort(function (left, right) {
