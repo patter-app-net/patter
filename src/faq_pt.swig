@@ -8,7 +8,7 @@
     <div class="page-header">
       <h1>Patter FAQ</h1>
     </div>
-    <div class="hero-unit">
+    <div class="jumbotron"><div class="container">
       <div class="page-header">
         <h1>Geral</h1>
       </div>
@@ -43,8 +43,8 @@
       <p>Para iOS, Felix suporta notificações para salas privadas Patter.</p>
       <p>Para Android, Robin suporta notificações.</p>
       <p><a href="http://patter-app.net/patter-notify.html">Patter Notify</a> é uma extensão para o Chrome que te notifica de novas PMs e updates do Patter.</p>
-    </div>
-    <div class="hero-unit">
+    </div></div>
+    <div class="jumbotron"><div class="container">
       <div class="page-header">
         <h1>Chatting</h1>
       </div>
@@ -62,8 +62,8 @@
       <p>Dentro de uma sala, a lista de utilizadores irá desvaneçer os usernames que não postaram nada nos últimos minutos. Depois de 10 minutos eles serão removidos da lista.</p>
       <p>Publicações que te mencionam e posts que tu criaste estão apresentados com cores de fundo diferente para maior facilidade de navegação.</p>
       <p>@michelelewis é verde. Porque sim.</p>
-    </div>
-    <div class="hero-unit">
+    </div></div>
+    <div class="jumbotron"><div class="container">
       <div class="page-header">
         <h1>Salas</h1>
       </div>
@@ -71,8 +71,8 @@
       <p>Só podes mudar uma sala se fores o proprietário da mesma. Quando estás na sala clica em 'Edit Room' na barra de menu no topo, e podes adicionar ou remover utilizadores, mudar as permissões, tratar da promoção da sala e editar o nome.</p>
       <h2>Posso apagar a minha sala?</h2>
       <p>Não podes apagar uma sala neste momento devido a limitações na API do app.net. Se quiseres simplesmente esqueçer a sala edita as permissões para privado e mais ninguém pode entrar, depois simplesmente deixa de a subscrever. Se uma sala possuir mensagens sensíveis ou outras informações terás que remover essas mensagens separadamente. Não há nenhuma maneira fácil para apagar um grande número de mensagens de uma vez, mas se a necessidade aumentar contacta o @duerig e eu posso trabalhar para adicionar esta funcionalidade.</p>
-    </div>
-    <div class="hero-unit">
+    </div></div>
+    <div class="jumbotron"><div class="container">
       <div class="page-header">
         <h1>Suporte</h1>
       </div>
@@ -84,6 +84,6 @@
       <p>Também existe uma definição em account.app.net/settings/ que te permite limitar quem é que te pode re-subscrever a uma sala. Clica em 'Privacy' e depois seleciona qual grupo de pessoas que te pode enviar mensagens. Esta definição não irá afectar salas existentes a que já estás subscrito, mas pode prevenir outros a subscrever-te a salas novas que eles criarem.</p>
       <h2>Algo não está a funcionar, com quem é que eu falo?</h2>
       <p>Deverás primeiro contactar o autor do cliente que estéas a usar (Patter para iOS é de @boxenjim). Se tiveres algum problema com o cliente web ou se for um problema que não pode ser resolvido de outra maneira fica à vontade de me contactar (@duerig). Diverte-te a usar o Patter!</p>
-    </div>
+    </div></div>
   </div>
 {% endblock %}

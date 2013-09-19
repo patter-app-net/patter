@@ -8,7 +8,7 @@
     <div class="page-header">
       <h1>Patter FAQ</h1>
     </div>
-    <div class="hero-unit">
+    <div class="jumbotron"><div class="container">
       <div class="page-header">
         <h1>General</h1>
       </div>
@@ -49,8 +49,8 @@
       <p>En iOS, Felix soporta notificaciones para salas privadas de Patter.</p>
       <p>En Android, Robin soporta notificaciones.</p>
       <p>Patter Notify es una extensión de Chrome que le notificará cuando haya un nuevo mensaje privado y actualizaciones Patter.</p>
-    </div>
-    <div class="hero-unit">
+    </div></div>
+    <div class="jumbotron"><div class="container">
       <div class="page-header">
         <h1>Chateando</h1>
       </div>
@@ -73,8 +73,8 @@
       <p>Dentro de una sala, la lista de usuarios desvanecerá los nombres de usuarios que no han publicado en los últimos minutos. Después de 10 minutos de inactividad, serán borrados de la lista.</p>
       <p>Publicaciones que lo mencionen a usted y publicaciones creadas por usted son representadas con un distinto color de fondo para fácil identificación.</p>
       <p>@michelelewis es de color verde. Simplemente porque sí.</p>
-    </div>
-    <div class="hero-unit">
+    </div></div>
+    <div class="jumbotron"><div class="container">
       <div class="page-header">
         <h1>Salas</h1>
       </div>
@@ -84,8 +84,8 @@
 
       <h2>¿Puedo eliminar mi sala?</h2>
       <p>No es posible eliminar una sala debido a las limitaciones del API de app.net. Si desea simplemente olvidarse de una sala, edite la sala para que sea privada y nadie pueda entrar y dé de baja su suscripción a ella. Si la sala tiene mensajes importantes u otra información en ella, tendrá que eliminar dichos mensajes separadamente. Por el momento no hay forma sencilla de eliminar múltiples mensajes a su vez pero en caso de que surja la necesidad, contacte a @duerig y podré trabajar en agregar dicha característica.</p>
-    </div>
-    <div class="hero-unit">
+    </div></div>
+    <div class="jumbotron"><div class="container">
       <div class="page-header">
         <h1>Soporte</h1>
       </div>
@@ -100,6 +100,6 @@
 
       <h2>Algo no funciona. ¿Con quién tengo que hablar?</h2>
       <p>Primero deberá contactar con el autor del cliente que se encuentra usando (Patter para iOS es creado por @boxenjim). Si tiene un problema con el cliente web o es un problema que no puede ser resuelto por dicha vía, siéntase libre de contactarme (@duerig). ¡Diviértase usando Patter!</p>
-    </div>
+    </div></div>
   </div>
 {% endblock %}

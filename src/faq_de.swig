@@ -8,7 +8,7 @@
     <div class="page-header">
       <h1>Patter FAQ</h1>
     </div>
-    <div class="hero-unit">
+    <div class="jumbotron"><div class="container">
       <div class="page-header">
         <h1>Allgemein</h1>
       </div>
@@ -41,8 +41,8 @@
       <p>Für iOS gibt es Felix, der Unterstützung für private Patter Räume mitbringt.</p>
       <p>Für Android unterstützt Robin Benachrichtigungen.</p>
       <p><a href="http://patter-app.net/patter-notify.html">Patter Notify</a> ist eine Chrome Extension, die Dich über neue private Nachrichten und neue Posts in Patter-Räumen benachrichtigt..</p>
-    </div>
-    <div class="hero-unit">
+    </div></div>
+    <div class="jumbotron"><div class="container">
       <div class="page-header">
         <h1>Chatten</h1>
       </div>
@@ -60,8 +60,8 @@
       <p>Innerhalb eines Raumes werden die Benutzernamen von Benutzern, die in den letzten paar Minuten nichts gepostet haben, nach und nach ausgeblendet. Nach 10 untätigen Minuten werden sie von der Liste entfernt.</p>
       <p>Posts, in denen Du erwähnt wirst, und Posts, die Du geschrieben hast, werden in verschiedenen Hintergrundfarben dargestellt, um sie leichter erkennbar und auffindbar zu machen.</p>
       <p>@michelelewis ist grün. Einfach so. Aus Gründen.</p>
-    </div>
-    <div class="hero-unit">
+    </div></div>
+    <div class="jumbotron"><div class="container">
       <div class="page-header">
         <h1>Räume</h1>
       </div>
@@ -69,8 +69,8 @@
       <p>Du kannst einen Raum nur dann verändern, wenn Du der Besitzer bist, und es keine Privaten Nachrichten sind, sondern ein Patter-Raum. Wenn Du in dem Raum bist, klicke auf “Raum bearbeiten” in der Menüleiste oben. Dann kannst Du Teilnehmer hinzufügen und entfernen, Rechte verändern, die Beschreibung des Raumes einstellen und den Namen des Raumes bearbeiten.</p>
       <h2>Kann ich meinen Raum löschen?</h2>
       <p>Die App.net API lässt ein Löschen von Räumen im Moment nicht zu. Wenn Du einen Raum einfach vergessen willst, bearbeite den Raum so, dass er privat ist, niemand außer Dir Zutritt hat und lösche dann Dein Abonnement für den Raum. Wenn der Raum sensible Nachrichten oder andere Informationen enthält, wirst Du diese Nachrichten separat löschen müssen. Bisher gibt es keine einfachere Möglichkeit, Mehrfachlöschungen von Nachrichten vorzunehmen. Falls Du diese Funktion gerne hättest, kontaktiere @duerig, dann werde ich mich daran machen, diese Funktion hinzuzufügen.</p>
-    </div>
-    <div class="hero-unit">
+    </div></div>
+    <div class="jumbotron"><div class="container">
       <div class="page-header">
         <h1>Support</h1>
       </div>
@@ -82,6 +82,6 @@
       <p>Es gibt aber auch eine Einstellung unter account.app.net/settings/, die es Dir erlaubt, einzuschränken, wer Dich automatisch als Teilnehmer eines Raumes eintragen kann. Klicke auf “Privatsphäre” und wähle dann aus, welche Benutzer Dir Nachrichten senden dürfen. Diese Einstellung beeinflusst existierende Abonnements für Räume nicht. Aber sie wird verhindern, dass andere Dich zu Räumen, die sie erstellen, hinzufügen können.</p>
       <h2>Es funktioniert nicht. Wen soll ich ansprechen?</h2>
       <p>Am besten kontaktierst du zunächst den Entwickler des jeweiligen Clients, den Du verwendest (Patter for iOS ist von @boxenjim). Wenn Du ein Problem mit dem Web-Client hast, oder wenn es um etwas geht, das nicht auf diese Art gelöst werden kann, kannst Du gerne mich (@duerig) kontaktieren. Viel Spaß beim Benutzen von Patter!</p>
-    </div>
+    </div></div>
   </div>
 {% endblock %}

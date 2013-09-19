@@ -7,7 +7,7 @@
     <div class="page-header">
       <h1>Patter FAQ</h1>
     </div>
-    <div class="hero-unit">
+    <div class="jumbotron"><div class="container">
       <div class="page-header">
         <h1>General</h1>
       </div>
@@ -40,8 +40,8 @@
       <p>On iOS, Felix supports notifications for private Patter rooms.</p>
       <p>On Android, Robin supports notifications</p>
       <p><a href="http://patter-app.net/patter-notify.html">Patter Notify</a> is a Chrome extension that will notify you about new private messages and Patter updates.</p>
-    </div>
-    <div class="hero-unit">
+    </div></div>
+    <div class="jumbotron"><div class="container">
       <div class="page-header">
         <h1>Chatting</h1>
       </div>
@@ -59,8 +59,8 @@
       <p>Inside of a room, the user list will fade out usernames that have not posted in the last few minutes. After 10 idling minutes, they will be removed from the list.</p>
       <p>Posts that mention you and posts that you create are styled in a different background color for ease of lookup.</p>
       <p>@michelelewis is green. Just because.</p>
-    </div>
-    <div class="hero-unit">
+    </div></div>
+    <div class="jumbotron"><div class="container">
       <div class="page-header">
         <h1>Rooms</h1>
       </div>
@@ -68,8 +68,8 @@
       <p>You can only change a room if you are the owner of that room and it is a Patter room. When viewing the room, click 'Edit Room' from the menu bar at the top and you can add/remove users, change the permissions, setup promotion for the room, and edit its name.</p>
       <h2>Can I delete my room?</h2>
       <p>You cannot delete a room right now because of limitations in the app.net API. If you want to just forget about a room, edit the room so that it is private and nobody else is allowed in then unsubscribe. If the room has sensitive messages or other information in it, you will need to delete those messages separately. There is no easy way yet to mass-delete messages but if the need arises, contact @duerig and I can work on adding this feature.</p>
-    </div>
-    <div class="hero-unit">
+    </div></div>
+    <div class="jumbotron"><div class="container">
       <div class="page-header">
         <h1>Support</h1>
       </div>
@@ -81,6 +81,6 @@
       <p>There is also an app.net setting at account.app.net/settings/ which allows you limit who else can auto-subscribe you to a room. Click Privacy and then select which group of people can send you messages. This setting will not affect existing rooms that you've subscribed to. But it can prevent others from subscribing you to rooms that they create.</p>
       <h2>Something is broken. Who do I talk to?</h2>
       <p>You should first contact the author of whichever client you are using (Patter for iOS is by @boxenjim). If you have a problem with the web client or if it is an issue that can't be resolved that way, feel free to contact me (@duerig). Have fun using Patter!</p>
-    </div>
+    </div></div>
   </div>
 {% endblock %}
