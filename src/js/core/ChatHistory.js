@@ -71,7 +71,9 @@ function ($, _, util, appnet, postString, emojiTemplate) {
 
   ChatHistory.prototype.renderPost = function (data)
   {
-    var body = embedEmoji(appnet.textToHtml(data.text, data.entities).html());
+    var body = appnet.textToHtml(data.text, data.entities).html();
+    body = embedEmoji(body);
+    body = embedNewlines(body);
     var name = '';
     if (data.user)
     {
@@ -197,6 +199,30 @@ function ($, _, util, appnet, postString, emojiTemplate) {
           result += ':' + name + ':';
         }
         start = index + name.length + 2;
+      }
+    }
+    result += text.substr(start);
+    return result;
+  }
+
+  function embedNewlines(text)
+  {
+    var result = '';
+    var matches = text.match(/\n/g);
+    var start = 0;
+    var i = 0;
+    var limit = 10;
+    if (matches !== null) {
+      if (matches.length < limit)
+      {
+        limit = matches.length;
+      }
+      for (i = 0; i < limit; i += 1)
+      {
+        var index = text.indexOf(matches[i], start);
+        result += text.substr(start, index - start);
+        result += '<br>';
+        start = index + 1;
       }
     }
     result += text.substr(start);

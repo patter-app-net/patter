@@ -16,7 +16,6 @@ function ($, util, appnet, attachModal, chatTemplate) {
     this.channelName = appnet.note.findPatterName(channel);
     this.postCallback = postCallback;
 
-    this.input = root.find('#chatBox');
     root.find('#chat-form').submit($.proxy(clickSend, this));
     root.find('#chatSend').click($.proxy(clickSend, this));
     if (channel.type === 'net.patter-app.room' &&
@@ -69,11 +68,11 @@ function ($, util, appnet, attachModal, chatTemplate) {
   var clickSend = function (event)
   {
     event.preventDefault();
-    if (this.input.val().length > 0)
+    if (this.getInput().val().length > 0)
     {
-      var text = this.input.val();
+      var text = this.getInput().val();
       this.postMessage(text, getImageUrl(text));
-      this.input.val('');
+      this.getInput().val('');
     }
     return false;
   };
@@ -81,11 +80,11 @@ function ($, util, appnet, attachModal, chatTemplate) {
   var clickBroadcast = function (event)
   {
     event.preventDefault();
-    if (this.input.val().length > 0)
+    if (this.getInput().val().length > 0)
     {
-      var text = this.input.val();
+      var text = this.getInput().val();
       this.getEntities(text, getImageUrl(text));
-      this.input.val('');
+      this.getInput().val('');
     }
     return false;
   };
@@ -199,6 +198,15 @@ function ($, util, appnet, attachModal, chatTemplate) {
   {
   };
 
+  ChatForm.prototype.getInput = function ()
+  {
+    var result = this.root.find('#chatBox');
+    if (result.is(':hidden'))
+    {
+      result = this.root.find('#textBox');
+    }
+    return result;
+  };
 
   ChatForm.prototype.insertUserIntoText = function (event)
   {
@@ -206,7 +214,7 @@ function ($, util, appnet, attachModal, chatTemplate) {
     if (appnet.isLogged())
     {
       var user = event.target.id;
-      insertText(user, this.input);
+      insertText(user, this.getInput());
     }
     return false;
   };

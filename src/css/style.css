@@ -256,7 +256,8 @@ ul.messageList {
   font-weight: 500;
 }
 #chatInput input,
-#chatInput a {
+#chatInput a,
+#chatInput textarea {
   float: left;
   display: block;
 }
@@ -303,6 +304,17 @@ ul.messageList {
   border: 1px solid #000;
   width: 74%;
   height: 40px;
+  resize: none;
+  margin: 5px 0 0 5px;
+  padding: 0 0 0 10px;
+  font-weight: 400;
+}
+#chatInput #textBox {
+  -webkit-appearance: none;
+  border: 1px solid #000;
+  width: 74%;
+  height: 90px;
+  resize: none;
   margin: 5px 0 0 5px;
   padding: 0 0 0 10px;
   font-weight: 400;

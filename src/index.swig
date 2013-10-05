@@ -32,6 +32,7 @@
         <ul class="dropdown-menu" role="menu">
           <li role="presentation" class="dropdown-header" id="username">@username</li>
           <li role="presentation" class="divider"></li>
+          <li role="presentation"><a role="menuitem" href="" id="options-button">Options</a></li>
           <li role="presentation"><a role="menuitem" href="faq.html">FAQ</a></li>
           <li role="presentation" class="divider"></li>
           <li role="presentation"><a role="menuitem" id="logout" href="#" data-toggle="dropdown" data-target="#settings">Logout</a></li>
@@ -44,30 +45,6 @@
     <div id="main-lobby">
 
 <br/><br/><br/>
-<!--
-      <div class="navbar navbar-default" role="navigation">
-        <div class="navbar-header">
-    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse">
-      <span class="sr-only">Toggle navigation</span>
-      <span class="icon-bar"></span>
-      <span class="icon-bar"></span>
-      <span class="icon-bar"></span>
-    </button>
-          <a class="navbar-brand patter-logo" href="index.html"><img src="/images/patter-logo-alt.png" width="70" height="15"></a>
-        </div>
-        <div class="collapse navbar-collapse navbar-ex1-collapse">
-          <ul class="nav navbar-nav">
-            <li><a href="" id="create-patter-button">Create Room</a></li>
-            <li><a href="" id="create-pm-button">Compose Private Message</a></li>
-          </ul>
-          <ul class="nav navbar-nav navbar-right">
-            <li><a href="faq.html">FAQ (en)</a></li>
-            <li><a href="faq_de.html">FAQ (de)</a></li>
-            <li><a href="" id="logout-button">Logout</a></li>
-          </ul>
-        </div>
-      </div>
--->
 
       <div class="tabbable tabs-left">
         <ul class="nav nav-tabs">
@@ -151,6 +128,7 @@
     </div>
 
     <div id="modal-container"></div>
+    <div id="options-wrapper"></div>
 {% endblock %}
 
 {% block bottom_js %}

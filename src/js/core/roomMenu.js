@@ -4,15 +4,21 @@
 
 /*global define: true */
 define(['jquery', 'appnet', 'js/core/roomInfo', 'js/core/editRoomModal',
-        'js/deps/text!template/roomMenu.html', 'js/deps/text!template/embeddedRoomMenu.html',
+        'js/core/OptionsView', 'js/core/OptionsModel',
+        'js/deps/text!template/roomMenu.html',
+        'js/deps/text!template/embeddedRoomMenu.html',
         'jquery-jfontsize', 'jquery-translator', 'bootstrap'],
-function ($, appnet, roomInfo, editRoomModal, menuTemplate, embeddedMenuTemplate) {
+function ($, appnet, roomInfo, editRoomModal, OptionsView, OptionsModel,
+          menuTemplate, embeddedMenuTemplate) {
   'use strict';
 
   var roomMenu = {};
 
   var container;
   var header;
+
+  var optionsView;
+  var optionsModel;
 
   roomMenu.init = function (menuContainer, headerContainer, history)
   {
@@ -26,9 +32,15 @@ function ($, appnet, roomInfo, editRoomModal, menuTemplate, embeddedMenuTemplate
     container.find('#subscribe').click(clickSubscribe);
     container.find('#help').click(clickHelp);
     container.find('#archive').click(clickArchive);
+    container.find('#options-button').click(clickOptions);
 //    initFontsize(history);
     editRoomModal.init();
     roomMenu.updateChannelView();
+
+    optionsModel = new OptionsModel();
+    optionsView = new OptionsView({ model: optionsModel,
+                                    el: $('#options-wrapper') });
+    optionsView.updateChat();
   };
 
   function initTranslate()
@@ -84,6 +96,12 @@ function ($, appnet, roomInfo, editRoomModal, menuTemplate, embeddedMenuTemplate
   {
     event.preventDefault();
     window.open('archive.html?channel=' + roomInfo.id);
+  }
+
+  function clickOptions(event)
+  {
+    event.preventDefault();
+    optionsView.show();
   }
 
   function initFontsize(history)

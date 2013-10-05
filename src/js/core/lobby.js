@@ -4,11 +4,14 @@
 
 /*global require: true */
 require(['jquery', 'appnet', 'util', 'js/options', 'js/core/editRoomModal',
+         'js/core/OptionsModel', 'js/core/OptionsView',
          'js/core/RoomList', 'js/core/RoomListView',
          'js/core/allChannels', 'js/core/allUsers',
          'js/deps/text!template/public-tab.html',
          'bootstrap', 'jquery-cloud', 'jquery-appnet'],
-function ($, appnet, util, options, editRoomModal, RoomList, RoomListView,
+function ($, appnet, util, options, editRoomModal,
+          OptionsModel, OptionsView,
+          RoomList, RoomListView,
           allChannels, allUsers, publicTabString) {
   'use strict';
 
@@ -27,6 +30,9 @@ function ($, appnet, util, options, editRoomModal, RoomList, RoomListView,
 
   var currentUser = null;
 
+  var optionsModel;
+  var optionsView;
+
   function initialize()
   {
     options.initialize();
@@ -42,10 +48,15 @@ function ($, appnet, util, options, editRoomModal, RoomList, RoomListView,
         initLobby();
       });
       $('#logout').on('click', logout);
+      $('#options-button').on('click', clickOptions);
+      optionsModel = new OptionsModel();
+      optionsView = new OptionsView({ model: optionsModel,
+                                      el: $('#options-wrapper') });
     }
     else
     {
       util.initAuthBody(options);
+      $('#main-body').hide();
     }
     $('#public').html(publicTabString);
   }
@@ -364,6 +375,12 @@ function ($, appnet, util, options, editRoomModal, RoomList, RoomListView,
     delete localStorage.patter2Token;
     util.redirect('index.html');
     return false;
+  }
+
+  function clickOptions(event)
+  {
+    event.preventDefault();
+    optionsView.show();
   }
 
   $(document).ready(initialize);

@@ -106,6 +106,7 @@
           <li role="presentation"><a role="menuitem" id="view" href="#" data-toggle="dropdown" data-target="#settings">View Room</a></li>
           <li role="presentation"><a role="menuitem" id="archive" href="archive.html" target="_blank" data-toggle="dropdown" data-target="#settings">Archive</a></li>
           <li role="presentation" class="divider"></li>
+          <li role="presentation"><a role="menuitem" id="options-button" href="" data-toggle="dropdown" data-target="#settings">Options</a></li>
           <li role="presentation"><a role="menuitem" id="help" href="faq.html" target="_blank" data-toggle="dropdown" data-target="#settings">Help</a></li>
         </ul>
       </div>
@@ -131,6 +132,7 @@
         <form id="chat-form">
           <input type="text" id="chatBox" placeholder="Enter text here." maxlength="2000" autofocus="true">
         </form>
+        <textarea id="textBox" placeholder="Enter text here." maxlength="2000" autofocus="true" style="display: none"></textarea>
         <a id="chatSend"><span class="ss-standard ss-icon white-icon">Chat</span></a>
         <a id="chatBroadcast"><span class="ss-standard ss-icon white-icon">Wifi</span></a>
         <a id="chatEmbed"><span class="ss-standard ss-icon white-icon">Attach</span></a>
@@ -147,6 +149,7 @@
   </div>
 
   <div id="modal-container"></div>
+  <div id="options-wrapper"></div>
 {% endblock %}
 
 {% block bottom_js %}

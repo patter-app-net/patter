@@ -9,12 +9,21 @@ function () {
 
   var options = {
     // channel -- Channel id if this is a single room view
+    channel: null,
     // token -- Access token if available
+    token: null,
     // embedded -- True if this is an embedded view
+    embedded: false,
     // unique_id -- Unique per-instance id
+    unique_id: null,
     // client_id -- Per-client id set by grunt
+    client_id: null,
     // state -- state for authorization
+    state: null,
     // noStorage -- True if we do not have access to local storage
+    noStorage: false,
+    // settings -- Object containing user settings
+    settings: {}
   };
 
   options.initialize = function ()
@@ -68,8 +77,26 @@ function () {
         options.client_id = window.PATTER.config.client_id;
       }
     }
+
+    try
+    {
+      options.settings = JSON.parse(localStorage.patterSettings);
+    }
+    catch (e) { }
+    if (! options.settings)
+    {
+      options.settings = {};
+    }
   };
 
+  options.saveSettings = function ()
+  {
+    try
+    {
+      localStorage.patterSettings = JSON.stringify(options.settings);
+    }
+    catch (e) { }
+  };
 
   function getUrlVars()
   {
