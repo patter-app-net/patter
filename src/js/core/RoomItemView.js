@@ -3,11 +3,11 @@
 // A single room item row
 
 /*global define:true */
-define(['jquery', 'underscore', 'backbone', 'util',
+define(['jquery', 'underscore', 'backbone', 'util', 'js/options',
         'js/core/allUsers',
         'js/deps/text!template/RoomItemView.html',
         'jquery-appnet'],
-function ($, _, Backbone, util, allUsers, roomTemplateString)
+function ($, _, Backbone, util, options, allUsers, roomTemplateString)
 {
   'use strict';
 
@@ -25,6 +25,7 @@ function ($, _, Backbone, util, allUsers, roomTemplateString)
     tagName: 'tr',
 
     events: {
+      'click #open': 'clickOpen',
       'click #subscribe': 'clickSubscribe',
       'click #mute': 'clickMute'
     },
@@ -89,6 +90,19 @@ function ($, _, Backbone, util, allUsers, roomTemplateString)
         result = this.model.get('channel').recent_message.created_at;
       }
       return result;
+    },
+
+    clickOpen: function (event) {
+      event.preventDefault();
+      var url = this.$('#open').attr('href');
+      if (options.settings.roomWindow)
+      {
+        window.open(url);
+      }
+      else
+      {
+        window.location = url;
+      }
     },
 
     clickSubscribe: function (event) {

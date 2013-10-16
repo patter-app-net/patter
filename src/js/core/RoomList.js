@@ -105,6 +105,14 @@ function ($, _, Backbone, allChannels, allUsers)
       });
     },
 
+    searchChannelMethod: function () {
+      this.get('params').include_annotations = 1;
+      this.get('params').include_recent_message = 1;
+      this.get('params').type = 'net.patter-app.room';
+      var promise = $.appnet.channel.search(this.get('params'));
+      return promise.then(updateMeta(this));
+    },
+
     subscriptionMethod: function () {
       this.get('params').include_annotations = 1;
       this.get('params').include_recent_message = 1;

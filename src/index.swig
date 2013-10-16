@@ -118,7 +118,17 @@
 
 
           </div>
-          <div id="rooms" class="tab-pane"></div>
+          <div id="rooms" class="tab-pane">
+            <br>
+            <form role="form" class="form-inline" id="private-search-rooms">
+              <div class="form-group">
+                <label class="sr-only" for="private-search-text">Search Your Private Rooms by Title</label>
+                <input type="text" class="form-control" id="private-search-text" placeholder="Private Rooms by Title">
+              </div>
+              <button type="submit" class="btn btn-default"><i class="icon-search"></i></button>
+            </form>
+            <div id="rooms-content"></div>
+          </div>
           <div id="pms" class="tab-pane"></div>
           <div id="public" class="tab-pane"></div>
           <div id="search" class="tab-pane"></div>

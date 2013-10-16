@@ -132,7 +132,7 @@ function ($, appnet, util, options, editRoomModal,
 
     var roomView = new RoomListView({
       model: rooms,
-      el: $('#rooms'),
+      el: $('#rooms-content'),
       tabEl: $('#room-tab'),
       showUnreadState: true,
       showMore: true,
@@ -177,6 +177,11 @@ function ($, appnet, util, options, editRoomModal,
     $('#search-rooms').submit(clickSearch);
     $('#recent-rooms').click(clickRecent);
     $('#active-rooms').click(clickActive);
+
+    $('#private-search-rooms').submit(clickPrivateSearch);
+    $('#public-search-rooms').submit(clickPublicSearch);
+    $('#public-active-rooms').click(clickPublicActive);
+    $('#popular-rooms').click(clickPopular);
   }
 
   var tagsAreSetup = false;
@@ -261,9 +266,62 @@ function ($, appnet, util, options, editRoomModal,
   function clickActive(event)
   {
     event.preventDefault();
-    event.preventDefault();
     searches.reset(searches.activeMethod, {},
-                   'Active Patter Rooms');
+                   'Active Rooms in the Patter Directory');
+    $('#search-tab').show();
+    $('#search-tab-link').tab('show');
+    searches.fetchMore();
+  }
+
+  function clickPrivateSearch(event)
+  {
+    event.preventDefault();
+    var text = $('#private-search-text');
+    searches.reset(searches.searchChannelMethod,
+                   { q: text.val(),
+                     is_private: 1 },
+                   'Searching Your Private Rooms');
+    $('#search-tab').show();
+    $('#search-tab-link').tab('show');
+    searches.fetchMore();
+    text.val('');
+  }
+
+  function clickPublicSearch(event)
+  {
+    event.preventDefault();
+    var text = $('#public-search-text');
+    searches.reset(searches.searchChannelMethod,
+                   { q: text.val(),
+                     is_public: 1 },
+                   'Searching All Public Rooms');
+    $('#search-tab').show();
+    $('#search-tab-link').tab('show');
+    searches.fetchMore();
+    text.val('');
+  }
+
+  function clickPublicActive(event)
+  {
+    event.preventDefault();
+    searches.reset(searches.searchChannelMethod,
+                   { q: '',
+                     is_public: true,
+                     order: 'activity' },
+                   'All Public Active Rooms');
+    $('#search-tab').show();
+    $('#search-tab-link').tab('show');
+    searches.fetchMore();
+  }
+
+  function clickPopular(event)
+  {
+    event.preventDefault();
+    searches.reset(searches.searchChannelMethod,
+                   { q: '',
+                     is_public: true,
+                     order: 'popularity' },
+                   'All Public Popular Rooms');
     $('#search-tab').show();
     $('#search-tab-link').tab('show');
     searches.fetchMore();

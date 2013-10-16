@@ -8,13 +8,67 @@
       <div class="modal-body">
 
         <form>
-          <legend>Room UI</legend>
+          <legend>Lobby Interface</legend>
           <div class="checkbox">
             <label>
-              <input type="checkbox" checked="true" id="toggle-chat">Small Chatbox
+              <input type="checkbox" checked="true" id="roomWindow"> Open each room in a new window
+            </label>
+          </div>
+
+          <legend>Room Interface</legend>
+          <div class="checkbox">
+            <label>
+              <input type="checkbox" checked="true" id="smallChat"> Small chatbox
             </label>
           </div>
         </form>
+        <br>
+
+        <form class="form-horizontal">
+          <legend>Room Notifications</legend>
+          <span class="help-block">If a new message comes in while a room is out of focus, notify you by:</span>
+          <div class="form-group">
+            <div class="col-md-4 col-lg-4">
+              <span class="help-block"><strong>Every Message</strong></span>
+            </div>
+            <div class="col-md-8 col-lg-8">
+              <div class="checkbox">
+                <label>
+                  <input type="checkbox" value="true" id="everyTitle">Flash Window Title</label>
+              </div>
+              <div class="checkbox">
+                <label>
+                  <input type="checkbox" value="true" id="everyNotify">Browser Notification</label>
+              </div>
+              <div class="checkbox">
+                <label>
+                  <input type="checkbox" value="true" id="everySound">Play a Sound</label>
+              </div>
+            </div>
+          </div>
+          <div class="form-group">
+            <div class="col-md-4 col-lg-4">
+              <span class="help-block"><strong>On Mentions</strong></span>
+            </div>
+            <div class="col-md-8 col-lg-8">
+              <div class="checkbox">
+                <label>
+                  <input type="checkbox" value="true" id="mentionTitle">Flash Window Title</label>
+              </div>
+              <div class="checkbox">
+                <label>
+                  <input type="checkbox" value="true" id="mentionNotify">Browser Notification</label>
+              </div>
+              <div class="checkbox">
+                <label>
+                  <input type="checkbox" value="true" id="mentionSound">Play a Sound</label>
+              </div>
+            </div>
+          </div>
+        </form>
+        <button class="btn btn-success"
+                data-loading-text="Browser Notifications Are Unavailable"
+                id="test-notify">Send a Browser Notification</button>
 
       </div>
       <div class="modal-footer">

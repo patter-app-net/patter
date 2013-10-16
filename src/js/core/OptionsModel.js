@@ -7,20 +7,35 @@ function ($, _, Backbone, options)
   var OptionsModel = Backbone.Model.extend({
 
     defaults: {
-      smallChat: true
+      smallChat: true,
+      roomWindow: false,
+      everyTitle: true,
+      everyNotify: false,
+      everySound: false,
+      mentionTitle: true,
+      mentionNotify: false,
+      mentionSound: false
     },
 
     initialize: function () {
-      var chat = true;
-      if (options.settings.smallChat === false)
+      var newModel = {};
+      var list = ['smallChat', 'roomWindow',
+                  'everyTitle', 'everyNotify', 'everySound',
+                  'mentionTitle', 'mentionNotify', 'mentionSound'];
+      var i = 0;
+      for (i = 0; i < list.length; i += 1)
       {
-        chat = false;
+        if (options.settings[list[i]] !== undefined &&
+            options.settings[list[i]] !== null)
+        {
+          newModel[list[i]] = options.settings[list[i]];
+        }
       }
-      this.set({ smallChat: chat });
+      this.set(newModel);
     },
 
     save: function () {
-      options.settings.smallChat  = this.get('smallChat');
+      options.settings = this.toJSON();
       options.saveSettings();
     }
 

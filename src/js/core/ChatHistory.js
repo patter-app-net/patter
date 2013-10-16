@@ -3,13 +3,14 @@
 // A pane showing a scrollable list of chats and posts
 
 /*global define:true */
-define(['jquery', 'underscore', 'util', 'appnet',
+define(['jquery', 'underscore', 'util', 'js/options', 'appnet',
         'js/deps/text!template/post.html', 'js/deps/text!template/postEmoji.html',
         'jquery-desknoty', 'jquery-titlealert'],
-function ($, _, util, appnet, postString, emojiTemplate) {
+function ($, _, util, options, appnet, postString, emojiTemplate) {
   'use strict';
 
   var postTemplate = _.template(postString);
+  var bloop;
 
   // id is the DOM id of the node to add the history too.
   function ChatHistory(root, authorCallback, muteCallback, avatarUrls)
@@ -23,6 +24,7 @@ function ($, _, util, appnet, postString, emojiTemplate) {
     this.root.scroll($.proxy(onScroll, this));
     $(window).on('resize', $.proxy(this.scrollToBottom, this));
     updateTimestamps();
+    bloop = new Audio('audio/bloop.mp3');
   }
 
   ChatHistory.prototype.update = function (data, goBack)
@@ -97,19 +99,9 @@ function ($, _, util, appnet, postString, emojiTemplate) {
     timestamp.attr('title', data.created_at);
     util.formatTimestamp(timestamp);
 
-    var userMention;
-    if (appnet.user !== null) {
-      userMention = new RegExp('@' + appnet.user.username + '[^a-zA-Z\\-_]');
-/*
-      if (data.user.username === appnet.user.username)
-      {
-        $('.postRow', post).addClass('myPost');
-      }
-*/
-      if (userMention.test(body))
-      {
-        post.addClass('mentioned');
-      }
+    if (this.checkMention(data.text))
+    {
+      post.addClass('mentioned');
     }
 
     var author = post.find('.author');
@@ -229,6 +221,21 @@ function ($, _, util, appnet, postString, emojiTemplate) {
     return result;
   }
 
+  ChatHistory.prototype.checkMention = function (post)
+  {
+    var result = false;
+    var userMention;
+    if (appnet.user !== null)
+    {
+      userMention = new RegExp('@' + appnet.user.username + '\\b');
+      if (userMention.test(post))
+      {
+        result = true;
+      }
+    }
+    return result;
+  };
+
   ChatHistory.prototype.addPostsToFeed = function (posts, addBefore, last)
   {
     var fromBottom = this.root.prop('scrollHeight') - this.root.scrollTop();
@@ -240,27 +247,41 @@ function ($, _, util, appnet, postString, emojiTemplate) {
     {
       this.root.find('.messageList').append(posts);
       if (! util.has_focus) {
-        $.titleAlert('New Message', {
-          duration: 10000,
-          interval: 1000
-        });
-        if (window.webkitNotifications)
+        var isMention = this.checkMention(last.text);
+        if (options.settings.everyTitle ||
+            (isMention && options.settings.mentionTitle))
         {
-          $.desknoty({
-            icon: '/images/patter-top-mobile.png',
-            title: last.username,
-            body: last.text,
-            url: ''
+          $.titleAlert('New Message', {
+            duration: 10000,
+            interval: 1000
           });
         }
-        if (window.fluid)
+        if (options.settings.everyNotify ||
+            (isMention && options.settings.mentionNotify))
         {
-          window.fluid.showGrowlNotification({
-            title: last.username,
-            description: last.text,
-            icon: '/images/patter-top-mobile.png',
-            sticky: false
-          });
+          if (window.webkitNotifications)
+          {
+            $.desknoty({
+              icon: '/images/patter-top-mobile.png',
+              title: last.username,
+              body: last.text,
+              url: ''
+            });
+          }
+          if (window.fluid)
+          {
+            window.fluid.showGrowlNotification({
+              title: last.username,
+              description: last.text,
+              icon: '/images/patter-top-mobile.png',
+              sticky: false
+            });
+          }
+        }
+        if (options.settings.everySound ||
+            (isMention && options.settings.mentionSound))
+        {
+          bloop.play();
         }
       }
     }
