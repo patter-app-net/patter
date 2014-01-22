@@ -1,7 +1,7 @@
 {
   "browser": true,
   "indent": 2,
-  "bitwise": true,
+  "bitwise": false,
   "curly": true,
   "eqeqeq": true,
   "latedef": true,
