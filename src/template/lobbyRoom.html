@@ -1,0 +1,34 @@
+<td><a class="btn btn-primary" id="open" href="room.html?channel=<%= id %>">Chat</a></td>
+<td>
+  <% if (isRoom) { %>
+    <h4><%- name %></h4>
+  <% } else { %>
+    <p><%- members %></p>
+  <% } %>
+</td>
+<td>
+  <div id="failure" class="alert alert-danger" style="display: none">
+    <button type="button" class="close" data-dismiss="alert">&times;</button>
+    <p><strong>Error:</strong> <span id="failure-message"></span></p>
+  </div>
+  <% if (isRoom && blurb !== '') { %>
+    <%- blurb %>
+  <% } else { %>
+    <% _.each(thumbs, function (thumb) { %>
+      <img class="avatarImg img-rounded" width="40" height="40"
+           src="<%- thumb.avatar %>" alt="Avatar for @<%- thumb.user %>">
+    <% }); %>
+  <% } %>
+</td>
+<td><span>Last chat:</span> <span title="<%- time %>" class="timestamp text-muted"></span></td>
+<td>
+  <img id="loading" src="images/spinner-big.gif" width="32" height="32"
+       style="display: none" alt="Loading...">
+  <div id="menu" class="dropdown">
+    <button class="btn btn-info btn-xs dropdown-toggle" data-toggle="dropdown" href="#"><span class="ss-standard ss-icon white-icon">dropdown</span></button>
+    <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownmenu1">
+      <li role="presentation"><a role="menuitem" tabindex="-1" href="#" id="subscribe" title="Subscribing to a room means you will see it in your 'My Rooms' or 'Private Messages' list."><% if (subscribed) { %>Unsubscribe<% } else { %>Subscribe<% } %></a></li>
+      <li role="presentation"><a role="menuitem" tabindex="-1" href="#" id="mute" title="Muting a room unsubscribes you to it and makes sure that you will not be re-subscribed automatically. Use this to leave private messaging rooms permanently."><% if (muted) { %>Unmute<% } else { %>Mute<% } %></a></li>
+    </ul>
+  </div>
+</td>
