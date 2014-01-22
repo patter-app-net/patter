@@ -107,7 +107,8 @@ function ($, util, appnet, attachModal, chatTemplate) {
       post.entities = { links: links };
     } else {
       post.entities = {
-        parse_markdown_links: 1
+        parse_markdown_links: 1,
+        parse_links: 1
       };
     }
     appnet.api.createMessage(this.channelId, post, { include_annotations: 1 },
