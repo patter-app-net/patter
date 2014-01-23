@@ -74,16 +74,14 @@ function ($, util, appnet, PatterEmbed) {
 
     this.webSocket.onopen = function (e) {
       roomFeed.webSocketActive = true;
-
-      if (roomFeed.connectionId !== null) {
-        callback(roomFeed.connectionId);
-      }
+//      console.log('open');
     };
 
     this.webSocket.onmessage = function (e) {
+//      console.log('message');
       var payload = JSON.parse(e.data);
 
-      if (payload.meta.connection_id && (roomFeed.connectionId !== payload.meta.connection_id)) {
+      if (payload.meta.connection_id) {
         roomFeed.connectionId = payload.meta.connection_id;
         try {
           localStorage.connectionId = payload.meta.connection_id;
@@ -98,10 +96,15 @@ function ($, util, appnet, PatterEmbed) {
     };
 
     this.webSocket.onclose = function (e) {
+//      console.log('close');
       roomFeed.webSocketActive = false;
+      roomFeed.shownFeed = false;
+      clearTimeout(this.timer);
+      this.timer = setTimeout($.proxy(this.checkFeed, this), 2000);
     };
 
     this.webSocket.onerror = function (e) {
+//      console.log('error');
       roomFeed.dontUseWebSocket = true;
       roomFeed.webSocketActive = false;
       roomFeed.connectionId = null;
@@ -109,12 +112,15 @@ function ($, util, appnet, PatterEmbed) {
       try {
         localStorage.connectionId = null;
       } catch (_e) { }
+      clearTimeout(this.timer);
+      this.timer = setTimeout($.proxy(this.checkFeed, this), 2000);
     };
   };
 
   RoomFeed.prototype.checkFeed = function ()
   {
     var scroll, height, options, requiresPoll, roomFeed;
+    var that = this;
 
     roomFeed = this;
 
@@ -149,16 +155,19 @@ function ($, util, appnet, PatterEmbed) {
       if (this.webSocketActive) { return; }
 
       this.getConnectionId(function(connectionId) {
-        options = {
-          connection_id: connectionId,
-          include_annotations: 1,
-          count: 200,
-          subscription_id: roomFeed.subscriptionId
-        };
+        if (! that.shownFeed)
+        {
+          options = {
+            connection_id: connectionId,
+            include_annotations: 1,
+            count: 40,
+            subscription_id: roomFeed.subscriptionId
+          };
 
-        appnet.api.getMessages(roomFeed.channel.id, options,
-                               $.proxy(completeFeed, roomFeed),
-                               $.proxy(failFeed, roomFeed));
+          appnet.api.getMessages(roomFeed.channel.id, options,
+                                 $.proxy(completeFeed, roomFeed),
+                                 $.proxy(failFeed, roomFeed));
+        }
       });
 
     } else {
