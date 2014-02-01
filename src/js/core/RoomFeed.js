@@ -52,12 +52,6 @@ function ($, util, appnet, PatterEmbed) {
       this.subscriptionId = generateUUID();
     }
 
-    try {
-      if (localStorage.connectionId) {
-        this.connectionId = localStorage.connectionId;
-      }
-    } catch (_e) { }
-
     streamUrl = 'wss://stream-channel.app.net/stream/user?include_annotations=1&include_html=1&include_marker=1&include_recent_message=1&include_html=1&auto_delete=1&access_token=' + appnet.api.accessToken;
 
     if (this.connectionId !== null) {
@@ -74,18 +68,17 @@ function ($, util, appnet, PatterEmbed) {
 
     this.webSocket.onopen = function (e) {
       roomFeed.webSocketActive = true;
-//      console.log('open');
+
+      if ($('#room_header .room_title .ws_active_indicator').length === 0) {
+        $('<span class="ws_active_indicator"></span>').appendTo('#room_header .room_title');
+      }
     };
 
     this.webSocket.onmessage = function (e) {
-//      console.log('message');
       var payload = JSON.parse(e.data);
 
       if (payload.meta.connection_id) {
         roomFeed.connectionId = payload.meta.connection_id;
-        try {
-          localStorage.connectionId = payload.meta.connection_id;
-        } catch (_e) { }
 
         callback(roomFeed.connectionId);
       }
@@ -96,24 +89,27 @@ function ($, util, appnet, PatterEmbed) {
     };
 
     this.webSocket.onclose = function (e) {
-//      console.log('close');
-      roomFeed.webSocketActive = false;
-      roomFeed.shownFeed = false;
-      clearTimeout(this.timer);
-      this.timer = setTimeout($.proxy(this.checkFeed, this), 2000);
-    };
-
-    this.webSocket.onerror = function (e) {
-//      console.log('error');
       roomFeed.dontUseWebSocket = true;
       roomFeed.webSocketActive = false;
       roomFeed.connectionId = null;
 
-      try {
-        localStorage.connectionId = null;
-      } catch (_e) { }
-      clearTimeout(this.timer);
-      this.timer = setTimeout($.proxy(this.checkFeed, this), 2000);
+      // Fall back to polling.
+      roomFeed.checkFeed();
+
+      // Remove the indicator.
+      $('#room_header .room_title .ws_active_indicator').remove();
+    };
+
+    this.webSocket.onerror = function (e) {
+      roomFeed.dontUseWebSocket = true;
+      roomFeed.webSocketActive = false;
+      roomFeed.connectionId = null;
+
+      // Fall back to polling.
+      roomFeed.checkFeed();
+
+      // Remove the indicator.
+      $('#room_header .room_title .ws_active_indicator').remove();
     };
   };
 
