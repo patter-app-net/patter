@@ -28,6 +28,7 @@ function ($, util, appnet, PatterEmbed) {
     this.dontUseWebSocket = false;
     this.webSocket = null;
     this.subscriptionId = null;
+    this.webSocketTries = 0;
   }
 
   function generateUUID(){
@@ -68,6 +69,7 @@ function ($, util, appnet, PatterEmbed) {
 
     this.webSocket.onopen = function (e) {
       roomFeed.webSocketActive = true;
+      roomFeed.webSocketTries = 0;
 
       if ($('#room_header .room_title .ws_active_indicator').length === 0) {
         $('<span class="ws_active_indicator"></span>').appendTo('#room_header .room_title');
@@ -89,15 +91,25 @@ function ($, util, appnet, PatterEmbed) {
     };
 
     this.webSocket.onclose = function (e) {
-      roomFeed.dontUseWebSocket = true;
-      roomFeed.webSocketActive = false;
-      roomFeed.connectionId = null;
+      // CLOSE_ABNORMAL
+      if (e.code === 1006 && roomFeed.webSocketTries < 3) {
+        // Try again.
+        roomFeed.webSocketActive = false;
+        roomFeed.connectionId = null;
 
-      // Fall back to polling.
-      roomFeed.checkFeed();
+        roomFeed.webSocketTries += 1;
+        roomFeed.checkFeed();
+      } else {
+        roomFeed.dontUseWebSocket = true;
+        roomFeed.webSocketActive = false;
+        roomFeed.connectionId = null;
 
-      // Remove the indicator.
-      $('#room_header .room_title .ws_active_indicator').remove();
+        // Fall back to polling.
+        roomFeed.checkFeed();
+
+        // Remove the indicator.
+        $('#room_header .room_title .ws_active_indicator').remove();
+      }
     };
 
     this.webSocket.onerror = function (e) {
