@@ -90,8 +90,10 @@
                 <div id="main-home" style="display: none"></div>
               </div>
               <div class="col-md-3">
+<!--
                 <h3>Patter News</h3>
                 <iframe frameborder="0" src="http://blog-app.net/embed.html#2508" width="100%" height="600" >
+-->
                 </iframe>
               </div>
             </div>
