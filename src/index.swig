@@ -57,7 +57,7 @@
         <div class="tab-content">
           <div id="home" class="tab-pane active">
             <div class="row">
-              <div class="col-md-9">
+              <div class="col-md-12">
                 <div id="fallback-home" style="display: none">
                   <h1>Welcome to Patter</h1>
                   <p>With Patter, you can chat privately with friends or join public chat rooms. There are several ways to get started:</p>
@@ -89,18 +89,11 @@
                 </div>
                 <div id="main-home" style="display: none"></div>
               </div>
-              <div class="col-md-3">
-<!--
-                <h3>Patter News</h3>
-                <iframe frameborder="0" src="http://blog-app.net/embed.html#2508" width="100%" height="600" >
--->
-                </iframe>
-              </div>
             </div>
 
       <br>
       <div class="well well-small">
-        <p>For troubleshooting, contact <a href="http://alpha.app.net/duerig">@duerig</a>. In-room design by <a href="http://alpha.app.net/zenimpulse">@zenimpulse.</a>. Patter for iOS was created by <a href="http://alpha.app.net/boxenjim">@boxenjim</a>. The Patter logo was created by <a href="http://alpha.app.net/tellingtales">@tellingtales</a>.</p>
+        <p>For troubleshooting, contact <a href="http://alpha.app.net/duerig">@duerig</a>. In-room design by <a href="http://alpha.app.net/zenimpulse">@zenimpulse</a>. Patter for iOS was created by <a href="http://alpha.app.net/boxenjim">@boxenjim</a>. The Patter logo was created by <a href="http://alpha.app.net/tellingtales">@tellingtales</a>.</p>
       </div>
       <div class="well well-small">
         <p>If you wish to buy me a coffee or help pay my way to the upcoming hackathon, here is a button for you. Include your app.net name if you want me to know who donated:</p>
